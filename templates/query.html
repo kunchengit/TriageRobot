@@ -1,0 +1,133 @@
+{% extends "layout.html" %}
+{% block body %}
+<link rel='stylesheet' type='text/css' href='static/css/jquery-ui.css'>
+<script src="static/js/jquery-1.11.1.js"></script>
+<script src="static/js/jquery-ui.js"></script>
+
+
+<script>
+$(function() {
+    function split( val ) {
+        return val.split( /,\s*/ );
+    }
+    function extractLast( term ) {
+        return split( term ).pop();
+    }
+    $( "#auto_profile" )
+        // don't navigate away from the field on tab when selecting an item
+        .bind( "keydown", function( event ) {
+            if ( event.keyCode === $.ui.keyCode.TAB &&
+                $( this ).autocomplete( "instance" ).menu.active ) {
+                event.preventDefault();
+                }
+        })
+        .autocomplete({
+            minLength: 0,
+            source: function( request, response ) {
+                    $.ajax({
+                        url: "{{url_for("autocomplete_profile")}}",
+                        dataType: "json",
+                        data: {
+                            term: extractLast( request.term )
+                        },
+                        success: function( data ) {
+                            response( data );
+                        }
+                    });
+                },
+            focus: function() {
+                // prevent value inserted on focus
+            return false;
+            },
+            select: function( event, ui ) {
+                var terms = split( this.value );
+                // remove the current input
+                terms.pop();
+                // add the selected item
+                terms.push( ui.item.value );
+                // add placeholder to get the comma-and-space at the end
+                terms.push( "" );
+                this.value = terms.join( "," );
+                return false;
+            }
+        });
+    });
+</script>
+
+
+<script>
+$(function() {
+  $("#auto_product").autocomplete({
+    source: "{{url_for("autocomplete_product")}}",
+    minLength: 2
+  });
+});
+</script>
+
+<script>
+$(function() {
+  $("#auto_version").autocomplete({
+     source: function( request, response ) 
+     {
+            $.ajax({
+            url: "{{url_for("autocomplete_version")}}",
+            dataType: "json",
+            data: {
+                term: request.term,
+                product: $("#auto_product").val()
+            },
+        success: function( data ) {
+        response( data );
+            }
+            });
+    },
+    minLength: 2,
+  });
+});
+</script>
+
+
+
+
+    {% if error %}<p class=error><strong>Error:</strong> {{ error }}{% endif %}
+    {% if session.logged_in %}
+
+    <form action="{{ url_for('show_entries') }}" method=post>
+        <ul class=entries>
+        <table id="query_table" class="display" cellspacing="0">
+            <thead>
+                <th>Assigned to:</th>
+                <th>Fix by Product:</th>
+                <th>Fix by Version:</th>
+                <th>Product:</th>
+            </thead>
+            <tbody>
+                <td>
+                    <div class="ui-widget">
+                        <input id="auto_profile" name=assigned_to>
+                    </div>
+                </td>
+                <td>
+                    <div class="ui-widget">
+                        <input id="auto_product" name=fix_by_product>
+                    </div>
+                </td>
+                <td>
+                    <div class="ui-widget">
+                        <input id="auto_version" name=fix_by_version>
+                    </div>
+                </td>
+                <td>
+                    <div class="ui-widget">
+                        <input id="auto_product" name=product>
+                    </div>
+                </td>
+            </tbody>
+        </table>
+            <dl>
+                <dd><input type=submit value=Submit>
+            </dl>
+        </ul>
+    </form>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends "layout.html" %}
+{% block body %}
+    <form action="{{ url_for('Admin_Custom_List') }}" method=post>
+        <ul class=entries>
+            <dl>
+                <dt>Admin List: {{admin_list}}
+                {% if admin_list_add %}
+                <dd>Added: {{admin_list_add}}
+                {% endif %}
+                {% if admin_list_remove %}
+                <dd>Removed: {{admin_list_remove}}
+                {% endif %}
+                <dd>Add:<input type=text id=admin_list_add name=admin_list_add>
+                <dd>Remove:<input type=text id=admin_list_remove name=admin_list_remove>
+                <input type=hidden id=admin_list_ori name=admin_list_ori value = {{admin_list}}>
+                <dd><input type=submit value=Submit>
+            </dl>
+        </ul>
+    </form>
+{% endblock %}

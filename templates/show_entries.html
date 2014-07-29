@@ -1,0 +1,142 @@
+{% extends "layout.html" %}
+{% block body %}
+{% set Number = 1 %}
+<link rel='stylesheet' type='text/css' href='static/css/dataTables.bootstrap.css'>
+<link rel='stylesheet' type='text/css' href='static/css/bootstrap-3.1.1.css'>
+<link rel="stylesheet" type="text/css" href="static/css/jquery.dataTables.css">
+<link rel="stylesheet" type="text/css" href="static/css/dataTables.colVis.css">
+
+<script type='text/javascript' src='static/js/jquery-1.11.1.js'></script>
+<script type='text/javascript' src='static/js/dataTables.bootstrap.js'></script>
+<script type='text/javascript' src='static/js/bootstrap-3.1.1.js'></script>
+<script type='text/javascript' src='static/js/jquery.dataTables.js'></script>
+<script type='text/javascript' src='static/js/dataTables.colVis.js'></script>
+<script type='text/javascript' src='static/js/dataTables.fixedColumns.js'></script>
+<script src="static/highstock.js"></script>
+
+<!--
+When setting the name of posted variables, the name of "check_id", "comment_id" should not be assigned since I used the check_id to represent the checkboxes and comment_id to represent the comments
+07/15/2014 ShinYeh
+-->
+<link rel="stylesheet" type="text/css" href="static/css/jquery-ui.css">
+<script type='text/javascript' src='static/js/Chart.js'></script>
+<script type='text/javascript' src='static/js/jquery-ui.js'></script>
+
+
+
+<script>
+var oTable;
+var selected =  new Array();
+$(document).ready(function() {
+    var table = $('#bugs_table').DataTable({
+        paging:         true, 
+        dom: 'C<"clear">lfrtip',
+        scrollY:        "300px"
+        
+    } );
+ 
+    new $.fn.dataTable.FixedColumns( table, {
+        leftColumns: 3,
+        rightColumns: 1
+    } );
+    $('#check_all').click( function() {
+        $('input', table.fnGetNodes()).attr('checked',this.checked);
+    } );
+} );
+</script>
+<script>
+    var lineChartData = 
+    {
+        labels : [ "{{triage_date[0]['Month']}}", "{{triage_date[1]['Month']}}","{{triage_date[2]['Month']}}","{{triage_date[3]['Month']}}","{{triage_date[4]['Month']}}","{{triage_date[5]['Month']}}","{{triage_date[6]['Month']}}"],
+        datasets : 
+        [
+            {
+                label: "My First dataset",
+				fillColor : "rgba(151,187,205,0.2)",
+				strokeColor : "rgba(151,187,205,1)",
+				pointColor : "rgba(151,187,205,1)",
+				pointStrokeColor : "#fff",
+				pointHighlightFill : "#fff",
+				pointHighlightStroke : "rgba(151,187,205,1)",
+                data : [{{triage_date[0]['Value']}}, {{triage_date[1]['Value']}}, {{triage_date[2]['Value']}}, {{triage_date[3]['Value']}}, {{triage_date[4]['Value']}}, {{triage_date[5]['Value']}}, {{triage_date[6]['Value']}}]
+            }
+        ]
+    }
+	window.onload = function()
+    {
+		var ctx = document.getElementById("canvas").getContext("2d");
+		window.myLine = new Chart(ctx).Line(lineChartData, 
+        {
+			responsive: true
+		});
+	}
+</script>
+ <script>
+    $(function() {
+        $( "#drag_triage_chart" ).draggable();
+        $( ".selector" ).draggable({ zIndex: 100 });
+    });
+</script>
+
+<form action="{{ url_for('entries_processing') }}" method=post>
+<ul class=entries>
+    <div style="width:30%" id="drag_triage_chart">
+        <dd>The Statistic of Triage-Accepted of {{assigned}}
+        <dd><canvas id="canvas" height="450" width="900"></canvas>
+    </div>
+    <dl>
+        <select name="A_R_Selection">
+            <option value="A">Add</option>
+            <option value="R">Remove</option>
+        </select>
+        <input type=text list=browsers name="keywords">
+        <datalist id=browsers >
+            <option> triage-accepted
+            <option> triage-required
+            <option> SR
+            <option> cosmetic
+        </datalist>
+    </dl>
+    <table id="bugs_table" class="display" cellspacing="0" width="100%">
+        <thead>
+            <tr>
+                <th>Select All <input type=checkbox id = check_all name = check_all></th>
+                <th>Number</th>
+                <th>Bug ID</th>
+                <th>Keywords</th>
+                <th>Weight</th>
+                <th>Priority</th>
+                <th>Severity</th>
+                <th>Case Count</th>
+                <th>fix by product</th>
+                <th>Assigned_to</th>
+                <th>ETA</th>
+                <th>Highlighted Reasons</th>
+                <th>Comments</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entry in bugs %}
+            <tr>
+                <td><input type=checkbox id = {{ entry["bug_id"] }} value = {{ entry["bug_id"] }} name = check_id_{{ entry["bug_id"] }}></td>
+                <td>{{ Number }}</td>
+                <td><a href=https://bugzilla.eng.vmware.com/show_bug.cgi?id={{ entry["bug_id"] }}>{{ entry["bug_id"] }}</a></td>
+                <td>{{ entry["keywords"] }}</td>
+                <td>{{ entry["weight"] }}</td>
+                <td>{{ entry["priority"] }}</td>
+                <td>{{ entry["bug_severity"] }}</td>
+                <td>{{ entry["case_count"] }}</td>
+                <td>{{ fix_by[entry["bug_id"]] }}</td>
+                <td>{{ entry["assigned_rn"] }}</td>
+                <td>{{ entry["cf_eta"] }}</td>
+                <td>{{ entry["highlighted_by"] }}</td>
+                <td><textarea name = comment_id_{{ entry["bug_id"] }} cols="20" rows="3" ></textarea></td>
+            </tr>
+            {% set Number = Number + 1%}
+        {% endfor %}
+        </tbody>
+    </table>
+    <input type=submit value=Submit>
+    </form>
+</ul>
+{% endblock %}

@@ -1,0 +1,196 @@
+{% extends "layout.html" %}
+{% block body %}
+{% set Number = 1 %}
+<link rel='stylesheet' type='text/css' href='static/css/dataTables.bootstrap.css'>
+<link rel='stylesheet' type='text/css' href='static/css/bootstrap-3.1.1.css'>
+<link rel="stylesheet" type="text/css" href="static/css/jquery.dataTables.css">
+<link rel="stylesheet" type="text/css" href="static/css/dataTables.colVis.css">
+
+<script type='text/javascript' src='static/js/jquery-1.11.1.js'></script>
+<script type='text/javascript' src='static/js/dataTables.bootstrap.js'></script>
+<script type='text/javascript' src='static/js/bootstrap-3.1.1.js'></script>
+<script type='text/javascript' src='static/js/jquery.dataTables.js'></script>
+<script type='text/javascript' src='static/js/dataTables.colVis.js'></script>
+<script type='text/javascript' src='static/js/dataTables.fixedColumns.js'></script>
+<script src="static/highstock.js"></script>
+
+<!--
+When setting the name of posted variables, the name of "check_id", "comment_id" should not be assigned since I used the check_id to represent the checkboxes and comment_id to represent the comments
+07/15/2014 ShinYeh
+-->
+<link rel="stylesheet" type="text/css" href="static/css/jquery-ui.css">
+<script type='text/javascript' src='static/js/Chart.js'></script>
+<script type='text/javascript' src='static/js/jquery-ui.js'></script>
+<script>
+$(document).ready(function() {
+    var T_ETA_table = $('#T_ETA_bugs_table').DataTable( {
+        dom: 'C<"clear">lfrtip',
+        scrollY:        "300px",
+        paging:         false
+    } );
+    new $.fn.dataTable.FixedColumns( T_ETA_table, {
+        leftColumns: 3
+    } );
+} );
+</script>
+
+<script>
+$(document).ready(function() {
+    var ETA_table = $('#ETA_bugs_table').DataTable( {
+        dom: 'C<"clear">lfrtip',
+        scrollY:        "300px",
+        paging:         false
+    } );
+    new $.fn.dataTable.FixedColumns( ETA_table, {
+        leftColumns: 3
+    } );
+} );
+</script>
+
+<script>
+$(document).ready(function() {
+    var W_U_table = $('#W_U_bugs_table').DataTable( {
+        dom: 'C<"clear">lfrtip',
+        scrollY:        "300px",
+        paging:         false
+    } );
+    new $.fn.dataTable.FixedColumns( W_U_table, {
+        leftColumns: 3
+    } );
+} );
+</script>
+
+
+
+
+<form action="{{ url_for('Admin_Email_Processing') }}" method=post>
+    
+<ul class=entries>
+    <input type=submit value=SendEmail>
+    
+    <dt>The table of the bugs which should add ETA after triage-accepted</dt>
+    <table id="T_ETA_bugs_table" class="display" cellspacing="0" width="100%">
+        <thead>
+            <tr>
+                <th>Select All</th>
+                <th>Number</th>
+                <th>Bug ID</th>
+                <th>Keywords</th>
+                <th>ETA</th>
+                <th>Weight</th>
+                <th>Priority</th>
+                <th>Severity</th>
+                <th>Case Count</th>
+                <th>fix by product</th>
+                <th>Assigned_to</th>
+                <th>Highlighted Reasons</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entry in T_ETA_bug_results %}
+            <tr>
+                <td><input type=checkbox id = T_ETA_{{ entry["bug_id"] }} value = {{ entry["bug_id"] }} name = T_ETA_check_{{ entry["bug_id"] }}></td>
+                <input type=hidden value = {{ entry["assigned_rn"] }} name = {{ entry["bug_id"] }}>
+                <td>{{ Number }}</td>
+                <td><a href=https://bugzilla.eng.vmware.com/show_bug.cgi?id={{ entry["bug_id"] }}>{{ entry["bug_id"] }}</a></td>
+                <td>{{ entry["keywords"] }}</td>
+                <td>{{ entry["cf_eta"] }}</td>
+                <td>{{ entry["weight"] }}</td>
+                <td>{{ entry["priority"] }}</td>
+                <td>{{ entry["bug_severity"] }}</td>
+                <td>{{ entry["case_count"] }}</td>
+                <td>{{ T_ETA_bug_fix_by_results[entry["bug_id"]] }}</td>
+                <td>{{ entry["assigned_rn"] }}</td>
+                <td>{{ entry["highlighted_by"] }}</td>
+            </tr>
+            {% set Number = Number + 1%}
+        {% endfor %}
+        </tbody>
+    </table>
+    
+    <dt>The table of the bugs which should check ETA condition e.g, ETA: expired, one week...etc</dt>
+    <table id="ETA_bugs_table" class="display" cellspacing="0" width="100%">
+        <thead>
+            <tr>
+                <th>Select All</th>
+                <th>Number</th>
+                <th>Bug ID</th>
+                <th>ETA</th>
+                <th>Keywords</th>
+                <th>Weight</th>
+                <th>Priority</th>
+                <th>Severity</th>
+                <th>Case Count</th>
+                <th>fix by product</th>
+                <th>Assigned_to</th>
+                <th>Highlighted Reasons</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entry in ETA_bug_results %}
+            <tr>
+                <td><input type=checkbox id = ETA_{{ entry["bug_id"] }} value = {{ entry["bug_id"] }} name = ETA_check_{{ entry["bug_id"] }}></td>
+                <input type=hidden value = {{ entry["assigned_rn"] }} name = {{ entry["bug_id"] }}>
+                <td>{{ Number }}</td>
+                <td><a href=https://bugzilla.eng.vmware.com/show_bug.cgi?id={{ entry["bug_id"] }}>{{ entry["bug_id"] }}</a></td>
+                <td>{{ entry["cf_eta"] }}</td>
+                <td>{{ entry["keywords"] }}</td>
+                <td>{{ entry["weight"] }}</td>
+                <td>{{ entry["priority"] }}</td>
+                <td>{{ entry["bug_severity"] }}</td>
+                <td>{{ entry["case_count"] }}</td>
+                <td>{{ ETA_bug_fix_by_results[entry["bug_id"]] }}</td>
+                <td>{{ entry["assigned_rn"] }}</td>
+                <td>{{ entry["highlighted_by"] }}</td>
+            </tr>
+            {% set Number = Number + 1%}
+        {% endfor %}
+        </tbody>
+    </table>
+    
+    <dt>The table of the bugs which are not updated for a long time</dt>
+    <table id="W_U_bugs_table" class="display" cellspacing="0" width="100%">
+        <thead>
+            <tr>
+                <th>Select All</th>
+                <th>Number</th>
+                <th>Bug ID</th>
+                <th>Last Modified Time</th>
+                <th>ETA</th>
+                <th>Keywords</th>
+                <th>Weight</th>
+                <th>Priority</th>
+                <th>Severity</th>
+                <th>Case Count</th>
+                <th>fix by product</th>
+                <th>Assigned_to</th>
+                <th>Highlighted Reasons</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entry in W_U_bug_results %}
+            <tr>
+                <td><input type=checkbox id = W_U_{{ entry["bug_id"] }} value = {{ entry["bug_id"] }} name = W_U_check_{{ entry["bug_id"] }}></td>
+                <input type=hidden value = {{ entry["assigned_rn"] }} name = {{ entry["bug_id"] }}>
+                <td>{{ Number }}</td>
+                <td><a href=https://bugzilla.eng.vmware.com/show_bug.cgi?id={{ entry["bug_id"] }}>{{ entry["bug_id"] }}</a></td>
+                <th>{{ entry["delta_ts"] }}</th>
+                <td>{{ entry["cf_eta"] }}</td>
+                <td>{{ entry["keywords"] }}</td>
+                <td>{{ entry["weight"] }}</td>
+                <td>{{ entry["priority"] }}</td>
+                <td>{{ entry["bug_severity"] }}</td>
+                <td>{{ entry["case_count"] }}</td>
+                <td>{{ W_U_bug_fix_by_results[entry["bug_id"]] }}</td>
+                <td>{{ entry["assigned_rn"] }}</td>
+                <td>{{ entry["highlighted_by"] }}</td>
+            </tr>
+            {% set Number = Number + 1%}
+        {% endfor %}
+        </tbody>
+    </table>
+    
+    <input type=submit value=SendEmail>
+    </form>
+</ul>
+{% endblock %}

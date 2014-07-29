@@ -1,0 +1,38 @@
+<!doctype html>
+<head>
+<title>TriageRobot</title>
+<link rel='stylesheet' type='text/css' href='static/css/bootstrap-3.1.1.css'>
+
+<!-- <script type='text/javascript' src='static/jquery-ui-1.10.4.js'></script> -->
+
+</head>
+<div class=page>
+  <h1>BugsTable</h1>
+    {% for message in get_flashed_messages() %}
+        <div class=flash>{{ message }}</div>
+    {% endfor %}
+    {% if not session.logged_in%}
+        <form action = "{{url_for('login')}}" method = post>
+            <dl>
+                <dt>Account:<input type=text name=BG_account>
+                <dt>Password:<input type=password name=BG_password>
+                <input type=submit value=Submit>
+            </dl>
+        </form>
+    {% endif %}
+    {% if session.logged_in%}
+        <form action = "{{url_for('logout')}}" method = post>
+            <ul class=entries>
+                <dl>
+                    <dt>User: {{session.username}}</dt>
+                    <input type=submit value=Logout>
+                </dl>
+                {% if session.admin %}
+                    <dt><a href={{url_for('Admin_Custom_Webpage')}}>Admin_Custom_Webpage</a></dt>
+                {% endif %}
+                    <dt><a href={{url_for('query')}}>Query Page</a></dt>
+            </ul>
+        </form>
+    {% endif %}
+  {% block body %}{% endblock %}
+</div>

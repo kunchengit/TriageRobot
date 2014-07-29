@@ -1,0 +1,71 @@
+create table bugs (bug_id mediumint, 
+                        assigned_to mediumint, 
+                        assigned_rn varchar(255),
+                        short_desc varchar(255),
+                        product_id smallint,
+                        product_rn varchar(64),
+                        category_id smallint,
+                        category_rn varchar(64),
+                        component_id smallint,
+                        component_rn varchar(64),
+                        bug_status varchar(64), 
+                        keywords varchar(255),
+                        resolution varchar(64),
+                        delta_ts datetime, 
+                        bug_severity varchar(64),
+                        cf_public_severity varchar(64),
+                        cf_attempted int,
+                        cf_failed int,
+                        cf_reported_by varchar(64),
+                        cf_eta datetime,
+                        priority varchar(64),
+                        fix_by_product_id smallint,
+                        fix_by_product_rn varchar(64),
+                        fix_by_version_id smallint,
+                        fix_by_version_rn varchar(64),
+                        fix_by_phase_id smallint,
+                        fix_by_phase_rn varchar(64),
+                        weight float,
+                        highlighted_by varchar(64),
+                        ld_when varchar(255),
+                        ld_text varchar(5000),
+                        case_count mediumint,
+                        PRIMARY KEY (bug_id)
+)
+create table bug_fix_by_map(bug_id mediumint,
+                        fix_by_product_id smallint,
+                        fix_by_product_rn varchar(64),
+                        fix_by_version_id smallint,
+                        fix_by_version_rn varchar(64),
+                        fix_by_phase_id smallint,
+                        fix_by_phase_rn varchar(64),
+                        md5 varchar(255),
+                        PRIMARY KEY (md5)
+)
+create table rules (assigned_rn varchar(255), 
+                        fix_by_product varchar(64), 
+                        fix_by_version varchar(64), 
+                        product varchar(64), 
+                        D_begin datetime, 
+                        D_end datetime, 
+                        md5 varchar(255), 
+                        PRIMARY KEY(md5)
+)
+create table profiles (userid mediumint,
+                        login_name varchar(255),
+                        realname varchar(255),
+                        PRIMARY KEY(userid)
+)
+create table versions (id mediumint,
+                        name varchar(255),
+                        product_id mediumint,
+                        PRIMARY KEY(id)
+)
+create table products (id mediumint,
+                        name varchar(255),
+                        PRIMARY KEY(id)
+)
+create table update_information(update_time datetime)
+
+CREATE EVENT daily_clear on schedule every 1 day comment 'Clear expired update record' 
+DO delete from TriageRobot.update_information where update_time < date_add(NOW(), INTERVAL -1 day);
