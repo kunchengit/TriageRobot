@@ -1,20 +1,143 @@
 {% extends "layout.html" %}
-{% block body %}
-    <form action="{{ url_for('Admin_Custom_List') }}" method=post>
-        <ul class=entries>
-            <dl>
-                <dt>Admin List: {{admin_list}}
-                {% if admin_list_add %}
-                <dd>Added: {{admin_list_add}}
-                {% endif %}
-                {% if admin_list_remove %}
-                <dd>Removed: {{admin_list_remove}}
-                {% endif %}
-                <dd>Add:<input type=text id=admin_list_add name=admin_list_add>
-                <dd>Remove:<input type=text id=admin_list_remove name=admin_list_remove>
-                <input type=hidden id=admin_list_ori name=admin_list_ori value = {{admin_list}}>
-                <dd><input type=submit value=Submit>
-            </dl>
-        </ul>
-    </form>
+{% if session.logged_in and session.admin %}
+{% block head %}
+    <link rel='stylesheet' type='text/css' href='static/css/jquery-ui.css'>
+    <script src="static/js/jquery-1.11.1.js"></script>
+    <script src="static/js/jquery-ui.js"></script>
+<script>
+    $(function() {
+        function split( val ) {
+            return val.split( /,\s*/ );
+        }
+        function extractLast( term ) {
+            return split( term ).pop();
+        }
+        $( "#add_list" )
+            // don't navigate away from the field on tab when selecting an item
+            .bind( "keydown", function( event ) {
+                if ( event.keyCode === $.ui.keyCode.TAB &&
+                    $( this ).autocomplete( "instance" ).menu.active ) {
+                    event.preventDefault();
+                    }
+            })
+            .autocomplete({
+                minLength: 0,
+                source: function( request, response ) {
+                        $.ajax({
+                            url: "{{url_for("autocomplete_profile")}}",
+                            dataType: "json",
+                            data: {
+                                term: extractLast( request.term )
+                            },
+                            success: function( data ) {
+                                response( data );
+                            }
+                        });
+                    },
+                focus: function() {
+                    // prevent value inserted on focus
+                return false;
+                },
+                select: function( event, ui ) {
+                    var terms = split( this.value );
+                    // remove the current input
+                    terms.pop();
+                    // add the selected item
+                    terms.push( ui.item.value );
+                    // add placeholder to get the comma-and-space at the end
+                    terms.push( "" );
+                    this.value = terms.join( "," );
+                    return false;
+                }
+            });
+        });
+</script>
+<script>
+    $(function() {
+        function split( val ) {
+            return val.split( /,\s*/ );
+        }
+        function extractLast( term ) {
+            return split( term ).pop();
+        }
+        $( "#remove_list" )
+            // don't navigate away from the field on tab when selecting an item
+            .bind( "keydown", function( event ) {
+                if ( event.keyCode === $.ui.keyCode.TAB &&
+                    $( this ).autocomplete( "instance" ).menu.active ) {
+                    event.preventDefault();
+                    }
+            })
+            .autocomplete({
+                minLength: 0,
+                source: function( request, response ) {
+                        $.ajax({
+                            url: "{{url_for("autocomplete_profile")}}",
+                            dataType: "json",
+                            data: {
+                                term: extractLast( request.term )
+                            },
+                            success: function( data ) {
+                                response( data );
+                            }
+                        });
+                    },
+                focus: function() {
+                    // prevent value inserted on focus
+                return false;
+                },
+                select: function( event, ui ) {
+                    var terms = split( this.value );
+                    // remove the current input
+                    terms.pop();
+                    // add the selected item
+                    terms.push( ui.item.value );
+                    // add placeholder to get the comma-and-space at the end
+                    terms.push( "" );
+                    this.value = terms.join( "," );
+                    return false;
+                }
+            });
+        });
+    </script>
 {% endblock %}
+
+{% block body %}
+<ul class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+    <form action="{{ url_for('Admin_Custom_List') }}" method=post>
+        <dl>
+            <dt>Admin List: 
+            <h4>
+            {% for entry in admin_list %}
+                <span class="label label-primary">{{entry}}</span>
+            {% endfor %}
+            </h4>
+            {% if admin_list_add %}
+                <h4>
+                    Added:
+                    {% for entry in admin_list_add %}
+                        <span class="label label-success">{{entry}}</span>
+                    {% endfor %}
+                </h4>
+            {% endif %}
+            {% if admin_list_remove %}
+                <h4>
+                    Removed:
+                    {% for entry in admin_list_remove %}
+                        <span class="label label-success">{{entry}}</span>
+                    {% endfor %}
+                </h4>
+            {% endif %}
+            <div class="ui-widget">
+                Add: <input id="add_list" name=admin_list_add>
+            </div>
+            <div class="ui-widget">
+                Remove: <input id="remove_list" name=admin_list_remove>
+            </div>
+            <input type=hidden id=admin_list_ori name=admin_list_ori value = {{admin_ori}}>
+            <dd><input type=submit value=Submit>
+        </dl>
+    </form>
+</ul>
+{% endblock %}
+{% endif %}

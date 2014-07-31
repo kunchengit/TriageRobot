@@ -1,9 +1,8 @@
 {% extends "layout.html" %}
-{% block body %}
 {% set Number = 1 %}
-
+{% if session.logged_in %}
+{% block head %}
 <link rel='stylesheet' type='text/css' href='static/css/dataTables.bootstrap.css'>
-<link rel='stylesheet' type='text/css' href='static/css/bootstrap-3.1.1.css'>
 <link rel="stylesheet" type="text/css" href="static/css/jquery.dataTables.css">
 <link rel="stylesheet" type="text/css" href="static/css/dataTables.colVis.css">
 
@@ -23,35 +22,38 @@ $(document).ready(function() {
 } );
 
 </script>
-
-  <h2>Submission Is Approved</h2>
-  {% if error %}<p class=error><strong>Error:</strong> {{ error }}{% endif %}
-  <form action="{{ url_for('query') }}" method=post>
-    <dl>
-      Processing REcord
-      <dd>{{selection["A_R_Selection"]}}</dd>
-      <dd>{{selection["Keywords"]}}</dd>
-      <table border='1' id="result_table" class="display">
-        <thead>
-            <tr>
-                <th>Number</th>
-                <th>Bug ID</th>
-                <th>{{ selection["A_R_Selection"]}} Keywords</th>
-                <th>Comments</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for entry in bugs %}
-            <tr>
-                <td>{{ Number }}</td>
-                <td><a href=https://bugzilla.eng.vmware.com/show_bug.cgi?id={{ entry["bug_id"] }}>{{ entry["bug_id"] }}</a></td>
-                <td>{{ entry["keywords"] }}</td>
-                <td>{{ entry["comments"] }}</td>
-            </tr>
-            {% set Number = Number + 1%}
-        {% endfor %}
-        </tbody>
-    </table>
-    </dl>
-  </form>
 {% endblock %}
+{% block body%}
+<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+    <h2>Submission Is Approved</h2>
+    {% if error %}<p class=error><strong>Error:</strong> {{ error }}{% endif %}
+    <form action="{{ url_for('query') }}" method=post>
+        <dl>
+        Processing Record
+        <table border='1' id="result_table" class="display">
+            <thead>
+                <tr>
+                    <th>Number</th>
+                    <th>Bug ID</th>
+                    <th>Add</th>
+                    <th>Remove</th>
+                    <th>Comments</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for entry in bugs %}
+                    <tr>
+                    <td>{{ Number }}</td>
+                    <td><a href=https://bugzilla.eng.vmware.com/show_bug.cgi?id={{ entry["bug_id"] }}>{{ entry["bug_id"] }}</a></td>
+                    <td>{{ entry["Add_keywords"] }}</td>
+                    <td>{{ entry["Remove_keywords"] }}</td>
+                    <td>{{ entry["comments"] }}</td>
+                </tr>
+                {% set Number = Number + 1%}
+                {% endfor %}
+            </tbody>
+        </table>
+        </dl>
+    </form>
+{% endblock %}
+{% endif %}

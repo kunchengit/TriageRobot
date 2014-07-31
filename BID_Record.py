@@ -50,7 +50,7 @@ class BID_Record:
         
         dic["priority"] = priority
         
-    def Set_Bug_fix_by(self, fix_by_product_id, fix_by_product_rn, fix_by_version_id, fix_by_version_rn, fix_by_phase_id, fix_by_phase_rn):
+    def Set_Bug_fix_by(self, fix_by_product_id, fix_by_product_rn, fix_by_version_id, fix_by_version_rn, fix_by_phase_id, fix_by_phase_rn, fix_by_id):
         dic = self.data
         dic["fix_by_product_id"] = fix_by_product_id
         dic["fix_by_product_rn"] = fix_by_product_rn
@@ -58,10 +58,13 @@ class BID_Record:
         dic["fix_by_version_rn"] = fix_by_version_rn
         dic["fix_by_phase_id"] = fix_by_phase_id
         dic["fix_by_phase_rn"] = fix_by_phase_rn
+        dic["fix_by_id"] = fix_by_id
 
-    def Set_Longdescs(self, ld_when, ld_text):# Comments
+    def Set_Longdescs(self, ld_id, ld_when, ld_who, ld_text):# Comments
         dic = self.data
+        dic["ld_id"] = map(int,ld_id)
         dic["ld_when"] = ld_when
+        dic["ld_who"] = ld_who
         dic["ld_text"] = ld_text
 
     def __str__(self):
@@ -112,7 +115,8 @@ def Rawdata_to_BID_Record(sb, db):
         list([p[2] for p in sb_bugs]),
         list([db["versions"][p[2]][1] for p in sb_bugs]),
         list([p[3] for p in sb_bugs]),
-        list([db["phases"][p[3]][1] for p in sb_bugs]))
+        list([db["phases"][p[3]][1] for p in sb_bugs]),
+        list([p[4] for p in sb_bugs]))
     """
     Retrieve the information from commented
     """
@@ -120,13 +124,32 @@ def Rawdata_to_BID_Record(sb, db):
     
     for idkey in sb["longdescs"]:
         sb_bugs = sb["longdescs"][idkey]
+        #print list([p[0] for p in sb_bugs])
         result[idkey].Set_Longdescs(
-        list([p[1] for p in sb_bugs]),
-        list([p[3] for p in sb_bugs]))
+        list([p[0] for p in sb_bugs]),
+        list([p[2] for p in sb_bugs]),
+        list([p[3] for p in sb_bugs]),
+        list([p[4] for p in sb_bugs]))
+    #for idkey in result.keys():
+    #    print result[idkey].data["ld_id"]
     return result
     
 class Option:
     def __init__(self, assigned_rn, fix_by_product_rn, fix_by_version_rn, product_rn, D_begin, D_end):#Set default Value
+        
+        """
+        After the after meeting in 7/22 afternoon, the bug_fix_by_product, version, product, and time are never be considered by queries.
+        All the query from user will check the assigned_to only.
+        If user query a subset, for example, we have queried shinyeht ESX before, the total set of shinyeht will be kept in our local database.
+        The assigned_to become the only key to connect with rules.
+        However, in order to keep an interface to connect with rules in the future, I did not remove any options since I designed NULL option when I set rules.
+        Therefore, the rule in option.p will have five ::::: after each rules, which are represented assigned_to, fix_by_product_rn, fix_by_version_rn, product, date_begin and date_end
+        If programmers want to implement subset query in the future for facilitating, it could be complicated by setting minor rule in the option.p.
+        Besides, the checking rules module in server.py needs to be modified too.
+        
+        07/22/2014 shinyeht
+        """
+        
         
         now = datetime.now()
         FMT_YMD = "%Y-%m-%d"
@@ -147,6 +170,7 @@ class Option:
         if assigned_rn: dic["assigned_rn"] = assigned_rn
         else: dic["assigned_rn"] = "bugs.assigned_to"
         
+        
         dic["fix_by_product"] = fix_by_product_rn
         dic["fix_by_version"] = fix_by_version_rn        
         dic["product"] = product_rn
@@ -164,6 +188,7 @@ class Option:
             temp_date_end = date_end
             temp_date_end = temp_date_end.strftime(FMT_YMDHMS)
             dic["D_end"] = temp_date_end
+        
         """
         below parts are using to match gOption design
         """

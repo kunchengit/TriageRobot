@@ -1,10 +1,13 @@
 {% extends "layout.html" %}
+{% if session.logged_in and session.admin %}
 {% block body %}
+<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
     <h2>Choose to edit the related configs</h2>
-    <form>
-        <ul class=entries>
-            <dt><a href={{url_for('Admin_Custom_List')}}>Admin List</a></dt>
-            <dt><a href={{url_for('Admin_Custom_Email')}}>Email Notification</a></dt>
-        </ul>
-    </form>
+    <ul class=entries>
+        <dt><a href={{url_for('Admin_Custom_List')}}>Admin List</a></dt>
+        <dt><a href={{url_for('Admin_Custom_Email')}}>Email Notification</a></dt>
+        <dt><a href={{url_for('Admin_Custom_Triage_Chart')}}>Triage Accepted Chart</a></dt>
+    </ul>
+</div>
 {% endblock %}
+{% endif %}

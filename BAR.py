@@ -67,9 +67,9 @@ gRecordSchema = {
     "phases"  : namedtuple("table_phases", "id, name, description, version_id"),
     # Bug detail tables
     "needinfo"      : namedtuple("table_needinfo", "bug_id, who"),
-    "bug_fix_by_map": namedtuple("table_bug_fix_by_map", "bug_id, product_id, version_id, phase_id"),
+    "bug_fix_by_map": namedtuple("table_bug_fix_by_map", "bug_id, product_id, version_id, phase_id, id"),
     "bug_case_map"  : namedtuple("table_bug_case_map", "bug_id, case_id"),
-    "longdescs"     : namedtuple("table_longdescs", "bug_id, bug_when, who, thetext"),
+    "longdescs"     : namedtuple("table_longdescs", "comment_id, bug_id, bug_when, who, thetext"),
     # composed bug record view.
     "bug_record"    : namedtuple("bug_record", "bugs, needinfo, fix_by, cases, comments"),
 }
@@ -184,7 +184,7 @@ class BugzillaDB(object):
             "bug_case_map"  : defaultdict(list),
             "longdescs"     : defaultdict(list),
         }
-        do_get_comments=False
+        #do_get_comments=False
         cursor = self.conn.cursor()
         # bugs table
         gLogger.debug(sql)
@@ -218,15 +218,11 @@ class BugzillaDB(object):
                         
                     sql = """SELECT {} FROM {}
                              WHERE bug_id IN ({})
-                                   AND longdescs.who IN ({})
-                                   AND longdescs.bug_when BETWEEN '{}' AND '{}'""".format(
+                             """.format(
                             ",".join(schema._fields),
                             table_name,
                             bug_ids,
-                            assigned_name_to,
-                            gOption.get("D_begin"),
-                            gOption.get("D_end"))
-                    #              AND longdescs.bug_when BETWEEN '{}' AND '{}'""".format(
+                            assigned_name_to)
                 else:
                     sql = "SELECT {} FROM {} WHERE bug_id IN ({})".format(
                         ",".join(schema._fields),
@@ -529,7 +525,7 @@ def run_report_for(*argv):
                     
     return sum_bugs_report
     
-def Match_and_Output(Rules, Query_result, do_input_output, check_resolved):
+def Match_and_Output(Rules, Query_result, check_resolved):
     """
     This function handles the rule match.
     All the rule classification is processed by this function with the interface of BAR_rules
@@ -543,102 +539,40 @@ def Match_and_Output(Rules, Query_result, do_input_output, check_resolved):
     CHECK_REPORTS = [ "incoming",  "commented", "backlog"]
     Total_Result={}
     Match_Map=[]
-    if do_input_output == False:
-        for okey in Rules:
-            Input={}
-            Urgent={}
-            Normal={}
-            #Match_Map=[]
-            gLogger.info("="*len(str(okey.data.values())))
-            gLogger.info(okey.data.values())
-            gLogger.info("="*len(str(okey.data.values())))
-            for rkey in CHECK_REPORTS:
-                base = Query_result[str(okey)][rkey]
-                Loader = Rawdata_to_BID_Record(base, Keep_record)
-                for key in Loader:
-                    Input[key] = Loader[key]
-                for bug_id in Input.keys():
-                    if bug_id not in Match_Map:
-                        Match_Map.append(bug_id)
-                        Urgent_Test_Result = Urgent_Test(Input[bug_id], okey, Keep_connect)
-                        if Urgent_Test_Result == "Urgent":
-                            Urgent[bug_id] = Input[bug_id]
-                        elif Urgent_Test_Result == "Normal":
-                            Normal[bug_id] = Input[bug_id]
-                        else:#Uncared Situation since the bug does not fit fix_by_map rule (option.p)
-                            continue
-                        Total_Result[bug_id] = Input[bug_id]
-                        
-                        #else:
-                        #    print "pass"
-            gLogger.info("Urgent")
-            bug_list = "{}/buglist.cgi?bug_id={}".format(BUGZILLA_LINK,",".join([str(bug_id) for bug_id in Urgent.keys()]))
-            gLogger.info(bug_list)
-                    
-            gLogger.info("Normal")
-            bug_list = "{}/buglist.cgi?bug_id={}".format(BUGZILLA_LINK,",".join([str(bug_id) for bug_id in Normal.keys()]))
-            gLogger.info(bug_list)
-
-    elif do_input_output == True:
-        """
-        Based on each rule, the data will be outputed to each respective files
-        """
-        md5 = hashlib.md5()
-        for okey in Rules: #okey--> key of option.p (custum rule)
-            cache_files = "/tmp/tmp_"+hashlib.md5("%s" % (okey)).hexdigest()+".p"
-            filepath = open(cache_files, 'wb')
-
-            
-            for rkey in CHECK_REPORTS: #rkey --> key of report, I traverse all the report type
-                base = Query_result[str(okey)][rkey]
-                result = Rawdata_to_BID_Record(base, Keep_record)
-                pickle.dump(result, filepath)
-            filepath.close()
-        
-        """
-        Load the data back!
-        In order to ensure the data integrity, I implemented output and input.
-        Without integrity test, the processing of output and input can be removed
-        """
-
-        for okey in Rules:
-            
-            Input={}
-            Urgent={}
-            Normal={}
-            Match_Map =[]
-            cache_files = "/tmp/tmp_"+hashlib.md5("%s" % (okey)).hexdigest()+".p"
-            filepath = open(cache_files, 'r')
-            
-            #gLogger.info("="*len(str(okey.data.values())))
-            #gLogger.info(okey.data.values())
-            #gLogger.info("="*len(str(okey.data.values())))
-            while filepath:
-                try:
-                    Loader = pickle.load(filepath)
-                    for key in Loader:
-                        Input[key] = Loader[key]
-                except:
-                    break
+    for okey in Rules:
+        Input={}
+        Urgent={}
+        Normal={}
+        #Match_Map=[]
+        gLogger.info("="*len(str(okey.data.values())))
+        gLogger.info(okey.data.values())
+        gLogger.info("="*len(str(okey.data.values())))
+        for rkey in CHECK_REPORTS:
+            base = Query_result[str(okey)][rkey]
+            Loader = Rawdata_to_BID_Record(base, Keep_record)
+            for key in Loader:
+                Input[key] = Loader[key]
             for bug_id in Input.keys():
-                    if bug_id not in Match_Map:
-                        Match_Map.append(bug_id)
-                        if Urgent_Test(Input[bug_id], okey, Keep_connect) == True:
-                            Urgent[bug_id] = Input[bug_id]
-                        else:
-                            Normal[bug_id] = Input[bug_id]
-                            
-                        Total_Result[bug_id] = Input[bug_id]
-                        
-                        #else:
-                        #    print "pass"
-            gLogger.info("Urgent")
-            bug_list = "{}/buglist.cgi?bug_id={}".format(BUGZILLA_LINK,",".join([str(bug_id) for bug_id in Urgent.keys()]))
-            gLogger.info(bug_list)
+                if bug_id not in Match_Map:
+                    Match_Map.append(bug_id)
+                    Urgent_Test_Result = Urgent_Test(Input[bug_id], okey, Keep_connect)
+                    if Urgent_Test_Result == "Urgent":
+                        Urgent[bug_id] = Input[bug_id]
+                    elif Urgent_Test_Result == "Normal":
+                        Normal[bug_id] = Input[bug_id]
+                    else:#Uncared Situation since the bug does not fit fix_by_map rule (option.p)
+                        continue
+                    Total_Result[bug_id] = Input[bug_id]
                     
-            gLogger.info("Normal")
-            bug_list = "{}/buglist.cgi?bug_id={}".format(BUGZILLA_LINK,",".join([str(bug_id) for bug_id in Normal.keys()]))
-            gLogger.info(bug_list)          
+                    #else:
+                    #    print "pass"
+        gLogger.info("Urgent")
+        bug_list = "{}/buglist.cgi?bug_id={}".format(BUGZILLA_LINK,",".join([str(bug_id) for bug_id in Urgent.keys()]))
+        gLogger.info(bug_list)
+                
+        gLogger.info("Normal")
+        bug_list = "{}/buglist.cgi?bug_id={}".format(BUGZILLA_LINK,",".join([str(bug_id) for bug_id in Normal.keys()]))
+        gLogger.info(bug_list)
              
     return Total_Result      
 def Connect_With_OurDB(Total_Result, Rules=[], Update=False, Update_end=None):
@@ -650,8 +584,10 @@ def Connect_With_OurDB(Total_Result, Rules=[], Update=False, Update_end=None):
     conn = MySQLdb.connect(host=LOCAL_DATABASE_HOST, user=LOCAL_DATABASE_USER, passwd=LOCAL_DATABASE_PW, db=LOCAL_DATABASE_DATABASE)
     cursor = conn.cursor()
     
+    
     str_columns = ["assigned_rn", "short_desc","product_rn","category_rn","component_rn", "bug_status","keywords","resolution","delta_ts","bug_severity","cf_public_severity", "cf_reported_by", "cf_eta", "priority","highlighted_by"]
-    fix_by_map = ["fix_by_product_rn", "fix_by_version_rn", "fix_by_phase_rn", "fix_by_product_id", "fix_by_version_id", "fix_by_phase_id"]
+    fix_by_map = ["fix_by_product_rn", "fix_by_version_rn", "fix_by_phase_rn", "fix_by_product_id", "fix_by_version_id", "fix_by_phase_id", "fix_by_id"]
+    comments = ["ld_id", "ld_when", "ld_who", "ld_text"]
     
     """
     Since the fix_by_map columns have list data structude, the sql of these lists has to process seperately
@@ -663,10 +599,10 @@ def Connect_With_OurDB(Total_Result, Rules=[], Update=False, Update_end=None):
             """
             Start String Processing for matching the requirement of sql
             """
-            if dickey in fix_by_map:#Skip the bug_fix_by_map column
+            if dickey in fix_by_map or dickey in comments:#Skip the bug_fix_by_map column
                 continue
             elif dickey in str_columns:#Process String
-                temp_sql[dickey] = '\''+str(sdata[dickey]).strip('[\']').replace('\'','\\\'')+'\''
+                temp_sql[dickey] = "'"+str(sdata[dickey]).replace("\\","\\\\").replace("\'","\\\'")+"'"
                 if not sdata[dickey]:
                     sdata[dickey] = '---'
                 #print key, sdata[a], temp_sql[a]
@@ -700,15 +636,14 @@ def Connect_With_OurDB(Total_Result, Rules=[], Update=False, Update_end=None):
         sdata = Total_Result[key].data
         for ikey in range(0,len(sdata["fix_by_product_id"])):
             temp_sql={}
-            temp_md5=str(sdata["bug_id"])
             for dkey in fix_by_map:
-                temp_md5 = temp_md5 + str(sdata[dkey][ikey])
                 if isinstance(sdata[dkey][ikey], str):
-                    temp_sql[dkey] = "'"+sdata[dkey][ikey]+"'"
+                    temp = sdata[dkey][ikey].replace("\\","\\\\").replace("\'","\\\'") #replace / -> // and ' -> /'
+                    temp_sql[dkey] = "'"+ temp +"'"
+                    #temp_sql[dkey] = "'"+sdata[dkey][ikey]+"'"
                 else:
                     temp_sql[dkey] = str(sdata[dkey][ikey])
             temp_sql["bug_id"] = str(sdata["bug_id"])
-            temp_sql["md5"] = "'" + hashlib.md5(temp_md5).hexdigest() + "'"
             if sdata["bug_status"] not in ["resolved", "closed"]:
                 sql = """INSERT INTO bug_fix_by_map 
                         ({})
@@ -725,6 +660,46 @@ def Connect_With_OurDB(Total_Result, Rules=[], Update=False, Update_end=None):
                 sql = """DELETE FROM bug_fix_by_map where bug_id = {}
                 """.format(sdata["bug_id"])
             cursor.execute(sql)
+    """
+    Process longdescs(comments)
+    There is no critical duplicate problems in comments section since there is comment_id
+    Most of the bugs have several comments.
+    PS: The text part should be process independently since there are lots of strange characters in text
+    """
+    
+    for key in Total_Result:
+        sdata = Total_Result[key].data
+        for ikey in range(0,len(sdata["ld_id"])):
+            temp_sql={}
+            for dkey in comments:
+                if isinstance(sdata[dkey][ikey], str):
+                    if dkey == 'ld_text':
+                        temp = sdata[dkey][ikey].replace("\\","\\\\").replace("\'","\\\'") #replace / -> // and ' -> /'
+                        temp_sql[dkey] = "'"+ temp +"'"
+                    else:
+                        temp_sql[dkey] = "'"+sdata[dkey][ikey]+"'"
+                elif isinstance(sdata[dkey][ikey], datetime):
+                    temp_sql[dkey] = "'"+str(sdata[dkey][ikey])+"'"
+                else:
+                    temp_sql[dkey] = str(sdata[dkey][ikey])
+            temp_sql["bug_id"] = str(sdata["bug_id"])
+            if sdata["bug_status"] not in ["resolved", "closed"]:
+                sql = """INSERT INTO longdescs
+                        ({})
+                        VALUES 
+                        ({})
+                        ON DUPLICATE KEY UPDATE
+                        {}
+                        """.format(
+                        ','.join(temp_sql.keys()),
+                        ','.join(temp_sql.values()),
+                        ','.join('{}={}'.format(k,temp_sql[k]) for k in temp_sql)
+                        )     # python variables
+            else:
+                sql = """DELETE FROM longdescs where bug_id = {}
+                """.format(sdata["bug_id"])
+            cursor.execute(sql)
+    
     
     """
     Update the rules into database for future query
@@ -811,6 +786,19 @@ def Update_Information():
         """.format(data[0], "'"+data[1]+"'", data[3], data[0], "'"+data[1]+"'", data[3]
         )
         cursor.execute(sql)
+    #"phases"  : namedtuple("table_phases", "id, name, description, version_id"),   
+    print "phases...",
+    for key in Keep_record["phases"]:
+        data = Keep_record["phases"][key]
+        sql = """INSERT INTO phases
+        (id,name,version_id)
+        VALUES
+        ({},{},{})
+        ON DUPLICATE KEY UPDATE
+        id={},name={},version_id={}
+        """.format(data[0], "'"+data[1]+"'", data[3], data[0], "'"+data[1]+"'", data[3]
+        )
+        cursor.execute(sql)    
     #"products"  : namedtuple("table_products", "id, name, description"),
     print "products..."
     for key in Keep_record["products"]:
@@ -829,7 +817,7 @@ def Update_Information():
     conn.commit()
     conn.close()
     
-def Periodically_Update():
+def Periodically_Update(Get_ID = True):
     """
     Query Information and connect with our db
     This function retrieve all the bug_id from our database
@@ -837,15 +825,21 @@ def Periodically_Update():
     """
     conn = MySQLdb.connect(host=LOCAL_DATABASE_HOST, user=LOCAL_DATABASE_USER, passwd=LOCAL_DATABASE_PW, db=LOCAL_DATABASE_DATABASE)
     cursor = conn.cursor()
-    sql = """SELECT bug_id from bugs"""
-    cursor.execute(sql)
     Bug_id_Result=[]
-    while True:
-        record = cursor.fetchone()
-        if not record:
-            break
-        Bug_id_Result.append(record[0])
+    
+    """
+    When we set Get_ID into false, we would not retrieve the id data for improving efficiency
+    """
+    if Get_ID:
+        sql = """SELECT bug_id from bugs"""
+        cursor.execute(sql)
+        while True:
+            record = cursor.fetchone()
+            if not record:
+                break
+            Bug_id_Result.append(record[0])
     #Total_Bug_id = ",".join(map(str, Result))
+    
     sql = """SELECT update_time from update_information 
     where update_time in (select max(update_time) from update_information)
     """
@@ -906,6 +900,60 @@ def Update_With_OriginalID(Previous_Result, Update_begin, Update_end, Update_bug
         Total_Result[bug_id] = Input[bug_id]
     return Total_Result
 
+def Update_Milestone():
+    import urllib2
+    import ast
+    import time
+    #start = datetime.now()
+    """
+    Retrieve the timeline message from Static php
+    """
+    MILESTONE_URL = "http://mt-db2.eng.vmware.com/lib/Examples.php"
+    #MILESTONE_URL = "http://10.117.8.249/"
+    
+    """
+    Replace the null string into "null" for matching sql
+    """
+    temp_read = urllib2.urlopen(MILESTONE_URL).read() . replace('null', '"null"')
+    milestone_results = ast.literal_eval(temp_read)
+    
+    
+    conn = MySQLdb.connect(host=LOCAL_DATABASE_HOST, user=LOCAL_DATABASE_USER, passwd=LOCAL_DATABASE_PW, db=LOCAL_DATABASE_DATABASE)
+    cursor = conn.cursor()
+    
+    def format_sql(input_string):
+        if isinstance(input_string, str):
+            return "'" + input_string + "'"
+        elif isinstance(input_string, int):
+            return input_string
+        else:
+            print "Check", input_string
+            return input_string
+    for entry in milestone_results:
+        """
+        the null key and value have to be removed
+        """
+        for key in entry.keys():
+            if entry[key] =='null':
+                del entry[key]
+        sql = """INSERT INTO milestone
+        ({})
+        VALUES
+        ({})
+        ON DUPLICATE KEY UPDATE
+        {}
+        """.format(
+        ','.join(entry.keys()),
+        ','.join(map(str, (format_sql(k) for k in entry.values()))),
+        ','.join('{}={}'.format(k,format_sql(entry[k])) for k in entry)
+        )
+        cursor.execute(sql)
+    cursor.close()
+    conn.commit()
+    conn.close()
+    #end = datetime.now()
+    #print end-start
+    return True
 
 if __name__ == "__main__":
     import time
@@ -976,6 +1024,8 @@ if __name__ == "__main__":
     parser.add_argument('--update', default=False, action='store_const', const=True, help='update per 15 minutes')
     parser.add_argument('--wo_update_information', default=True, action='store_const', const=False, help='update profile, version, products')
     parser.add_argument('--option', nargs=1, default="option.p", help='Enter the path of option.p')
+    parser.add_argument('--milestone', default=False, action='store_const', const=True, help='Update Milestone to local data base. This process costs about 150 seconds and is unable to run with other job because of the time.')
+    parser.add_argument('--ID', default=False, metavar='N', type=int, nargs='+', help='Do ID Update! This mode can not interact with other normal functions')
     
     args = parser.parse_args()
     
@@ -983,6 +1033,194 @@ if __name__ == "__main__":
     Run Update per 15 minutes
     """
     
+    if args.ID:
+        """
+        The major function of this part is Check_ID
+        """
+        def format_sql(input_string, comments_flag=False):
+            from datetime import date
+            if isinstance(input_string, str):
+                return "'" + input_string + "'"
+            elif isinstance(input_string, int):
+                return input_string
+            elif isinstance(input_string, datetime):
+                return "'" + str(input_string) + "'"
+            elif isinstance(input_string, date):
+                return "'" + str(input_string) + "'"
+            else:
+                return input_string
+        def Check_ID(args):
+            """
+            This function only updates specific bug_id.
+            Careful!!!!!
+            This function does not update long_desc and bug_fix_by_map
+            0728 Shinyeh
+            """
+            sql = """SELECT {} FROM bugs
+                     WHERE bug_id in ({})""".format(
+                    ",".join(["bugs.{}".format(field) for field in gRecordSchema["bugs"]._fields]),
+                    ",".join(map(str,args.ID)))
+            
+            bzdb_conn = MySQLdb.connect(host=BUGZILLA_DATABASE_HOST, port=BUGZILLA_DATABASE_PORT, user=BUGZILLA_DATABASE_USER, passwd=BUGZILLA_DATABASE_PW, db=BUGZILLA_DATABASE_DATABASE)
+            bzdb_cursor = bzdb_conn.cursor()
+            
+            local_conn = MySQLdb.connect(host=LOCAL_DATABASE_HOST, user=LOCAL_DATABASE_USER, passwd=LOCAL_DATABASE_PW, db=LOCAL_DATABASE_DATABASE)
+            local_cursor = local_conn.cursor()
+            
+            
+            bzdb_cursor.execute(sql)
+            columns = [column[0] for column in bzdb_cursor.description]
+            Bugs_Results = []
+            for row in bzdb_cursor.fetchall():
+                Bugs_Results.append(dict(zip(columns, row)))
+            
+            for entry in Bugs_Results:
+                for key in entry.keys():
+                    if entry[key] == None:
+                        del entry[key]
+            
+            
+            for entry in Bugs_Results:
+                if entry["bug_status"] not in ["resolved", "closed"]:
+                    sql = """INSERT INTO bugs
+                    ({})
+                    VALUES
+                    ({})
+                    ON DUPLICATE KEY UPDATE
+                    {}
+                    """.format(
+                    ','.join(entry.keys()),
+                    ','.join(map(str,(format_sql(k) for k in entry.values()))),
+                    ','.join('{}={}'.format(k,format_sql(entry[k])) for k in entry)
+                    )
+                else:
+                    sql = """DELETE FROM bugs where bug_id = {}
+                    """.format(entry["bug_id"])
+                local_cursor.execute(sql)
+                
+            """
+            Comments Update
+            """
+            sql = """SELECT {} FROM longdescs
+                     WHERE bug_id in ({})""".format(
+                    ",".join(["longdescs.{}".format(field) for field in gRecordSchema["longdescs"]._fields]),
+                    ",".join(map(str,args.ID)))    
+            
+            bzdb_cursor.execute(sql)
+            columns = [column[0] for column in bzdb_cursor.description]
+            Comments_Results = []
+            for row in bzdb_cursor.fetchall():
+                Comments_Results.append(dict(zip(columns, row)))
+            """
+            Change dictionary name
+            comment_id -> ld_id
+            bug_id -> bug_id
+            who -> ld_who
+            bug_when -> ld_when
+            thetext -> ld_text
+            """
+            for entry in Comments_Results:
+                entry["ld_id"] = entry.pop("comment_id")
+                #entry["bug_id"] = entry.pop("bug_id")
+                entry["ld_who"] = entry.pop("who")
+                entry["ld_when"] = entry.pop("bug_when")
+                entry["ld_text"] = entry.pop("thetext")
+                entry["ld_text"] = entry["ld_text"].replace("\\","\\\\").replace("\'","\\\'")
+            
+            for entry in Comments_Results:
+                for key in entry.keys():
+                    if entry[key] == None:
+                        del entry[key]
+            
+            for entry in Comments_Results:
+                sql = """INSERT INTO longdescs
+                ({})
+                VALUES
+                ({})
+                ON DUPLICATE KEY UPDATE
+                {}
+                """.format(
+                ','.join(entry.keys()),
+                ','.join(map(str,(format_sql(k) for k in entry.values()))),
+                ','.join('{}={}'.format(k,format_sql(entry[k])) for k in entry)
+                )
+                local_cursor.execute(sql)
+                
+            """
+            Update Bug_fix_by table
+            """
+            sql = """SELECT {} FROM bug_fix_by_map
+                     WHERE bug_id in ({})""".format(
+                    ",".join(["bug_fix_by_map.{}".format(field) for field in gRecordSchema["bug_fix_by_map"]._fields]),
+                    ",".join(map(str,args.ID)))    
+            
+            
+            
+            bzdb_cursor.execute(sql)
+            columns = [column[0] for column in bzdb_cursor.description]
+            Fix_by_Results = []
+            for row in bzdb_cursor.fetchall():
+                Fix_by_Results.append(dict(zip(columns, row)))
+
+            """
+            Change dictionary name
+            id -> fix_by_id
+            bug_id -> bug_id
+            product_id -> fix_by_product_id
+            version_id -> fix_by_version_id
+            phase_id -> fix_by_phase_id
+            """
+            for entry in Fix_by_Results:
+                entry["fix_by_id"] = entry.pop("id")
+                #entry["bug_id"] = entry.pop("bug_id")
+                entry["fix_by_product_id"] = entry.pop("product_id")
+                entry["fix_by_version_id"] = entry.pop("version_id")
+                entry["fix_by_phase_id"] = entry.pop("phase_id")
+                if entry["fix_by_product_id"] == 0:
+                    entry["fix_by_product_rn"] = "Unknown"
+                else:
+                    sql = """select name from products where id = {}""".format(entry["fix_by_product_id"])
+                    local_cursor.execute(sql)
+                    entry["fix_by_product_rn"] = local_cursor.fetchone()[0]
+                if entry["fix_by_version_id"] == 0:
+                    entry["fix_by_version_rn"] = "Unknown"
+                else:
+                    sql = """select name from versions where id = {}""".format(entry["fix_by_version_id"])
+                    local_cursor.execute(sql)
+                    entry["fix_by_version_rn"] = local_cursor.fetchone()[0]
+                if entry["fix_by_phase_id"] == 0:
+                    entry["fix_by_phase_rn"] = "Unknown"
+                else:
+                    sql = """select name from phases where id = {}""".format(entry["fix_by_phase_id"])
+                    local_cursor.execute(sql)
+                    entry["fix_by_phase_rn"] = local_cursor.fetchone()[0]
+            
+            for entry in Fix_by_Results:
+                for key in entry.keys():
+                    if entry[key] == None:
+                        del entry[key]
+            for entry in Fix_by_Results:
+                sql = """INSERT INTO bug_fix_by_map
+                ({})
+                VALUES
+                ({})
+                ON DUPLICATE KEY UPDATE
+                {}
+                """.format(
+                ','.join(entry.keys()),
+                ','.join(map(str,(format_sql(k) for k in entry.values()))),
+                ','.join('{}={}'.format(k,format_sql(entry[k])) for k in entry)
+                )
+                local_cursor.execute(sql)
+            
+            local_cursor.close()
+            local_conn.commit()
+            local_conn.close()
+            bzdb_cursor.close()
+            bzdb_conn.close()
+            
+        Check_ID(args)
+        exit()
     
     try:
         f = open(args.option[0], "r")
@@ -999,11 +1237,19 @@ if __name__ == "__main__":
         if not p.match(key):
             Raw_OP.append(key.rstrip().split(":"))
     
+    if args.milestone == True:
+        Update_Milestone()
+        print "Finish Update Milestone"
+        exit()
+    
     if args.update == True:
         Periodically_Update_Data = Periodically_Update()
         Update_begin = Periodically_Update_Data[0]
         Update_end = datetime.now().strftime(FMT_YMDHMS)
         Update_bug_id = Periodically_Update_Data[1]
+        
+        
+        
     
     for okey in Raw_OP:
         """
@@ -1013,7 +1259,8 @@ if __name__ == "__main__":
             t = time.strptime(okey[4], FMT_YMD)
             bz_date_begin = datetime(t[0], t[1], t[2], 0,0,0).strftime(FMT_YMDHMS)
         except:
-            bz_date_begin = None
+            #bz_date_begin = None
+            bz_date_begin = Periodically_Update()[0]
         try:
             t = time.strptime(okey[5], FMT_YMD)
             bz_date_end = datetime(t[0], t[1], t[2],23,59,59).strftime(FMT_YMDHMS)
@@ -1067,7 +1314,8 @@ if __name__ == "__main__":
         gOption.update(option)
         gOption["reports"] = REPORTS
         gOption["verbose"] = 3
-        Query_result[str(key)] = run_report_for(key.data["assigned_rn"], key.data["D_begin"], key.data["D_end"], key.data["product"])  
+        Query_result[str(key)] = run_report_for(key.data["assigned_rn"], key.data["D_begin"], key.data["D_end"], key.data["product"])
+    
     
     """
     Dictionary level
@@ -1090,11 +1338,12 @@ if __name__ == "__main__":
     Keep_record["versions"][0] = P(0,'Unknown','Not determined',0)
     Keep_record["phases"][0] = P(0,'Unknown','Not determined',0)
     
-    do_input_output = False
     check_resolved = False
-    Total_Result = Match_and_Output(Rules, Query_result, do_input_output, check_resolved)
+    Total_Result = Match_and_Output(Rules, Query_result, check_resolved)
+    
     if args.wo_update_information:
         Update_Information()
+    
     if args.update:
         Connect_With_OurDB(Total_Result, Rules, args.update, Update_end)
         """

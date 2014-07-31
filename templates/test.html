@@ -1,0 +1,52 @@
+<script>
+                    $(function() {
+                      $("#fix_by_{{entry['bug_id']}}_{{fix_entry['product']}}_{{fix_entry['version']}}_{{fix_entry['phase']}}_product_{{fix_number }}").autocomplete({
+                        source: "{{url_for("autocomplete_product")}}",
+                        minLength: 2
+                      });
+                    });
+                    </script>
+                    <!-- Set Auto Complete, versions -->
+                    <script>
+                    $(function() {
+                      $("#fix_by_{{entry['bug_id']}}_{{fix_entry['product']}}_{{fix_entry['version']}}_{{fix_entry['phase']}}_version_{{fix_number }}").autocomplete({
+                         source: function( request, response ) 
+                         {
+                                $.ajax({
+                                url: "{{url_for("autocomplete_version")}}",
+                                dataType: "json",
+                                data: {
+                                    term: request.term,
+                                    product: $("#fix_by_{{entry['bug_id']}}_{{fix_entry['product']}}_{{fix_entry['version']}}_{{fix_entry['phase']}}_product_{{fix_number }}").val()
+                                },
+                            success: function( data ) {
+                            response( data );
+                                }
+                                });
+                        },
+                        minLength: 2,
+                      });
+                    });
+                    </script>
+                    <!-- Set Auto Complete, phase : The minlength in this script is different among other auto completions-->
+                    <script>
+                    $(function() {
+                      $("#fix_by_{{entry['bug_id']}}_{{fix_entry['product']}}_{{fix_entry['version']}}_{{fix_entry['phase']}}_phase_{{fix_number }}").autocomplete({
+                         source: function( request, response ) 
+                         {
+                                $.ajax({
+                                url: "{{url_for("autocomplete_phase")}}",
+                                dataType: "json",
+                                data: {
+                                    term: request.term,
+                                    version: $("#fix_by_{{entry['bug_id']}}_{{fix_entry['product']}}_{{fix_entry['version']}}_{{fix_entry['phase']}}_version_{{fix_number }}").val(),
+                                },
+                            success: function( data ) {
+                            response( data );
+                                }
+                                });
+                        },
+                        minLength: 0,
+                      });
+                    });
+                    </script> 

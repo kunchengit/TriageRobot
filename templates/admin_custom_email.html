@@ -1,8 +1,7 @@
 {% extends "layout.html" %}
-{% block body %}
-{% set Number = 1 %}
+{% if session.logged_in and session.admin %}
+{%block head%}
 <link rel='stylesheet' type='text/css' href='static/css/dataTables.bootstrap.css'>
-<link rel='stylesheet' type='text/css' href='static/css/bootstrap-3.1.1.css'>
 <link rel="stylesheet" type="text/css" href="static/css/jquery.dataTables.css">
 <link rel="stylesheet" type="text/css" href="static/css/dataTables.colVis.css">
 
@@ -26,11 +25,25 @@ $(document).ready(function() {
     var T_ETA_table = $('#T_ETA_bugs_table').DataTable( {
         dom: 'C<"clear">lfrtip',
         scrollY:        "300px",
-        paging:         false
+        scrollX:        true,
+        paging:         false,
+        "aoColumns": [ 
+            {"bVisible":true},  //Checkbox
+            {"bVisible":true},  //BugID
+            {"bVisible":true, "sWidth": "30%", "orderDataType": "dom-text"},  //Keywords
+            {"bVisible":true},  //ETA
+            {"bVisible":true}, //Weight
+            {"bVisible":false}, //Priority
+            {"bVisible":false}, //Severity
+            {"bVisible":false},  //Case Count
+            {"bVisible":true, "sWidth": "20%", "orderDataType": "dom-text"},  //fix by product
+            {"bVisible":true},  //Assigned to
+            {"bVisible":true}  //Highlighted Reasons
+        ]
     } );
-    new $.fn.dataTable.FixedColumns( T_ETA_table, {
-        leftColumns: 3
-    } );
+    //new $.fn.dataTable.FixedColumns( T_ETA_table, {
+    //    leftColumns: 3
+    //} );
 } );
 </script>
 
@@ -39,11 +52,25 @@ $(document).ready(function() {
     var ETA_table = $('#ETA_bugs_table').DataTable( {
         dom: 'C<"clear">lfrtip',
         scrollY:        "300px",
-        paging:         false
+        scrollX:        true,
+        paging:         false,
+        "aoColumns": [ 
+            {"bVisible":true},  //Checkbox
+            {"bVisible":true},  //BugID
+            {"bVisible":true, "sWidth": "20%", "orderDataType": "dom-text"},  //ETA
+            {"bVisible":true},  //Keywords
+            {"bVisible":true},  //Weight
+            {"bVisible":false}, //Priority
+            {"bVisible":false}, //Severity
+            {"bVisible":false}, //Case Count
+            {"bVisible":true, "sWidth": "20%", "orderDataType": "dom-text"},  //fix by product
+            {"bVisible":true},  //Assigned to
+            {"bVisible":true}   //Highlighted Reasons
+        ]
     } );
-    new $.fn.dataTable.FixedColumns( ETA_table, {
-        leftColumns: 3
-    } );
+    //new $.fn.dataTable.FixedColumns( ETA_table, {
+    //    leftColumns: 3
+    //} );
 } );
 </script>
 
@@ -52,28 +79,43 @@ $(document).ready(function() {
     var W_U_table = $('#W_U_bugs_table').DataTable( {
         dom: 'C<"clear">lfrtip',
         scrollY:        "300px",
-        paging:         false
+        scrollX:        true,
+        paging:         false,
+        "aoColumns": [ 
+            {"bVisible":true},  //Checkbox
+            {"bVisible":true},  //BugID
+            {"bVisible":true, "sWidth": "20%", "orderDataType": "dom-text"},  //Last Modified
+            {"bVisible":true},  //ETA
+            {"bVisible":true},  //Keywords
+            {"bVisible":true},  //Weight
+            {"bVisible":false}, //Priority
+            {"bVisible":false}, //Severity
+            {"bVisible":false}, //Case Count
+            {"bVisible":true, "sWidth": "20%", "orderDataType": "dom-text"},  //fix by product
+            {"bVisible":true},  //Assigned to
+            {"bVisible":true}   //Highlighted Reasons
+        ]
     } );
-    new $.fn.dataTable.FixedColumns( W_U_table, {
-        leftColumns: 3
-    } );
+    //new $.fn.dataTable.FixedColumns( W_U_table, {
+    //   leftColumns: 3
+    //} );
 } );
 </script>
 
-
+{%endblock%}
+{%block body%}
 
 
 <form action="{{ url_for('Admin_Email_Processing') }}" method=post>
     
-<ul class=entries>
-    <input type=submit value=SendEmail>
-    
-    <dt>The table of the bugs which should add ETA after triage-accepted</dt>
+<ul class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+    <h3><span class="label label-primary">
+        1. The table of the bugs which should add ETA after triage-accepted
+    </span></h3>
     <table id="T_ETA_bugs_table" class="display" cellspacing="0" width="100%">
         <thead>
             <tr>
                 <th>Select All</th>
-                <th>Number</th>
                 <th>Bug ID</th>
                 <th>Keywords</th>
                 <th>ETA</th>
@@ -91,29 +133,42 @@ $(document).ready(function() {
             <tr>
                 <td><input type=checkbox id = T_ETA_{{ entry["bug_id"] }} value = {{ entry["bug_id"] }} name = T_ETA_check_{{ entry["bug_id"] }}></td>
                 <input type=hidden value = {{ entry["assigned_rn"] }} name = {{ entry["bug_id"] }}>
-                <td>{{ Number }}</td>
                 <td><a href=https://bugzilla.eng.vmware.com/show_bug.cgi?id={{ entry["bug_id"] }}>{{ entry["bug_id"] }}</a></td>
-                <td>{{ entry["keywords"] }}</td>
+                <td><b>{{ entry["keywords"] }}</b></td>
                 <td>{{ entry["cf_eta"] }}</td>
                 <td>{{ entry["weight"] }}</td>
                 <td>{{ entry["priority"] }}</td>
                 <td>{{ entry["bug_severity"] }}</td>
                 <td>{{ entry["case_count"] }}</td>
-                <td>{{ T_ETA_bug_fix_by_results[entry["bug_id"]] }}</td>
+                <td>
+                    {% for fix_entry in T_ETA_bug_fix_by_results[entry["bug_id"]] %}
+                        {% if fix_entry['product'] %}
+                            {{fix_entry['product']}}
+                        {% endif %}
+                        {% if fix_entry['version'] %}
+                            -{{fix_entry['version']}}
+                        {% endif %}
+                        {% if fix_entry['phase'] %}    
+                            -{{fix_entry['phase']}}
+                        {% endif %}
+                        <br>
+                    {% endfor %}
+                </td>
                 <td>{{ entry["assigned_rn"] }}</td>
                 <td>{{ entry["highlighted_by"] }}</td>
             </tr>
-            {% set Number = Number + 1%}
         {% endfor %}
         </tbody>
     </table>
-    
-    <dt>The table of the bugs which should check ETA condition e.g, ETA: expired, one week...etc</dt>
+    <textarea class="form-control" name="T_ETA_Message" row="20" placeholder="{{T_ETA_Message}}"></textarea>
+    <h3><span class="label label-primary">
+        2. The table of the bugs which should check ETA condition e.g, ETA: expired, one week...etc
+    </span></h3>
+    <b></b>
     <table id="ETA_bugs_table" class="display" cellspacing="0" width="100%">
         <thead>
             <tr>
                 <th>Select All</th>
-                <th>Number</th>
                 <th>Bug ID</th>
                 <th>ETA</th>
                 <th>Keywords</th>
@@ -131,29 +186,42 @@ $(document).ready(function() {
             <tr>
                 <td><input type=checkbox id = ETA_{{ entry["bug_id"] }} value = {{ entry["bug_id"] }} name = ETA_check_{{ entry["bug_id"] }}></td>
                 <input type=hidden value = {{ entry["assigned_rn"] }} name = {{ entry["bug_id"] }}>
-                <td>{{ Number }}</td>
                 <td><a href=https://bugzilla.eng.vmware.com/show_bug.cgi?id={{ entry["bug_id"] }}>{{ entry["bug_id"] }}</a></td>
-                <td>{{ entry["cf_eta"] }}</td>
+                <td><b>{{ entry["cf_eta"] }}</b></td>
                 <td>{{ entry["keywords"] }}</td>
                 <td>{{ entry["weight"] }}</td>
                 <td>{{ entry["priority"] }}</td>
                 <td>{{ entry["bug_severity"] }}</td>
                 <td>{{ entry["case_count"] }}</td>
-                <td>{{ ETA_bug_fix_by_results[entry["bug_id"]] }}</td>
+                <td>
+                    {% for fix_entry in ETA_bug_fix_by_results[entry["bug_id"]] %}
+                        {% if fix_entry['product'] %}
+                            {{fix_entry['product']}}
+                        {% endif %}
+                        {% if fix_entry['version'] %}
+                            -{{fix_entry['version']}}
+                        {% endif %}
+                        {% if fix_entry['phase'] %}    
+                            -{{fix_entry['phase']}}
+                        {% endif %}
+                        <br>
+                    {% endfor %}
+                </td>
                 <td>{{ entry["assigned_rn"] }}</td>
                 <td>{{ entry["highlighted_by"] }}</td>
             </tr>
-            {% set Number = Number + 1%}
         {% endfor %}
         </tbody>
     </table>
+    <textarea class="form-control" name="ETA_Message" row="20" placeholder="{{ETA_Message}}"></textarea>
     
-    <dt>The table of the bugs which are not updated for a long time</dt>
+    <h3><span class="label label-primary">
+        3. The table of the bugs which are not updated for a long time
+    </span></h3>
     <table id="W_U_bugs_table" class="display" cellspacing="0" width="100%">
         <thead>
             <tr>
                 <th>Select All</th>
-                <th>Number</th>
                 <th>Bug ID</th>
                 <th>Last Modified Time</th>
                 <th>ETA</th>
@@ -172,25 +240,38 @@ $(document).ready(function() {
             <tr>
                 <td><input type=checkbox id = W_U_{{ entry["bug_id"] }} value = {{ entry["bug_id"] }} name = W_U_check_{{ entry["bug_id"] }}></td>
                 <input type=hidden value = {{ entry["assigned_rn"] }} name = {{ entry["bug_id"] }}>
-                <td>{{ Number }}</td>
                 <td><a href=https://bugzilla.eng.vmware.com/show_bug.cgi?id={{ entry["bug_id"] }}>{{ entry["bug_id"] }}</a></td>
-                <th>{{ entry["delta_ts"] }}</th>
+                <td><b>{{ entry["delta_ts"] }}</b></td>
                 <td>{{ entry["cf_eta"] }}</td>
                 <td>{{ entry["keywords"] }}</td>
                 <td>{{ entry["weight"] }}</td>
                 <td>{{ entry["priority"] }}</td>
                 <td>{{ entry["bug_severity"] }}</td>
                 <td>{{ entry["case_count"] }}</td>
-                <td>{{ W_U_bug_fix_by_results[entry["bug_id"]] }}</td>
+                <td>
+                    {% for fix_entry in W_U_bug_fix_by_results[entry["bug_id"]] %}
+                        {% if fix_entry['product'] %}
+                            {{fix_entry['product']}}
+                        {% endif %}
+                        {% if fix_entry['version'] %}
+                            -{{fix_entry['version']}}
+                        {% endif %}
+                        {% if fix_entry['phase'] %}    
+                            -{{fix_entry['phase']}}
+                        {% endif %}
+                        <br>
+                    {% endfor %}
+                </td>
                 <td>{{ entry["assigned_rn"] }}</td>
                 <td>{{ entry["highlighted_by"] }}</td>
             </tr>
-            {% set Number = Number + 1%}
         {% endfor %}
         </tbody>
     </table>
-    
-    <input type=submit value=SendEmail>
+    <textarea class="form-control" name="W_U_Message" row="20" placeholder="{{W_U_Message}}"></textarea>
+    <br>
+    <h3><button class="btn btn-lg btn-primary btn-block" type="submit">Send Email</button></h3>
     </form>
 </ul>
 {% endblock %}
+{% endif %}

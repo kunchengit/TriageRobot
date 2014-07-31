@@ -187,6 +187,27 @@ class BugzillaServer(object):
 
     #def add_comment(self, bug_id, comment, email_flag):
     
+    def add_fix_bys(self, bug_id, fix_by_information):
+        print "Add fix by \n{}\nto Bug {}".format(fix_by_information, bug_id)
+        try:
+            self.server.Bug.add_fix_bys(bug_id, fix_by_information)
+        except xmlrpclib.Fault, err:
+            print "A fault occurred when add fix_by_information"
+            self.server.Bug.add_fix_bys(bug_id, fix_by_information)
+            return False
+        return True
+    
+    def remove_fix_bys(self, bug_id, fix_by_information):
+        print "Remove fix by \n{}\nto Bug {}".format(fix_by_information, bug_id)
+        try:
+            self.server.Bug.remove_fix_bys(bug_id, fix_by_information)
+        except xmlrpclib.Fault, err:
+            print "A fault occurred when remove fix_by_information"
+            return False
+        self.server.Bug.remove_fix_bys(bug_id, fix_by_information)
+        return True
+    
+    
     
     def add_comment(self, bug_id, comment):
         print "Add comment \n{}\nto Bug {}".format(comment, bug_id)

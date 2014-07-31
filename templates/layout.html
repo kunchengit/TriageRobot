@@ -1,38 +1,98 @@
 <!doctype html>
 <head>
-<title>TriageRobot</title>
-<link rel='stylesheet' type='text/css' href='static/css/bootstrap-3.1.1.css'>
-
-<!-- <script type='text/javascript' src='static/jquery-ui-1.10.4.js'></script> -->
-
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta charset="utf-8">
+    <link rel="icon" href="static/images/tab_figure.ico">
+    <title>TriageRobot, from VMware cpd-team</title>
+    <link rel='stylesheet' type='text/css' href='static/css/bootstrap-3.1.1.css'>
+    <!-- <link rel="stylesheet" type='text/css' href="static/css/bootstrap.css" >-->
+    <link href="static/css/dashboard.css" rel="stylesheet">
+    {%block head%}
+    {%endblock%}
 </head>
-<div class=page>
-  <h1>BugsTable</h1>
-    {% for message in get_flashed_messages() %}
-        <div class=flash>{{ message }}</div>
-    {% endfor %}
-    {% if not session.logged_in%}
-        <form action = "{{url_for('login')}}" method = post>
-            <dl>
-                <dt>Account:<input type=text name=BG_account>
-                <dt>Password:<input type=password name=BG_password>
-                <input type=submit value=Submit>
-            </dl>
-        </form>
-    {% endif %}
-    {% if session.logged_in%}
-        <form action = "{{url_for('logout')}}" method = post>
-            <ul class=entries>
-                <dl>
-                    <dt>User: {{session.username}}</dt>
-                    <input type=submit value=Logout>
-                </dl>
-                {% if session.admin %}
-                    <dt><a href={{url_for('Admin_Custom_Webpage')}}>Admin_Custom_Webpage</a></dt>
+
+<body>
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="http://www.google.com/search?q={{session.username}}">TriageRobot {% if session.username %}- User: {{session.username}} {% endif %}</a>
+            </div>
+            <div class="navbar-collapse collapse">
+                {% if not session.logged_in %}
+                    <form class="navbar-form navbar-right" role="form" action = "{{url_for('login')}}" method = post>
+                        <div class="form-group">
+                            <input type="text" placeholder="Account" class="form-control" name=BG_account>
+                        </div>
+                        <div class="form-group">
+                            <input type="password" placeholder="Password" class="form-control" name=BG_password>
+                        </div>
+                        <button type="submit" class="btn btn-success">Sign in</button>
+                    </form>
+                {% else %}
+                    <form class="navbar-form navbar-right" role="form">
+                        <a href={{url_for('logout')}} class="btn btn-success">Logout</a>
+                    </form>
                 {% endif %}
-                    <dt><a href={{url_for('query')}}>Query Page</a></dt>
-            </ul>
-        </form>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="https://wiki.eng.vmware.com/CPD/TriageRobot">Wiki</a></li>
+                    <li><a href="https://email.vmware.com">Email</a></li>
+                    <li><a href="https://wiki.eng.vmware.com/CPD/TriageRobot">Help</a></li>
+                </ul>
+            </div>
+            
+            
+        </div>
+    </div>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-3 col-md-2 sidebar">
+                {% if session.logged_in%}
+                    <ul class="nav nav-sidebar">
+                        {% if session.admin %}
+                            <li class="submenu"><!-- active open -->
+                                <a href={{url_for('Admin_Custom_Webpage')}}><i class="icon icon-th-list"></i> <span>Administrator</span> <span class="label">3</span></a>
+                                <ul> <!-- li class="active" -->
+                                    <li id="Admin_List" ><a href="{{url_for('Admin_Custom_List')}}">Admin List</a></li>
+                                    <li id="Admin_Email"><a href={{url_for('Admin_Custom_Email')}}>Email Notification</a></li>
+                                    <li id="Admin_Triage_Chart"><a href={{url_for('Admin_Custom_Triage_Chart')}}>Triage Chart</a></li>
+                                    <li id="Admin_Update"><a href={{url_for('Admin_Custom_Update')}}>Update Manually</a></li>
+                                </ul>
+                            </li>
+                        {% endif %}
+                        <li><a href={{url_for('query')}}>Query Page</a></li>
+                    </ul>
+                {% endif %}
+            </div>
+            {% if error or message%}
+            <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+                {% if error %}
+                <div class="alert alert-danger" role="alert">
+                    <strong>Error: </strong> {{error}}.
+                </div>
+                {% endif %}
+                {% if message %}
+                <div class="alert alert-success" role="alert">
+                    <strong>Message: </strong> {{message}}.
+                </div>
+                {% endif %}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    {% if session.logged_in%}
+    {% block body %}
+    {% endblock %}
     {% endif %}
-  {% block body %}{% endblock %}
-</div>
+</body>
+

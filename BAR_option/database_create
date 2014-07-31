@@ -21,20 +21,25 @@ create table bugs (bug_id mediumint,
                         priority varchar(64),
                         weight float,
                         highlighted_by varchar(64),
-                        ld_when varchar(255),
-                        ld_text varchar(5000),
                         case_count mediumint,
                         PRIMARY KEY (bug_id)
 )
-create table bug_fix_by_map(bug_id mediumint,
+create table bug_fix_by_map(fix_by_id mediumint,
+                        bug_id mediumint,
                         fix_by_product_id smallint,
                         fix_by_product_rn varchar(64),
                         fix_by_version_id smallint,
                         fix_by_version_rn varchar(64),
                         fix_by_phase_id smallint,
                         fix_by_phase_rn varchar(64),
-                        md5 varchar(255),
-                        PRIMARY KEY (md5)
+                        PRIMARY KEY (fix_by_id)
+)
+create table longdescs(ld_id int,
+                        bug_id mediumint,
+                        ld_who mediumint,
+                        ld_when datetime,
+                        ld_text mediumtext,
+                        PRIMARY KEY (ld_id)
 )
 create table rules (assigned_rn varchar(255), 
                         fix_by_product varchar(64), 
@@ -55,11 +60,27 @@ create table versions (id mediumint,
                         product_id mediumint,
                         PRIMARY KEY(id)
 )
+create table phases (id mediumint,
+                        name varchar(255),
+                        version_id mediumint,
+                        PRIMARY KEY(id)
+)
 create table products (id mediumint,
                         name varchar(255),
                         PRIMARY KEY(id)
 )
 create table update_information(update_time datetime)
+
+create table milestone (id mediumint,
+                        name varchar(255),
+                        status varchar(255),
+                        eta datetime,
+                        branch varchar(255),
+                        bugzila_product mediumint,
+                        bugzilla_version_id mediumint,
+                        type varchar(255),
+                        packaging_bug_id mediumint,
+                        PRIMARY KEY(id))
 
 CREATE EVENT daily_clear on schedule every 1 day comment 'Clear expired update record' 
 DO delete from TriageRobot.update_information where update_time < date_add(NOW(), INTERVAL -1 day);
