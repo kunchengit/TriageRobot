@@ -60,12 +60,13 @@ $(document).ready(function() {
         "aoColumns": [ 
             {"bVisible":true},  //Checkbox
             {"bVisible":true},  //BugID
+            {"bVisible":true, "sWidth": "30%"},  //Summary-short_desc
             {"bVisible":true},  //Keywords
             {"bVisible":true},  //Weights
             {"bVisible":false}, //Priority
             {"bVisible":false}, //Severity
             {"bVisible":false}, //Case count
-            {"bVisible":true, "sWidth": "40%", "orderDataType": "dom-text"},  //Fix_by_x
+            {"bVisible":true, "sWidth": "30%", "orderDataType": "dom-text"},  //Fix_by_x
             {"bVisible":true},  //Assigned to
             {"bVisible":true},  //ETA
             {"bVisible":true},  //Last Modified
@@ -97,6 +98,14 @@ $(document).ready(function() {
         return false;
         $(".form").submit();
         });*/
+} );
+</script>
+
+<script>
+$(document).ready(function() {
+    var milestone_table = $('#milestone_table').DataTable(
+    {"lengthMenu": [ [-1, 10, 25, 50], ["All",10, 25, 50] ]
+    });
 } );
 </script>
 
@@ -137,10 +146,50 @@ $(document).ready(function() {
 {% block body%}
 <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
     <div style = "width:40%">
-    The Statistic of Triage-Accepted of {{assigned}}
+        {% if query["fix_by_product"] %}
+            {% set fix_by_x = query["fix_by_product"] %}
+        {% endif %}
+        {% if query["fix_by_version"] %}
+            {% set fix_by_x = fix_by_x + '-' + query["fix_by_version"] %}
+        {% endif %}
+        {% if query["fix_by_phase"] %}
+            {% set fix_by_x = fix_by_x + '-' + query["fix_by_phase"] %}
+        {% endif %}
+        <h3><span class="label label-primary">
+            The Statistic of Triage-Accepted of {{assigned}}
+        </span></h3>
+        {% if fix_by_x %}
+        <h3><span class="label label-info">
+            {{fix_by_x}}
+        </span></h3>
+        {% endif %}
     <canvas id="canvas" height="450" width="900"></canvas>
     </div>
     {% if milestone_flag %}
+        <h3><span class="label label-primary">
+        Milestone Record of {{query["fix_by_product"]}}-{{query["fix_by_version"]}}
+        </span></h3>
+        <table id="milestone_table" class="display" cellspacing="0" width="100%">
+            <thead>
+                <tr>
+                    <td>Name</td>
+                    <td>ETA</td>
+                    <td>Weight</td>
+                </tr>
+            </thead>
+            <tbody>
+                {% for entry in milestone_results %}
+                <tr>
+                    <td>{{entry["name"]}}</td>
+                    <td>{{entry["eta"]}}</td>
+                    <td>{{entry["weight"]}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+            <!-- This part is removed since we modified the figure type-->
+            <!--
+            
             <div id="Milestone_Timeline" style="width:40%">Milestone Timeline</div>
                 <script type="text/javascript">
                 // DOM element where the Timeline will be attached
@@ -164,6 +213,7 @@ $(document).ready(function() {
                     // Create a Timeline
                 var timeline = new vis.Timeline(container, data, options);
                 </script>
+            -->
     {% endif %}
 </div>
     <form name="bugs_table_form" action="{{ url_for('entries_processing') }}" id="bugs_table_form" method="post">
@@ -196,6 +246,7 @@ $(document).ready(function() {
                     <input name="Custodians" type="checkbox" value="All" class="checkall">
                 </th>
                 <th>Bug ID</th>
+                <th>Summary</th>
                 <th>Keywords</th>
                 <th>Weight</th>
                 <th>Priority</th>
@@ -213,7 +264,8 @@ $(document).ready(function() {
         {% for entry in bugs %}
             <tr>
                 <td><input type=checkbox id = {{ entry["bug_id"] }} value = {{ entry["bug_id"] }} name = check_id_{{ entry["bug_id"] }}></td>
-                <td><a href=https://bugzilla.eng.vmware.com/show_bug.cgi?id={{ entry["bug_id"] }}>{{ entry["bug_id"] }}</a></td>
+                <td><a href=https://bugzilla.eng.vmware.com/show_bug.cgi?id={{ entry["bug_id"] }} target="_blank">{{ entry["bug_id"] }}</a></td>
+                <td>{{ entry["short_desc"] }}</td>
                 <td>{{ entry["keywords"] }}</td>
                 <td>{{ entry["weight"] }}</td>
                 <td>{{ entry["priority"] }}</td>

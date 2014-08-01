@@ -26,6 +26,13 @@ LOCAL_DATABASE_USER = "root"
 LOCAL_DATABASE_PW = "vmware"
 LOCAL_DATABASE_DATABASE = "TriageRobot"
 
+PATCHTOOL_DATABASE_HOST = "patchtool.eng.vmware.com"
+PATCHTOOL_DATABASE_PORT = 3306
+PATCHTOOL_DATABASE_USER = "read"
+PATCHTOOL_DATABASE_PW = "read"
+PATCHTOOL_DATABASE_DATABASE = "rmtool"
+
+
 VERBOSE_LEVEL_DEFAULT   = 0
 VERBOSE_LEVEL_BUG_LINK  = 1 # link
 VERBOSE_LEVEL_BUG       = 2 # fix by, etc
@@ -72,6 +79,8 @@ gRecordSchema = {
     "longdescs"     : namedtuple("table_longdescs", "comment_id, bug_id, bug_when, who, thetext"),
     # composed bug record view.
     "bug_record"    : namedtuple("bug_record", "bugs, needinfo, fix_by, cases, comments"),
+    # Added by ShinYeh
+    "milestone" : namedtuple("milestone", "dtm_eta_date, dtm_phase_id, rel_name, dtm_min_weight"),
 }
 
 class BugzillaDB(object):
@@ -584,7 +593,6 @@ def Connect_With_OurDB(Total_Result, Rules=[], Update=False, Update_end=None):
     conn = MySQLdb.connect(host=LOCAL_DATABASE_HOST, user=LOCAL_DATABASE_USER, passwd=LOCAL_DATABASE_PW, db=LOCAL_DATABASE_DATABASE)
     cursor = conn.cursor()
     
-    
     str_columns = ["assigned_rn", "short_desc","product_rn","category_rn","component_rn", "bug_status","keywords","resolution","delta_ts","bug_severity","cf_public_severity", "cf_reported_by", "cf_eta", "priority","highlighted_by"]
     fix_by_map = ["fix_by_product_rn", "fix_by_version_rn", "fix_by_phase_rn", "fix_by_product_id", "fix_by_version_id", "fix_by_phase_id", "fix_by_id"]
     comments = ["ld_id", "ld_when", "ld_who", "ld_text"]
@@ -603,6 +611,7 @@ def Connect_With_OurDB(Total_Result, Rules=[], Update=False, Update_end=None):
                 continue
             elif dickey in str_columns:#Process String
                 temp_sql[dickey] = "'"+str(sdata[dickey]).replace("\\","\\\\").replace("\'","\\\'")+"'"
+                temp_sql[dickey] = filter(lambda x: x in string.printable, temp_sql[dickey])
                 if not sdata[dickey]:
                     sdata[dickey] = '---'
                 #print key, sdata[a], temp_sql[a]
@@ -640,6 +649,7 @@ def Connect_With_OurDB(Total_Result, Rules=[], Update=False, Update_end=None):
                 if isinstance(sdata[dkey][ikey], str):
                     temp = sdata[dkey][ikey].replace("\\","\\\\").replace("\'","\\\'") #replace / -> // and ' -> /'
                     temp_sql[dkey] = "'"+ temp +"'"
+                    temp_sql[dickey] = filter(lambda x: x in string.printable, temp_sql[dickey])
                     #temp_sql[dkey] = "'"+sdata[dkey][ikey]+"'"
                 else:
                     temp_sql[dkey] = str(sdata[dkey][ikey])
@@ -676,8 +686,10 @@ def Connect_With_OurDB(Total_Result, Rules=[], Update=False, Update_end=None):
                     if dkey == 'ld_text':
                         temp = sdata[dkey][ikey].replace("\\","\\\\").replace("\'","\\\'") #replace / -> // and ' -> /'
                         temp_sql[dkey] = "'"+ temp +"'"
+                        temp_sql[dickey] = filter(lambda x: x in string.printable, temp_sql[dickey])
                     else:
                         temp_sql[dkey] = "'"+sdata[dkey][ikey]+"'"
+                        temp_sql[dickey] = filter(lambda x: x in string.printable, temp_sql[dickey])
                 elif isinstance(sdata[dkey][ikey], datetime):
                     temp_sql[dkey] = "'"+str(sdata[dkey][ikey])+"'"
                 else:
@@ -906,36 +918,57 @@ def Update_Milestone():
     import time
     #start = datetime.now()
     """
-    Retrieve the timeline message from Static php
+    The old method is to retrieve the timeline message from Static php
+    I just put all the code inside this part.
+    The milestone retriving url is changed to a database in patchtool after 0730
     """
-    MILESTONE_URL = "http://mt-db2.eng.vmware.com/lib/Examples.php"
-    #MILESTONE_URL = "http://10.117.8.249/"
+    #MILESTONE_URL = "http://mt-db2.eng.vmware.com/lib/Examples.php"
+    #Replace the null string into "null" for matching sql
+    #temp_read = urllib2.urlopen(MILESTONE_URL).read() . replace('null', '"null"')
+    #milestone_results = ast.literal_eval(temp_read)
     
+    
+    pttl_conn = MySQLdb.connect(host=PATCHTOOL_DATABASE_HOST, port=PATCHTOOL_DATABASE_PORT, user=PATCHTOOL_DATABASE_USER, passwd=PATCHTOOL_DATABASE_PW, db=PATCHTOOL_DATABASE_DATABASE)
+    pttl_cursor=pttl_conn.cursor()
+    
+    
+    
+    sql = """SELECT DATE(dtm_eta) 
+            AS dtm_eta_date,dtm_phase_id,rel_name,dtm_min_weight 
+            FROM rel JOIN dtool_rel_mil 
+            ON rel.rel_id = dtool_rel_mil.dtm_rel_id 
+            ORDER BY dtm_eta"""
+            
+    pttl_cursor.execute(sql)
+    columns = [column[0] for column in pttl_cursor.description]
+    Milestone_Results = []
+    for row in pttl_cursor.fetchall():
+        Milestone_Results.append(dict(zip(columns, row)))
     """
-    Replace the null string into "null" for matching sql
+    Change dictionary name
+    dtm_eta_date -> eta
+    dtm_phase_id -> phase_id
+    rel_name -> name
+    dtm_min_weight -> weight
     """
-    temp_read = urllib2.urlopen(MILESTONE_URL).read() . replace('null', '"null"')
-    milestone_results = ast.literal_eval(temp_read)
+    for entry in Milestone_Results:
+        entry["eta"] = entry.pop("dtm_eta_date")
+        entry["phase_id"] = entry.pop("dtm_phase_id")
+        entry["name"] = entry.pop("rel_name")
+        entry["weight"] = entry.pop("dtm_min_weight")
+    
+    local_conn = MySQLdb.connect(host=LOCAL_DATABASE_HOST, user=LOCAL_DATABASE_USER, passwd=LOCAL_DATABASE_PW, db=LOCAL_DATABASE_DATABASE)
+    local_cursor = local_conn.cursor()
     
     
-    conn = MySQLdb.connect(host=LOCAL_DATABASE_HOST, user=LOCAL_DATABASE_USER, passwd=LOCAL_DATABASE_PW, db=LOCAL_DATABASE_DATABASE)
-    cursor = conn.cursor()
     
-    def format_sql(input_string):
-        if isinstance(input_string, str):
-            return "'" + input_string + "'"
-        elif isinstance(input_string, int):
-            return input_string
-        else:
-            print "Check", input_string
-            return input_string
-    for entry in milestone_results:
-        """
-        the null key and value have to be removed
-        """
+    for entry in Milestone_Results:
         for key in entry.keys():
-            if entry[key] =='null':
+            if entry[key] == None:
                 del entry[key]
+            
+    
+    for entry in Milestone_Results:
         sql = """INSERT INTO milestone
         ({})
         VALUES
@@ -944,16 +977,31 @@ def Update_Milestone():
         {}
         """.format(
         ','.join(entry.keys()),
-        ','.join(map(str, (format_sql(k) for k in entry.values()))),
+        ','.join(map(str,(format_sql(k) for k in entry.values()))),
         ','.join('{}={}'.format(k,format_sql(entry[k])) for k in entry)
         )
-        cursor.execute(sql)
-    cursor.close()
-    conn.commit()
-    conn.close()
+        local_cursor.execute(sql)
+
+    
+    local_cursor.close()
+    local_conn.commit()
+    local_conn.close()
     #end = datetime.now()
     #print end-start
     return True
+
+def format_sql(input_string, comments_flag=False):
+            from datetime import date
+            if isinstance(input_string, str):
+                return "'" + input_string + "'"
+            elif isinstance(input_string, int):
+                return input_string
+            elif isinstance(input_string, datetime):
+                return "'" + str(input_string) + "'"
+            elif isinstance(input_string, date):
+                return "'" + str(input_string) + "'"
+            else:
+                return input_string
 
 if __name__ == "__main__":
     import time
@@ -1022,6 +1070,7 @@ if __name__ == "__main__":
                                      formatter_class=argparse.RawDescriptionHelpFormatter)
     
     parser.add_argument('--update', default=False, action='store_const', const=True, help='update per 15 minutes')
+    parser.add_argument('--full', default=False, action='store_const', const=True, help='Full update without query latest update time')
     parser.add_argument('--wo_update_information', default=True, action='store_const', const=False, help='update profile, version, products')
     parser.add_argument('--option', nargs=1, default="option.p", help='Enter the path of option.p')
     parser.add_argument('--milestone', default=False, action='store_const', const=True, help='Update Milestone to local data base. This process costs about 150 seconds and is unable to run with other job because of the time.')
@@ -1037,18 +1086,6 @@ if __name__ == "__main__":
         """
         The major function of this part is Check_ID
         """
-        def format_sql(input_string, comments_flag=False):
-            from datetime import date
-            if isinstance(input_string, str):
-                return "'" + input_string + "'"
-            elif isinstance(input_string, int):
-                return input_string
-            elif isinstance(input_string, datetime):
-                return "'" + str(input_string) + "'"
-            elif isinstance(input_string, date):
-                return "'" + str(input_string) + "'"
-            else:
-                return input_string
         def Check_ID(args):
             """
             This function only updates specific bug_id.
@@ -1221,6 +1258,11 @@ if __name__ == "__main__":
             
         Check_ID(args)
         exit()
+        
+    if args.milestone == True:
+        Update_Milestone()
+        print "Finish Update Milestone"
+        exit()
     
     try:
         f = open(args.option[0], "r")
@@ -1237,14 +1279,13 @@ if __name__ == "__main__":
         if not p.match(key):
             Raw_OP.append(key.rstrip().split(":"))
     
-    if args.milestone == True:
-        Update_Milestone()
-        print "Finish Update Milestone"
-        exit()
     
     if args.update == True:
         Periodically_Update_Data = Periodically_Update()
-        Update_begin = Periodically_Update_Data[0]
+        if args.full == True:
+            Update_begin = "2014-01-1"
+        else:
+            Update_begin = Periodically_Update_Data[0]
         Update_end = datetime.now().strftime(FMT_YMDHMS)
         Update_bug_id = Periodically_Update_Data[1]
         

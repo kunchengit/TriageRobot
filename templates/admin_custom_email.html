@@ -30,6 +30,7 @@ $(document).ready(function() {
         "aoColumns": [ 
             {"bVisible":true},  //Checkbox
             {"bVisible":true},  //BugID
+            {"bVisible":true, "sWidth": "30%", "orderDataType": "dom-text"},  //Summary
             {"bVisible":true, "sWidth": "30%", "orderDataType": "dom-text"},  //Keywords
             {"bVisible":true},  //ETA
             {"bVisible":true}, //Weight
@@ -57,6 +58,7 @@ $(document).ready(function() {
         "aoColumns": [ 
             {"bVisible":true},  //Checkbox
             {"bVisible":true},  //BugID
+            {"bVisible":true, "sWidth": "30%", "orderDataType": "dom-text"},  //Summary
             {"bVisible":true, "sWidth": "20%", "orderDataType": "dom-text"},  //ETA
             {"bVisible":true},  //Keywords
             {"bVisible":true},  //Weight
@@ -84,6 +86,7 @@ $(document).ready(function() {
         "aoColumns": [ 
             {"bVisible":true},  //Checkbox
             {"bVisible":true},  //BugID
+            {"bVisible":true, "sWidth": "30%", "orderDataType": "dom-text"},  //Summary
             {"bVisible":true, "sWidth": "20%", "orderDataType": "dom-text"},  //Last Modified
             {"bVisible":true},  //ETA
             {"bVisible":true},  //Keywords
@@ -117,6 +120,7 @@ $(document).ready(function() {
             <tr>
                 <th>Select All</th>
                 <th>Bug ID</th>
+                <th>Summary</th>
                 <th>Keywords</th>
                 <th>ETA</th>
                 <th>Weight</th>
@@ -133,7 +137,8 @@ $(document).ready(function() {
             <tr>
                 <td><input type=checkbox id = T_ETA_{{ entry["bug_id"] }} value = {{ entry["bug_id"] }} name = T_ETA_check_{{ entry["bug_id"] }}></td>
                 <input type=hidden value = {{ entry["assigned_rn"] }} name = {{ entry["bug_id"] }}>
-                <td><a href=https://bugzilla.eng.vmware.com/show_bug.cgi?id={{ entry["bug_id"] }}>{{ entry["bug_id"] }}</a></td>
+                <td><a href=https://bugzilla.eng.vmware.com/show_bug.cgi?id={{ entry["bug_id"] }} target="_blank">{{ entry["bug_id"] }}</a></td>
+                <td>{{ entry["short_desc"] }}</td>
                 <td><b>{{ entry["keywords"] }}</b></td>
                 <td>{{ entry["cf_eta"] }}</td>
                 <td>{{ entry["weight"] }}</td>
@@ -170,6 +175,7 @@ $(document).ready(function() {
             <tr>
                 <th>Select All</th>
                 <th>Bug ID</th>
+                <th>Summary</th>
                 <th>ETA</th>
                 <th>Keywords</th>
                 <th>Weight</th>
@@ -186,7 +192,8 @@ $(document).ready(function() {
             <tr>
                 <td><input type=checkbox id = ETA_{{ entry["bug_id"] }} value = {{ entry["bug_id"] }} name = ETA_check_{{ entry["bug_id"] }}></td>
                 <input type=hidden value = {{ entry["assigned_rn"] }} name = {{ entry["bug_id"] }}>
-                <td><a href=https://bugzilla.eng.vmware.com/show_bug.cgi?id={{ entry["bug_id"] }}>{{ entry["bug_id"] }}</a></td>
+                <td><a href=https://bugzilla.eng.vmware.com/show_bug.cgi?id={{ entry["bug_id"] }} target="_blank">{{ entry["bug_id"] }}</a></td>
+                <td>{{ entry["short_desc"] }}</td>
                 <td><b>{{ entry["cf_eta"] }}</b></td>
                 <td>{{ entry["keywords"] }}</td>
                 <td>{{ entry["weight"] }}</td>
@@ -223,6 +230,7 @@ $(document).ready(function() {
             <tr>
                 <th>Select All</th>
                 <th>Bug ID</th>
+                <th>Summary</th>
                 <th>Last Modified Time</th>
                 <th>ETA</th>
                 <th>Keywords</th>
@@ -240,7 +248,8 @@ $(document).ready(function() {
             <tr>
                 <td><input type=checkbox id = W_U_{{ entry["bug_id"] }} value = {{ entry["bug_id"] }} name = W_U_check_{{ entry["bug_id"] }}></td>
                 <input type=hidden value = {{ entry["assigned_rn"] }} name = {{ entry["bug_id"] }}>
-                <td><a href=https://bugzilla.eng.vmware.com/show_bug.cgi?id={{ entry["bug_id"] }}>{{ entry["bug_id"] }}</a></td>
+                <td><a href=https://bugzilla.eng.vmware.com/show_bug.cgi?id={{ entry["bug_id"] }} target="_blank">{{ entry["bug_id"] }}</a></td>
+                <td>{{ entry["short_desc"] }}</td>
                 <td><b>{{ entry["delta_ts"] }}</b></td>
                 <td>{{ entry["cf_eta"] }}</td>
                 <td>{{ entry["keywords"] }}</td>

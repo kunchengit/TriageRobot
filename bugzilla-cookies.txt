@@ -3,4 +3,4 @@
 # This is a generated file!  Do not edit.
 
 bugzilla.eng.vmware.com	FALSE	/	FALSE	2145916800	Bugzilla_login	22652
-bugzilla.eng.vmware.com	FALSE	/	FALSE	2145916800	Bugzilla_logincookie	1ArrLAhODj
+bugzilla.eng.vmware.com	FALSE	/	FALSE	2145916800	Bugzilla_logincookie	MqKVbFBW05

@@ -71,16 +71,23 @@ create table products (id mediumint,
 )
 create table update_information(update_time datetime)
 
-create table milestone (id mediumint,
+#create table milestone (id mediumint,
+#                        name varchar(255),
+#                        status varchar(255),
+#                        eta datetime,
+#                        branch varchar(255),
+#                        bugzila_product mediumint,
+#                        bugzilla_version_id mediumint,
+#                        type varchar(255),
+#                        packaging_bug_id mediumint,
+#                        PRIMARY KEY(id))
+
+create table milestone (phase_id mediumint,
                         name varchar(255),
-                        status varchar(255),
+                        weight float(4,2),
                         eta datetime,
-                        branch varchar(255),
-                        bugzila_product mediumint,
-                        bugzilla_version_id mediumint,
-                        type varchar(255),
-                        packaging_bug_id mediumint,
-                        PRIMARY KEY(id))
+                        PRIMARY KEY(phase_id))
+
 
 CREATE EVENT daily_clear on schedule every 1 day comment 'Clear expired update record' 
 DO delete from TriageRobot.update_information where update_time < date_add(NOW(), INTERVAL -1 day);

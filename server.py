@@ -723,10 +723,11 @@ def show_entries():
             if key["bug_id"] in bug_fix_by_results.keys():
                 ID_list.append(key["bug_id"])
         
-        sql = """select bug_id, fix_by_product_rn, fix_by_version_rn, fix_by_phase_rn from bug_fix_by_map
-        where bug_id in ({})
-        order by bug_id""".format(",".join(map(str, ID_list)))
-        bug_fix_by_results = Bug_Fix_By_SQL(sql, cursor)
+        if ID_list: #in order to avoud quering with a null list
+            sql = """select bug_id, fix_by_product_rn, fix_by_version_rn, fix_by_phase_rn from bug_fix_by_map
+            where bug_id in ({})
+            order by bug_id""".format(",".join(map(str, ID_list)))
+            bug_fix_by_results = Bug_Fix_By_SQL(sql, cursor)
         
         """
         Remove Finish Here!!!
@@ -750,12 +751,28 @@ def show_entries():
         """
         Finish Bugs_table generation.
         The below parts are using to generate charts for triage-accepted
+        In order to match the form of bugzilla database, I change the name of variable to query.
+        The minimal unit is version, if programmers want to implement phase only, the code is similar to the product and version
         """
         
+        bz_query_product = "bug_fix_by_map.product_id" if fix_by_product_number == "fix_by_product_id" else fix_by_product_number
+        bz_query_version = "bug_fix_by_map.version_id" if fix_by_version_number == "fix_by_version_id" else fix_by_version_number
+            
+        
         sql = """
-        select delta_ts from bugs where assigned_to in ({}) and delta_ts>'{}' and keywords like '%triage-accepted%'
-        """.format(profile_number, date.today() - relativedelta(months = 6) + relativedelta(day=1))
-        #print sql
+        select delta_ts from bugs, bug_fix_by_map
+        where assigned_to in ({}) 
+        and delta_ts>'{}' 
+        and keywords like '%triage-accepted%'
+        and bug_fix_by_map.bug_id = bugs.bug_id
+        and bug_fix_by_map.product_id = {}
+        and bug_fix_by_map.version_id = {}
+        """.format(profile_number, 
+        date.today() - relativedelta(months = 6) + relativedelta(day=1),
+        bz_query_product,
+        bz_query_version,
+        )
+        print sql
         try:
             global bzdb_conn
             cursor = bzdb_conn.cursor()
@@ -792,9 +809,15 @@ def show_entries():
     else:
         milestone_flag = False
         
-    milestone_flag = False
     
-    return render_template('show_entries.html', bugs = Pure_results, fix_by=bug_fix_by_results, triage_date = date_results, assigned = assigned_to, milestone_flag = milestone_flag, milestone_results = milestone_results)
+    return render_template('show_entries.html', 
+    bugs = Pure_results, 
+    fix_by=bug_fix_by_results, 
+    triage_date = date_results, 
+    assigned = assigned_to, 
+    milestone_flag = milestone_flag, 
+    milestone_results = milestone_results, 
+    query = request.form)
 
 @app.route('/Admin_Custom_Webpage', methods=['GET', 'POST'])
 def Admin_Custom_Webpage():
@@ -1027,6 +1050,7 @@ def Admin_Custom_Email():
     W_U_Message = EMAIL_WARNING_MESSAGE.format("'Longtime Without Update'")
     
     
+    
     return render_template('admin_custom_email.html', 
     T_ETA_bug_results = T_ETA_bug_results, 
     T_ETA_bug_fix_by_results = T_ETA_bug_fix_by_results,
@@ -1046,12 +1070,8 @@ def Admin_Email_Processing():
     This function will send email to the correspond assignee with correspond comments
     The name of the variables in this function should be identical to the namr of the variables in Admin_Custom_Email
     """
-    print request.form.keys()
     from_addr = session["username"] + "@vmware.com"
     
-    print request.form["T_ETA_Message"]
-    print request.form["ETA_Message"]
-    print request.form["W_U_Message"]
     for key in request.form.keys():
         if "T_ETA_check" in key:
             Bug_id = str(request.form[key])
@@ -1096,30 +1116,37 @@ def Admin_Email_Processing():
 
 def milestone_check(product, version):
     
+    
+    conn = MySQLdb.connect(host=LOCAL_DATABASE_HOST, user=LOCAL_DATABASE_USER, passwd=LOCAL_DATABASE_PW, db=LOCAL_DATABASE_DATABASE)
+    cursor=conn.cursor()
+    
     sql = """
-    select name, status, eta from milestone 
-    where bugzila_product = {}
-    and bugzilla_version_id = {}
-    """.format(product, version)
+        select phases.name, eta, weight 
+        from milestone, phases 
+        where milestone.phase_id in 
+        (select id from phases where version_id = {}) 
+        and milestone.phase_id = phases.id
+    """.format(version)
+
+    cursor.execute(sql)
     
-    #results = []
-    #cursor.execute(sql)
-    
-    #columns = [column[0] for column in cursor.description]
-    #results = []
-    #for row in cursor.fetchall():
-    #    results.append(dict(zip(columns, row)))
-    #cursor.close()
+    columns = [column[0] for column in cursor.description]
+    results = []
+    for row in cursor.fetchall():
+        results.append(dict(zip(columns, row)))
+    cursor.close()
     
     """
     Since the datetime in database is too precise, we have to remove the HMS message
     """
-    #for key in results:
-    #    if key["eta"] == "null":
-    #        continue
-    #    key["eta"] = key["eta"].date()
+    for key in results:
+        if key["eta"] == "null":
+            continue
+        key["eta"] = key["eta"].date()
     
-    return True
+    print results
+    
+    return results
 
 #def sendemail(from_addr, to_addr_list, cc_addr_list, 
 def sendemail(from_addr, to_addr,
