@@ -1,0 +1,26 @@
+{
+    "manifest_version": 2,
+    "name": "TriageRobot-plugin",
+    "description": "Connect Bugzilla with TriageRobot database",
+    "version": "0.1",
+    "background": {
+        "scripts": ["jquery-1.11.1.min.js", "background.js", "Chart.js"],
+        "persistent": true,
+        "all_frames": true
+    },
+    "browser_action": {
+        "default_icon": "icon.png",
+        "default_popup": "popup.html",
+        "all_frames": true
+    },
+    "permissions": [
+        "tabs", 
+        "http://*/", 
+        "https://*/"
+    ],
+    "icons" : {
+    "16" : "icon.png",
+    "48" : "icon.png",
+    "128" : "icon.png"
+  }
+}

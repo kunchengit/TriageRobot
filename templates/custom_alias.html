@@ -1,0 +1,164 @@
+{% extends "layout.html" %}
+{% if session.logged_in %}
+<head>
+    {%block head%}
+    <link rel='stylesheet' type='text/css' href='static/css/jquery-ui.css'>
+    <link rel='stylesheet' type='text/css' href='static/css/dataTables.bootstrap.css'>
+    <link rel="stylesheet" type="text/css" href="static/css/jquery.dataTables.css">
+    <script src="static/js/jquery-1.11.1.js"></script>
+    <script src="static/js/jquery-ui.js"></script>
+    <script type='text/javascript' src='static/js/dataTables.bootstrap.js'></script>
+    <script type='text/javascript' src='static/js/bootstrap-3.1.1.js'></script>
+    <script type='text/javascript' src='static/js/jquery.dataTables.js'></script>
+    
+    <!-- Set Auto Complete, profiles: This script is different since it could support multiple assignes -->
+    <script>
+    $(function() {
+        function split( val ) {
+            return val.split( /,\s*/ );
+        }
+        function extractLast( term ) {
+            return split( term ).pop();
+        }
+        $( "#auto_profile" )
+            // don't navigate away from the field on tab when selecting an item
+            .bind( "keydown", function( event ) {
+                if ( event.keyCode === $.ui.keyCode.TAB &&
+                    $( this ).autocomplete( "instance" ).menu.active ) {
+                    event.preventDefault();
+                    }
+            })
+            .autocomplete({
+                minLength: 0,
+                source: function( request, response ) {
+                        $.ajax({
+                            url: "{{url_for("autocomplete_profile")}}",
+                            dataType: "json",
+                            data: {
+                                term: extractLast( request.term )
+                            },
+                            success: function( data ) {
+                                response( data );
+                            }
+                        });
+                    },
+                focus: function() {
+                    // prevent value inserted on focus
+                return false;
+                },
+                select: function( event, ui ) {
+                    var terms = split( this.value );
+                    // remove the current input
+                    terms.pop();
+                    // add the selected item
+                    terms.push( ui.item.value );
+                    // add placeholder to get the comma-and-space at the end
+                    terms.push( "" );
+                    this.value = terms.join( "," );
+                    return false;
+                }
+            });
+        });
+    </script>
+
+    <!-- Set Calendar, There is two value keeping for each calendar in order to meet the correct sql query.-->
+    <script>
+    $(function() 
+    {
+        $( "#date_begin_cal" ).datepicker({ 
+            dateFormat: "yy/mm/dd", 
+            altFormat: "yy:mm:dd", 
+            altField: "#date_begin", 
+            maxDate: 0,
+            minDate: "2014/01/01"
+            });
+        $( "#date_end_cal" ).datepicker({ 
+            dateFormat: "yy/mm/dd", 
+            altFormat: "yy:mm:dd", 
+            altField: "#date_end", 
+            maxDate: 0,
+            minDate: "2014/01/01"
+            });
+    });
+    </script>
+    
+    <script>
+    function deleteRow(row)
+    {
+        var i=row.parentNode.parentNode.rowIndex;
+        document.getElementById('POITable').deleteRow(i);
+    }
+    function insRow()
+    {
+        var x=document.getElementById('New_Alias_Table');
+        var new_row = x.rows[1].cloneNode(true);
+        var len = x.rows.length;
+        new_row.cells[0].innerHTML = len;
+        
+        var inp1 = new_row.cells[1].getElementsByTagName('input')[0];
+        inp1.id = "name_" + len;
+        inp1.name = "name_" + len;
+        inp1.value = '';
+        var inp2 = new_row.cells[2].getElementsByTagName('input')[0];
+        inp2.id = "contents_" + len;
+        inp2.name = "contents_" + len;
+        inp2.value = '';
+        x.appendChild( new_row );
+    }
+    </script>
+    {%endblock%}
+</head>
+<body>
+    {%block body%}
+    <form action="{{ url_for('Custom_Alias') }}" method=post>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+            {% if alias %}
+            <table id="Old_Alias_Table" border="1">
+                <tr>
+                    <td align="center">Del</td>
+                    <td>Alias</td>
+                    <td>Contents</td>
+                </tr>
+                {% for entry in alias%}
+                <tr>
+                    <td align="center" width="100px"><input type="checkbox" name = "del_{{entry['md5']}}"></td>             
+                    <div class="input-group">
+                    <td width="200px"><input type="text" value="{{entry['alias_name']}}" class="form-control" readonly></td>
+                    </div>
+                    <div class="input-group">
+                    <td width="500px"><input type="text" id="alias_contents_{{entry['md5']}}" name="modify_{{entry['md5']}}" value="{{entry['alias_contents']}}" class="form-control"></td>
+                    </div>
+                </tr>
+                {% endfor %}
+            </table>
+            {% endif %}
+            
+            <h3><button type="button" onclick="insRow()" class="btn btn-lg btn-primary btn-block">Add Rule Row</button></h3>
+            <div class="table-responsive">
+            <table id="New_Alias_Table" border="1" class = "table table-condensed">
+                <thead>
+                    <tr>
+                        <td align="center">Number</td>
+                        <td>Alias</td>
+                        <td>Contents</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td align="center" width="100px">1</td>
+                        <div class="input-group">
+                            <td width="200px"><input type="text" id="alias_name_" name="name_1" class="form-control"></td>
+                        </div>
+                        <div class="input-group">
+                            <td width="500px"><input type="text" id="alias_contents" name="contents_1" class="form-control"></td>
+                        </div>
+                    </tr>
+                </tbody>
+            </table>
+            <h3><button class="btn btn-lg btn-primary btn-block" type="submit">Submit</button></h3>
+            </div>
+        </div>
+    </form>
+    {%endblock%}
+</body>
+{% endif %}

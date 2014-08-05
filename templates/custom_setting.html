@@ -1,0 +1,234 @@
+{% extends "layout.html" %}
+{% if session.logged_in %}
+<head>
+    {%block head%}
+    <link rel='stylesheet' type='text/css' href='static/css/jquery-ui.css'>
+    <script src="static/js/jquery-1.11.1.js"></script>
+    <script src="static/js/jquery-ui.js"></script>
+
+    <!-- Set Auto Complete, profiles: This script is different since it could support multiple assignes -->
+    <script>
+    $(function() {
+        function split( val ) {
+            return val.split( /,\s*/ );
+        }
+        function extractLast( term ) {
+            return split( term ).pop();
+        }
+        $( "#care_member" )
+            // don't navigate away from the field on tab when selecting an item
+            .bind( "keydown", function( event ) {
+                if ( event.keyCode === $.ui.keyCode.TAB &&
+                    $( this ).autocomplete( "instance" ).menu.active ) {
+                    event.preventDefault();
+                    }
+            })
+            .autocomplete({
+                minLength: 0,
+                source: function( request, response ) {
+                        $.ajax({
+                            url: "{{url_for("autocomplete_profile")}}",
+                            dataType: "json",
+                            data: {
+                                term: extractLast( request.term )
+                            },
+                            success: function( data ) {
+                                response( data );
+                            }
+                        });
+                    },
+                focus: function() {
+                    // prevent value inserted on focus
+                return false;
+                },
+                select: function( event, ui ) {
+                    var terms = split( this.value );
+                    // remove the current input
+                    terms.pop();
+                    // add the selected item
+                    terms.push( ui.item.value );
+                    // add placeholder to get the comma-and-space at the end
+                    terms.push( "" );
+                    this.value = terms.join( "," );
+                    return false;
+                }
+            });
+        });
+    </script>
+    <script>
+    $(function() {
+        function split( val ) {
+            return val.split( /,\s*/ );
+        }
+        function extractLast( term ) {
+            return split( term ).pop();
+        }
+        $( "#query_assignee" )
+            // don't navigate away from the field on tab when selecting an item
+            .bind( "keydown", function( event ) {
+                if ( event.keyCode === $.ui.keyCode.TAB &&
+                    $( this ).autocomplete( "instance" ).menu.active ) {
+                    event.preventDefault();
+                    }
+            })
+            .autocomplete({
+                minLength: 0,
+                source: function( request, response ) {
+                        $.ajax({
+                            url: "{{url_for("autocomplete_profile")}}",
+                            dataType: "json",
+                            data: {
+                                term: extractLast( request.term )
+                            },
+                            success: function( data ) {
+                                response( data );
+                            }
+                        });
+                    },
+                focus: function() {
+                    // prevent value inserted on focus
+                return false;
+                },
+                select: function( event, ui ) {
+                    var terms = split( this.value );
+                    // remove the current input
+                    terms.pop();
+                    // add the selected item
+                    terms.push( ui.item.value );
+                    // add placeholder to get the comma-and-space at the end
+                    terms.push( "" );
+                    this.value = terms.join( "," );
+                    return false;
+                }
+            });
+        });
+    </script>
+
+    <!-- Set Auto Complete, products -->
+    <script>
+    $(function() {
+      $("#auto_product").autocomplete({
+        source: "{{url_for("autocomplete_product")}}",
+        minLength: 2
+      });
+    });
+    </script>
+
+    <!-- Set Auto Complete, versions -->
+    <script>
+    $(function() {
+      $("#auto_version").autocomplete({
+         source: function( request, response ) 
+         {
+                $.ajax({
+                url: "{{url_for("autocomplete_version")}}",
+                dataType: "json",
+                data: {
+                    term: request.term,
+                    product: $("#auto_product").val()
+                },
+            success: function( data ) {
+            response( data );
+                }
+                });
+        },
+        minLength: 2,
+      });
+    });
+    </script>
+
+    <!-- Set Auto Complete, phase : The minlength in this script is different among other auto completions-->
+    <script>
+    $(function() {
+      $("#auto_phase").autocomplete({
+         source: function( request, response ) 
+         {
+                $.ajax({
+                url: "{{url_for("autocomplete_phase")}}",
+                dataType: "json",
+                data: {
+                    term: request.term,
+                    version: $("#auto_version").val(),
+                },
+            success: function( data ) {
+            response( data );
+                }
+                });
+        },
+        minLength: 0,
+      });
+    });
+    </script>
+
+    <!-- Set Calendar, There is two value keeping for each calendar in order to meet the correct sql query.-->
+    {%endblock%}
+</head>
+<body>
+    {%block body%}
+    <form action="{{ url_for('Custom_Setting') }}" method=post>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+            <h1 class="page-header">
+                <h2 class="sub-header">CPD - Filter</h2>
+            </h1>
+            <div class="table-responsive">
+                <table class="table table-condensed" cellspacing ="0">
+                    <thead>
+                        <tr>
+                            <th>Assignee:</th>
+                            <th>Fix by Product:</th>
+                            <th>Fix by Version:</th>
+                            <th>Fix by Phase:</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <div class="ui-widget">
+                                    <input id="query_assignee" name=query_assignee value='{{query_assignee}}'>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="ui-widget">
+                                    <input id="auto_product" name=query_product value='{{query_product}}'>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="ui-widget">
+                                    <input id="auto_version" name=query_version value='{{query_version}}'>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="ui-widget">
+                                    <input id="auto_phase" name=query_phase value='{{query_phase}}'>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table class="table table-condensed" cellspacing ="0">
+                    <thead>
+                        <tr>
+                            <th>Cared Members:</th>
+                            <th>Email Notification Period:</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <div class="ui-widget">
+                                    <input id="care_member" name=care_member value='{{care_member}}'>
+                                </div>
+                            </td>
+                            <td>
+                                <input id="email_notification" name=email_notification value='{{email_notification}}' data-bind="value:replyNumber">
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <h3><button class="btn btn-lg btn-primary btn-block" type="submit">Submit</button></h3>
+            </div>
+        </div>
+    </form>
+    {%endblock%}
+</body>
+{% endif %}
