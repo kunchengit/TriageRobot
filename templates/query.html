@@ -136,62 +136,64 @@
 </head>
 <body>
     {%block body%}
-    <form action="{{ url_for('show_entries') }}" method=post>
+    <form action="{{ url_for('Show_Entries') }}" method=post>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
             <h1 class="page-header">
                 <h2 class="sub-header">CPD - Filter</h2>
             </h1>
             <div class="table-responsive">
-                <table class="table table-condensed" cellspacing ="0">
-                    <thead>
-                        <tr>
-                            <th>Assigned to:</th>
-                            <th>Date Begin:</th>
-                            <th>Date End:</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
+                <div class="input-group">
+                    <table class="table table-condensed" cellspacing ="0">
+                        <thead>
+                            <tr>
+                                <th width="250px">Assigned to:</th>
+                                <th>Date Begin:</th>
+                                <th>Date End:</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div class="ui-widget">
+                                        <input id="auto_profile" name=assigned_to value="{{query_assignee}}" class="form-control" placeholder="'@:' can cite others' cared list">
+                                    </div>
+                                </td>
+                                <td>
+                                    <input type="text" id="date_begin_cal" class="form-control">
+                                    <input type="hidden" id = "date_begin" name=date_begin>
+                                </td>
+                                <td>
+                                    <input type="text" id="date_end_cal" class="form-control">
+                                    <input type="hidden" id = "date_end" name=date_end>
+                                </td>                
+                            </tr>
+                        </tbody>
+                        <thead>
+                            <th>Fix by Product:</th>
+                            <th>Fix by Version:</th>
+                            <th>Fix by Phase:</th>
+                        </thead>
+                        <tbody>
                             <td>
                                 <div class="ui-widget">
-                                    <input id="auto_profile" name=assigned_to>
+                                    <input id="auto_product" name=fix_by_product value = "{{query_product}}" class="form-control">
                                 </div>
                             </td>
                             <td>
-                                <input type="text" id="date_begin_cal">
-                                <input type="hidden" id = "date_begin" name=date_begin>
+                                <div class="ui-widget">
+                                    <input id="auto_version" name=fix_by_version value = "{{query_version}}" class="form-control">
+                                </div>
                             </td>
                             <td>
-                                <input type="text" id="date_end_cal">
-                                <input type="hidden" id = "date_end" name=date_end>
-                            </td>                
-                        </tr>
-                    </tbody>
-                    <thead>
-                        <th>Fix by Product:</th>
-                        <th>Fix by Version:</th>
-                        <th>Fix by Phase:</th>
-                    </thead>
-                    <tbody>
-                        <td>
-                            <div class="ui-widget">
-                                <input id="auto_product" name=fix_by_product>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="ui-widget">
-                                <input id="auto_version" name=fix_by_version>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="ui-widget">
-                                <input id="auto_phase" name=fix_by_phase>
-                            </div>
-                        </td>
-                    </tbody>
-                    <input type=hidden name="product">
-                    <h3><button class="btn btn-lg btn-primary btn-block" type="submit">Submit</button></h3>
-                </table>
+                                <div class="ui-widget">
+                                    <input id="auto_phase" name=fix_by_phase value = "{{query_phase}}" class="form-control">
+                                </div>
+                            </td>
+                        </tbody>
+                        <input type=hidden name="product">
+                        <h3><button class="btn btn-lg btn-primary btn-block" type="submit">Submit</button></h3>
+                    </table>
+                </div>
             </div>
         </div>
     </form>

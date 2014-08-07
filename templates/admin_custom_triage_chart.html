@@ -2,10 +2,23 @@
 {% if session.logged_in and session.admin %}
 {% block head %}
 <link rel='stylesheet' type='text/css' href='static/css/jquery-ui.css'>
+
 <script src="static/js/jquery-1.11.1.js"></script>
 <script src="static/js/jquery-ui.js"></script>
 {% if chart_flag %}
+
+<link rel='stylesheet' type='text/css' href='static/css/dataTables.bootstrap.css'>
+<link rel="stylesheet" type="text/css" href="static/css/jquery.dataTables.css">
+<link rel="stylesheet" type="text/css" href="static/css/dataTables.colVis.css">
 <script type='text/javascript' src='static/js/Chart.js'></script>
+<script type='text/javascript' src='static/js/dataTables.bootstrap.js'></script>
+<script type='text/javascript' src='static/js/bootstrap-3.1.1.js'></script>
+<script type='text/javascript' src='static/js/jquery.dataTables.js'></script>
+<script type='text/javascript' src='static/js/dataTables.colVis.js'></script>
+<script type='text/javascript' src='static/js/dataTables.fixedColumns.js'></script>
+<script type="text/javascript" src="static/js/dataTables.fnGetFilteredNodes.js"></script>
+<script type="text/javascript" src="static/js/dataTables.fnGetHiddenNodes.js"></script>
+<script type>
 <script>
     $(function() {
         function split( val ) {
@@ -156,25 +169,139 @@ $(function() {
         });
     });
 </script>
+
+<script>
+$(document).ready(function() {
+    var TA_by_table = $('#TA_by_table').DataTable( {
+        dom: 'C<"clear">lfrtip',
+        scrollY:        "300px",
+        scrollX:        true,
+        paging:         true,
+        "aoColumns": [ 
+            {"bVisible":true},  //BugID
+            {"bVisible":true, "sWidth": "30%", "orderDataType": "dom-text"},  //Summary
+            {"bVisible":true},  //Weight
+            {"bVisible":true},  //Assigned to
+            {"bVisible":true, "sWidth": "30%", "orderDataType": "dom-text"},  //Keywords
+            {"bVisible":true},   //Highlighted Reasons
+            {"bVisible":true, "sWidth": "20%", "orderDataType": "dom-text"},  //fix by product
+            {"bVisible":true}   //delta_ts
+        ]
+    } );
+    //new $.fn.dataTable.FixedColumns( W_U_table, {
+    //   leftColumns: 3
+    //} );
+} );
+</script>
+
+<script>
+$(document).ready(function() {
+    var TA_Own_table = $('#TA_Own_table').DataTable( {
+        paging:         true,
+        dom: 'C<"clear">lfrtip',
+        scrollY:        "300px",
+        scrollX:        true,
+        "aoColumns": [ 
+            {"bVisible":true},  //BugID
+            {"bVisible":true, "sWidth": "30%", "orderDataType": "dom-text"},  //Summary
+            {"bVisible":true},  //Weight
+            {"bVisible":true},  //Assigned to
+            {"bVisible":true, "sWidth": "30%", "orderDataType": "dom-text"},  //Keywords
+            {"bVisible":true},  //Highlighted Reasons
+            {"bVisible":true, "sWidth": "20%", "orderDataType": "dom-text"},  //fix by product
+            {"bVisible":true}   //delta_ts
+        ]
+    } );
+    //new $.fn.dataTable.FixedColumns( W_U_table, {
+    //   leftColumns: 3
+    //} );
+} );
+</script>
+
+
 {% endblock %}
 {% block body %}
 <ul class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
     <form action="{{ url_for('Admin_Custom_Triage_Chart') }}" method=post>
         <dl>
-            {% if chart_flag %}
-            <div style="width:30%">
-                <p>The bugs which are Triage-Accepted by {{assigned}}
-                <dd><canvas id="TA_BY_RESULTS" height="450" width="900"></canvas>
+                {% if chart_flag %}
+                <div style="width:50%">
+                    <h3><span class="label label-primary">
+                        The bugs which are Triage-Accepted by {{assigned}}
+                    </span></h3>
+                    <dd><canvas id="TA_BY_RESULTS" height="450" width="900"></canvas>
+                </div>
+                
+                <table id="TA_by_table" class="display" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th>Bug ID</th>
+                            <th>Summary</th>
+                            <th>Weight</th>
+                            <th>Assigned_to</th>
+                            <th>Keywords</th>
+                            <th>Highlighted Reasons</th>
+                            <th>fix by product-version-phase</th>
+                            <th>Last Modified</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for entry in TA_by_data %}
+                        <tr>
+                            <td><a href=https://bugzilla.eng.vmware.com/show_bug.cgi?id={{ entry["bug_id"] }} target="_blank">{{ entry["bug_id"] }}</a></td>
+                            <td>{{ entry["short_desc"] }}</td>
+                            <td>{{ entry["weight"] }}</td>
+                            <td>{{ entry["assigned_rn"] }}</td>
+                            <td>{{ entry["keywords"] }}</td>
+                            <td>{{ entry["highlighted_by"] }}</td>
+                            <td>{{ entry["fix_by_product_rn"] }}-{{ entry["fix_by_version_rn"] }}-{{ entry["fix_by_phase_rn"] }}</td>
+                            <td>{{ entry["delta_ts"] }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <div style="width:50%">
+                    <h3><span class="label label-primary">
+                        The Triage-Accepted bugs which are owned by {{assigned}}
+                    </span></h3>
+                    <dd><canvas id="TA_OWN_RESULTS" height="450" width="900"></canvas>
+                </div>
+                
+                <table id="TA_Own_table" class="display" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th>Bug ID</th>
+                            <th>Summary</th>
+                            <th>Weight</th>
+                            <th>Assigned_to</th>
+                            <th>Keywords</th>
+                            <th>Highlighted Reasons</th>
+                            <th>fix by product-version-phase</th>
+                            <th>Last Modified</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for entry in TA_Own_data %}
+                        <tr>
+                            <td><a href=https://bugzilla.eng.vmware.com/show_bug.cgi?id={{ entry["bug_id"] }} target="_blank">{{ entry["bug_id"] }}</a></td>
+                            <td>{{ entry["short_desc"] }}</td>
+                            <td>{{ entry["weight"] }}</td>
+                            <td>{{ entry["assigned_rn"] }}</td>
+                            <td>{{ entry["keywords"] }}</td>
+                            <td>{{ entry["highlighted_by"] }}</td>
+                            <td>{{ entry["fix_by_product_rn"] }}-{{ entry["fix_by_version_rn"] }}-{{ entry["fix_by_phase_rn"] }}</td>
+                            <td>{{ entry["delta_ts"] }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% endif %}
+            <div class="input-group">
+                <div class="ui-widget">
+                    User: <input id="auto_profile" name=query_user class="form-control">
+                </div>
+                <input type=submit value=Submit>
             </div>
-            <div style="width:30%">
-                <dd>The Triage-Accepted bugs which are owned by {{assigned}}
-                <dd><canvas id="TA_OWN_RESULTS" height="450" width="900"></canvas>
-            </div>
-            {% endif %}
-            <div class="ui-widget">
-                User: <input id="auto_profile" name=query_user>
-            </div>
-            <input type=submit value=Submit>
         </dl>
     </form>
 </ul>

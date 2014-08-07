@@ -66,7 +66,7 @@ $(document).ready(function() {
             {"bVisible":false}, //Priority
             {"bVisible":false}, //Severity
             {"bVisible":false}, //Case count
-            {"bVisible":true, "sWidth": "30%", "orderDataType": "dom-text"},  //Fix_by_x
+            {"bVisible":true, "sWidth": "32%", "orderDataType": "dom-text"},  //Fix_by_x
             {"bVisible":true},  //Assigned to
             {"bVisible":true},  //ETA
             {"bVisible":true},  //Last Modified
@@ -104,7 +104,9 @@ $(document).ready(function() {
 <script>
 $(document).ready(function() {
     var milestone_table = $('#milestone_table').DataTable(
-    {"lengthMenu": [ [-1, 10, 25, 50], ["All",10, 25, 50] ]
+    {
+        "lengthMenu": [ [-1, 10, 25, 50], ["All",10, 25, 50] ],
+        "order": [[ 1, "desc" ]]
     });
 } );
 </script>
@@ -216,7 +218,7 @@ $(document).ready(function() {
             -->
     {% endif %}
 </div>
-    <form name="bugs_table_form" action="{{ url_for('entries_processing') }}" id="bugs_table_form" method="post">
+    <form name="bugs_table_form" action="{{ url_for('Entries_Processing') }}" id="bugs_table_form" method="post">
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
             <h1 class="page-header">
                 <h2 class="sub-header">CPD - Filter</h2>

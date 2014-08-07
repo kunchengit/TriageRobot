@@ -168,7 +168,7 @@
     <form action="{{ url_for('Custom_Setting') }}" method=post>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
             <h1 class="page-header">
-                <h2 class="sub-header">CPD - Filter</h2>
+                <h2 class="sub-header">Default Query</h2>
             </h1>
             <div class="table-responsive">
                 <table class="table table-condensed" cellspacing ="0">
@@ -205,11 +205,12 @@
                         </tr>
                     </tbody>
                 </table>
+                <h2 class="sub-header">Custom Setting</h2>
                 <table class="table table-condensed" cellspacing ="0">
                     <thead>
                         <tr>
                             <th>Cared Members:</th>
-                            <th>Email Notification Period:</th>
+                            <th>Email Notification Period(0=False, Unit:day)</th>
                         </tr>
                     </thead>
                     <tbody>

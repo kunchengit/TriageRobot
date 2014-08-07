@@ -27,33 +27,31 @@ $(document).ready(function() {
 <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
     <h2>Submission Is Approved</h2>
     {% if error %}<p class=error><strong>Error:</strong> {{ error }}{% endif %}
-    <form action="{{ url_for('query') }}" method=post>
-        <dl>
-        Processing Record
-        <table border='1' id="result_table" class="display">
-            <thead>
+    <dl>
+    Processing Record
+    <table border='1' id="result_table" class="display">
+        <thead>
+            <tr>
+                <th>Number</th>
+                <th>Bug ID</th>
+                <th>Add</th>
+                <th>Remove</th>
+                <th>Comments</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for entry in bugs %}
                 <tr>
-                    <th>Number</th>
-                    <th>Bug ID</th>
-                    <th>Add</th>
-                    <th>Remove</th>
-                    <th>Comments</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for entry in bugs %}
-                    <tr>
-                    <td>{{ Number }}</td>
-                    <td><a href=https://bugzilla.eng.vmware.com/show_bug.cgi?id={{ entry["bug_id"] }}>{{ entry["bug_id"] }}</a></td>
-                    <td>{{ entry["Add_keywords"] }}</td>
-                    <td>{{ entry["Remove_keywords"] }}</td>
-                    <td>{{ entry["comments"] }}</td>
-                </tr>
-                {% set Number = Number + 1%}
-                {% endfor %}
-            </tbody>
-        </table>
-        </dl>
-    </form>
+                <td>{{ Number }}</td>
+                <td><a href=https://bugzilla.eng.vmware.com/show_bug.cgi?id={{ entry["bug_id"] }}>{{ entry["bug_id"] }}</a></td>
+                <td>{{ entry["Add_keywords"] }}</td>
+                <td>{{ entry["Remove_keywords"] }}</td>
+                <td>{{ entry["comments"] }}</td>
+            </tr>
+            {% set Number = Number + 1%}
+            {% endfor %}
+        </tbody>
+    </table>
+    </dl>
 {% endblock %}
 {% endif %}

@@ -29,7 +29,7 @@
             </div>
             <div class="navbar-collapse collapse">
                 {% if not session.logged_in %}
-                    <form class="navbar-form navbar-right" role="form" action = "{{url_for('login')}}" method = post>
+                    <form class="navbar-form navbar-right" role="form" action = "{{url_for('Login')}}" method = post>
                         <div class="form-group">
                             <input type="text" placeholder="Account" class="form-control" name=BG_account>
                         </div>
@@ -40,7 +40,8 @@
                     </form>
                 {% else %}
                     <form class="navbar-form navbar-right" role="form">
-                        <a href={{url_for('logout')}} class="btn btn-success">Logout</a>
+                        <a href="https://vmwaresearch.vmware.com/search?proxystylesheet=vmlinksearch_frontend&getfields=*&site=People&q={{session.username}}@vmware.com" class="btn btn-info">Profile</a>
+                        <a href={{url_for('Logout')}} class="btn btn-success">Logout</a>
                     </form>
                 {% endif %}
                 <ul class="nav navbar-nav navbar-right">
@@ -70,7 +71,14 @@
                                 </ul>
                             </li>
                         {% endif %}
-                        <li><a href={{url_for('query')}}>Query Page</a></li>
+                        <li><a href={{url_for('Query')}}>Query Page</a></li>
+                        <li><a href={{url_for('Custom_Webpage')}}>Customerize</a></li>
+                            <li class="submenu"><!-- active open -->
+                            <ul>
+                                <li id="Custom_Alias" ><a href="{{url_for('Custom_Setting')}}">Settings</a></li>
+                                <li id="Custom_Alias" ><a href="{{url_for('Custom_Alias')}}">Alias</a></li>
+                                </ul>
+                            </li>
                     </ul>
                 {% endif %}
             </div>

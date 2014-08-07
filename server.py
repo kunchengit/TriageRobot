@@ -6,6 +6,8 @@ pip install MySQLdb
 """
 
 from Bugzilla_webservice import *
+from BAR_Rules import *
+from BAR import gRecordSchema
 from flask import request
 from flask import render_template
 from flask import flash
@@ -36,10 +38,12 @@ BUGZILLA_DATABASE_DATABASE="bugzilla"
 bzdb_conn = MySQLdb.connect(host=BUGZILLA_DATABASE_HOST, port=BUGZILLA_DATABASE_PORT, user=BUGZILLA_DATABASE_USER, passwd=BUGZILLA_DATABASE_PW, db=BUGZILLA_DATABASE_DATABASE)
 
 LOCAL_DATABASE_HOST = "localhost"
-#LOCAL_DATABASE_PORT
+LOCAL_DATABASE_PORT = 3306
 LOCAL_DATABASE_USER = "root"
 LOCAL_DATABASE_PW = "vmware"
 LOCAL_DATABASE_DATABASE = "TriageRobot"
+local_conn = MySQLdb.connect(host=LOCAL_DATABASE_HOST, port=LOCAL_DATABASE_PORT, user=LOCAL_DATABASE_USER, passwd=LOCAL_DATABASE_PW, db=LOCAL_DATABASE_DATABASE)
+
 
 PATCHTOOL_DATABASE_HOST = "patchtool.eng.vmware.com"
 PATCHTOOL_DATABASE_PORT = 3306
@@ -53,6 +57,7 @@ app.secret_key = 'B1Z298g/3y2 R~lHHbjaN]LWX/,?RT'
 cache = SimpleCache(default_timeout=300)
 BUGZILLA_URL = 'https://bugzilla.eng.vmware.com/xmlrpc.cgi'
 BAR_OPTION_DIRECTORY = "BAR_option/"
+CUSTOM_OPTION_DIRECTORY = "Custom_Setting/"
 
 BAR_OFILENAME = BAR_OPTION_DIRECTORY + "option.p"
 BAR_ADMINFILE = BAR_OPTION_DIRECTORY + "admin.p"
@@ -90,8 +95,8 @@ with app.test_request_context('/hello', method='POST'):
 def index():
     return render_template('query.html')
 
-@app.route('/login', methods=['GET', 'POST'])
-def login():
+@app.route('/Login', methods=['GET', 'POST'])
+def Login():
     """
     This function handles login function.
     The login procedure is connected with bugzilla
@@ -114,9 +119,24 @@ def login():
     if not login_result:
         logging.warning("{} fails to login into the bugzilla.".format(str(request.form["BG_account"])))
         return render_template('query.html', error = "Error Account/Password, Please Login again")
+        
+    
+    
+    
     
     session['username'] = request.form['BG_account']
     session['password'] = request.form['BG_password']
+    
+    conn = MySQLdb.connect(host=LOCAL_DATABASE_HOST, user=LOCAL_DATABASE_USER, passwd=LOCAL_DATABASE_PW, db=LOCAL_DATABASE_DATABASE)
+    cursor = conn.cursor()
+    sql="""
+        select userid from profiles where login_name = '{}'
+        """.format(session["username"])
+    cursor.execute(sql)
+    profile_number = cursor.fetchone()[0]
+    
+    
+    session['userid'] = profile_number
     session['logged_in'] = True
     
     admin_file_path = open(BAR_ADMINFILE, "r")
@@ -132,10 +152,12 @@ def login():
     cache.set('cookie', cookie_file)
     logging.warning("{} login into the bugzilla successfully.".format(session['username']))
     
-    return render_template('query.html')
+    
+    return Query()
+    #return render_template('query.html')
 
-@app.route('/logout', methods=['GET', 'POST'])
-def logout():
+@app.route('/Logout', methods=['GET', 'POST'])
+def Logout():
     """
     This function helps user to log out.
     All the session will be left
@@ -152,8 +174,8 @@ def logout():
 
 
 
-@app.route('/entries_processing', methods = ['GET', 'POST'])
-def entries_processing():
+@app.route('/Entries_Processing', methods = ['GET', 'POST'])
+def Entries_Processing():
     
     from collections import defaultdict
     """
@@ -166,9 +188,9 @@ def entries_processing():
     cookie_file = cache.get('cookie')
     #print cookie_file
     
-    if cookie_file is None:
-        session['logged_in'] = False
-        return redirect(url_for('query'))
+    #if cookie_file is None:
+    #    session['logged_in'] = False
+    #    return redirect(url_for('query'))
     server = BugzillaServer(BUGZILLA_URL, cookie_file)
     
     
@@ -197,7 +219,7 @@ def entries_processing():
         flash("Fail to Connect my Sql, please try again later")
         return render_template('query.html', error="Fail to Connect MySQL, Please try again later")
     cursor=conn.cursor()
-    Database_Bug_ID_Results = Bug_Fix_By_SQL(sql, cursor)
+    Database_Bug_ID_Results = bug_fix_by_SQL(sql, cursor)
     
     
     """
@@ -271,7 +293,7 @@ def entries_processing():
     This function transfer all the realname list into id list.
     It also helps user removing all the 0_0_0 case.
     """
-    def Product_Version_Phase_Realname_To_ID(target_list):
+    def product_version_phase_realname_to_ID(target_list):
         conn = MySQLdb.connect(host=LOCAL_DATABASE_HOST, user=LOCAL_DATABASE_USER, passwd=LOCAL_DATABASE_PW, db=LOCAL_DATABASE_DATABASE)
         if not conn:
             flash("Fail to Connect my Sql, please try again later")
@@ -343,7 +365,7 @@ def entries_processing():
     
     #if the return data is list, it is correct. if the return data is string, it is error message
     #Process Add_list
-    Record = Product_Version_Phase_Realname_To_ID(Fix_By_Add_List)
+    Record = product_version_phase_realname_to_ID(Fix_By_Add_List)
     if isinstance(Record, str):
         return render_template("query.html", error=Record)
     Fix_By_Add_List = Record
@@ -356,7 +378,7 @@ def entries_processing():
         #server.add_fix_bys(key["bug_id"], fix_by_information)
     
     #Process Remove_list
-    Record = Product_Version_Phase_Realname_To_ID(Fix_By_Remove_List)
+    Record = product_version_phase_realname_to_ID(Fix_By_Remove_List)
     if isinstance(Record, str):
         return render_template("query.html", error=Record)
     Fix_By_Remove_List = Record
@@ -436,13 +458,45 @@ def entries_processing():
     
     return render_template('entries_processing.html', bugs=results, message = "Finish Processing at {}".format(datetime.now().strftime(FMT_YMDHMS)))
 
-@app.route('/query', methods=['GET', 'POST'])
-def query():
-    error = None
-    return render_template('query.html')
 
-@app.route('/show_entries', methods=['GET', 'POST'])
-def show_entries():
+
+@app.route('/query', methods=['GET', 'POST'])
+def Query():
+    """
+    This function queries the database first.
+    If there is custom setting in local database, it will fill into respective columns initially.
+    """
+    
+    conn = MySQLdb.connect(host=LOCAL_DATABASE_HOST, user=LOCAL_DATABASE_USER, passwd=LOCAL_DATABASE_PW, db=LOCAL_DATABASE_DATABASE)
+    cursor = conn.cursor()
+    
+    sql="""
+        select userid from profiles where login_name = '{}'
+        """.format(session["username"])
+    cursor.execute(sql)
+    profile_number = cursor.fetchone()[0]
+    
+    sql="""
+    select * from custom_setting where userid = {}
+    """.format(profile_number)
+    cursor.execute(sql)
+    
+    columns = [column[0] for column in cursor.description]
+    results = []
+    for row in cursor.fetchall():
+        results.append(dict(zip(columns, row)))
+    if results:
+        return render_template('query.html', 
+            query_assignee = results[0]["query_assignee"],
+            query_product = results[0]["query_product"],
+            query_version = results[0]["query_version"],
+            query_phase = results[0]["query_phase"]
+            )
+    else:
+        return render_template('query.html')
+
+@app.route('/Show_Entries', methods=['POST'])
+def Show_Entries():
     """
     This function processes the quesy and pass the results into show_entries.html
     At first, the function will hash the query into md5.
@@ -459,8 +513,117 @@ def show_entries():
     e.g., 
     shinyeht,cpd-platform,
     """
+    conn = MySQLdb.connect(host=LOCAL_DATABASE_HOST, user=LOCAL_DATABASE_USER, passwd=LOCAL_DATABASE_PW, db=LOCAL_DATABASE_DATABASE)
+    if not conn:
+        flash("Fail to Connect my Sql, please try again later")
+        return render_template('query.html', error="Fail to Connect MySQL, Please try again later")
+    cursor = conn.cursor()
     
-    assigned_to = request.form['assigned_to'].rstrip(',')
+    assigned_to = str(request.form['assigned_to']).rstrip(',')
+    """
+    Transform assigned_to with alias
+    """
+    
+    processing_assign = assigned_to.split(',')
+    
+    processing_profile_number = session["userid"]
+    processing_profile_results = []
+    
+    """
+    Query the database
+    If the key is alias, it would be replaced by the contents of alias.
+    If the key is not alias, it would be key itself
+    """
+    for key in processing_assign:
+        sql="""
+        select alias_contents from custom_alias
+        where userid = {}
+        and alias_name = "{}"
+        """.format(
+                    processing_profile_number,
+                    key)
+        cursor.execute(sql)
+        result = cursor.fetchone()
+        if result:
+            processing_profile_results.append(result[0])
+        else:
+            processing_profile_results.append(key)
+    """
+    Converge the Processing_profile_results into assigned_to again
+    
+    We have to remove the duplicate profile name
+    The below this line is using to remove duplicate
+    For example, shinyeht, shinyeht, cpd-platform.
+    We should only query shinyeht, cpd-platform
+    
+    """
+    processing_profile_results = ",".join(processing_profile_results)
+    processing_profile_results = processing_profile_results.split(',')
+    processing_profile_list = []
+    for key in processing_profile_results:
+        processing_profile_list.append(key.strip())
+        
+    processing_profile_results = list(set(processing_profile_list))
+    
+    assigned_to = ",".join(processing_profile_results)
+    
+    """
+    Accordingly, the assigned_to is transfered from alias to normal string
+    We have to process cite situation now.
+    For example, if there is an alias A, A -> "@:X,Y" , when shinyeht queries A,Z.
+    Therefore
+        A, Z --> @:X,Y,Z --> a,b,c,Y,Z
+    This part would probably cause bugs because of the recursive problem.
+    """
+    
+    processing_cite_list = assigned_to.split(',')
+    processing_cite_results = []
+    for key in processing_cite_list:
+        if "@:" in key:
+            if key[0] != "@" and key[1] != ":":
+                return render_template('query.html', error = "cite @: using error")
+            cite_username = key.replace("@:", "")
+            
+            sql = """
+            select userid from profiles 
+            where login_name = '{}'
+            """.format(cite_username)
+            cursor.execute(sql)
+            result = cursor.fetchone()
+            if result:
+                cite_userid = result[0]
+            else:
+                return render_template('query.html', error = "error in profile query")
+            
+            sql="""
+            select care_member from custom_setting
+            where userid = {}
+            """.format(cite_userid)
+            cursor.execute(sql)
+            result = cursor.fetchone()
+            if result:
+                cite_contents = result[0]
+                processing_cite_results.append(cite_contents)
+            else:
+                pass
+        else:
+            processing_cite_results.append(key)
+    
+    print processing_cite_results
+    
+    processing_cite_results = ",".join(processing_cite_results)
+    processing_cite_results = processing_cite_results.split(',')
+    processing_cite_list = []
+    for key in processing_cite_results:
+        processing_cite_list.append(key.strip())
+    processing_cite_results = list(set(processing_cite_list))
+    
+    assigned_to = ",".join(processing_cite_results)
+    
+
+        
+    
+    
     """
     request.form["assigned_to"] processing finish
     """
@@ -478,227 +641,220 @@ def show_entries():
     else:
         Date_end = "delta_ts"
     
+    """
+    This line is commented because of the 07/22 meeting.
+    This is lines is the first line.
+    In the bottom of the code, there is another line which modified Format_Rule.
+    The reason and new method are defined in the comment of BAR.py
+    #Input_Rule = assigned_to+request.form['fix_by_product']+request.form['fix_by_version']+request.form['product']
+    """
+    Input_Rule = assigned_to
+    Need_Query_List=[]
+    
+    logging.warning("{} queries for assigned_to:{}\t fix_by_product:{}\t fix_by_version:{}\t product:{}.".format(session['username'], assigned_to, request.form['fix_by_product'], request.form['fix_by_version'], request.form['product']))
     
     
-    if request.method == 'POST':
-        conn = MySQLdb.connect(host=LOCAL_DATABASE_HOST, user=LOCAL_DATABASE_USER, passwd=LOCAL_DATABASE_PW, db=LOCAL_DATABASE_DATABASE)
-        if not conn:
-            flash("Fail to Connect my Sql, please try again later")
-            return render_template('query.html', error="Fail to Connect MySQL, Please try again later")
+    """
+    The following iteration compares each profile name in the query.
+    It will pick the queries which are not queried before in order to avoid duplicate queries.
+    Needing query profiles will be kepy in Need_Query_List.
+    """
+    
+    for key in str(assigned_to).split(','):
+        check_sum = hashlib.md5(key).hexdigest()
+        sql = """select md5 from rules where md5 = '{}'""".format(check_sum)
+        cursor.execute(sql)
+    
+        result = cursor.fetchone()
+        if not result:
+            Need_Query_List.append(key)
+    
+    """
+    This section is used for comparing input name with the database.
+    If the user types the wrong name, it would trigger the checking process
+    """
+    len_input=len(str(assigned_to).split(','))
+    
+    
+    if not len_input:
+        logging.warning("{} queries are not approved since the assigned column should not be empty.".format(session['username']))
+        return render_template('query.html', error="The assigned column should not be empty.")
+    
+    
+    sql = """select userid from profiles where login_name in ('{}')""".format("','".join(assigned_to.split(',')))
+    
+    cursor.execute(sql)
+    profile_result = cursor.fetchall()
+    profile_number = ",".join(map(str, (key[0] for key in profile_result)))
+    len_db=len(profile_result)
+    
+    if len_db != len_input:
+        logging.warning("{} queries are not approved since the profile name is unfindable.".format(session['username']))
+        return render_template('query.html', error="The profile name {} is unfindable. \n Please corrent your spelling".format(assigned_to))
+    
+    """
+    This section is used for comparing input product name with the database.
+    If the user types the wrong name, it would trigger the checking process
+    """
+    if str(request.form['fix_by_product']) != "":
+        len_input=len(str(request.form['fix_by_product']).split(','))
+        sql = """select id from products where name in ('{}')""".format("','".join(request.form['fix_by_product'].split(',')))
+        cursor.execute(sql)
+        fix_by_product_result = cursor.fetchall()
+        fix_by_product_number = ",".join(map(str, (key[0] for key in fix_by_product_result)))
+        len_db=len(fix_by_product_result)
+        len_product = len(fix_by_product_result)
+        
+        if len_db < len_input:
+            logging.warning("{} queries are not approved since the product name is unfindable.".format(session['username']))
+            return render_template('query.html', error="The product name is unfindable. \n Please corrent your spelling")
+    else:
+        """
+        In order to match the query column of versions, the name should be product_id first.
+        This name should changed to fix_by_product_id after querying versions
+        """
+        fix_by_product_number = "product_id"
+    """
+    The version name has not been verified, since the version is hard to checked without auto complete boxes.
+    It should be done with multi-level select menu with javascript.
+    Because of the drop menu of bugzilla is done by brute-force style, I did not implement this version check in this script.
+    """
+    if str(request.form['fix_by_version']) != "":
+        len_input=len(str(request.form['fix_by_version']).split(','))
+        sql = """select id from versions 
+        where name in ('{}')
+        and product_id in ({})
+        """.format("','".join(request.form['fix_by_version'].split(',')),
+        fix_by_product_number)
+        cursor.execute(sql)
+        fix_by_version_result = cursor.fetchall()
+        fix_by_version_number = ",".join(map(str, (key[0] for key in fix_by_version_result)))
+        len_db=len(fix_by_version_result)
+        len_version = len(fix_by_version_result)
+        
+        if str(request.form['fix_by_version']) != "" and len_db < len_input:
+            logging.warning("{} queries are not approved since the version name is unfindable.".format(session['username']))
+            return render_template('query.html', error="The version name is unfindable. \n Please corrent your spelling")
+    else:
+        fix_by_version_number = "version_id"
+    
+    """
+    The processing of phase name is similar to the processing of version name
+    """
+    if str(request.form['fix_by_phase']) != "":
+        len_input=len(str(request.form['fix_by_phase']).split(','))
+        sql = """select id from phases 
+        where name in ('{}')
+        and version_id in ({})
+        """.format("','".join(request.form['fix_by_phase'].split(',')),
+        fix_by_version_number)
+        
+        cursor.execute(sql)
+        fix_by_phase_result = cursor.fetchall()
+        fix_by_phase_number = ",".join(map(str, (key[0] for key in fix_by_phase_result)))
+        len_db=len(fix_by_phase_result)
+        len_phase = len(fix_by_phase_result)
+        
+        if str(request.form['fix_by_phase']) != "" and len_db < len_input:
+            logging.warning("{} queries are not approved since the phase name is unfindable.".format(session['username']))
+            return render_template('query.html', error="The phase name is unfindable. \n Please corrent your spelling")
+    else:
+        fix_by_phase_number = "phase_id"
+    
+    
+    
+    
+    
+    
+    """
+    Change the product, version and phase number to "fix_by_product_xx"
+    """
+    if str(request.form['fix_by_product']) == "":
+        fix_by_product_number = "fix_by_product_id"
+    if str(request.form['fix_by_version']) == "":
+        fix_by_version_number = "fix_by_version_id"
+    if str(request.form['fix_by_phase']) == "":
+        fix_by_phase_number = "fix_by_phase_id"
+    
+    """
+    If the product number is larger than two, the length of version can only be zero.
+    """
+    if request.form['fix_by_version'] != "" or request.form['fix_by_phase'] != "":
+        if request.form['fix_by_product'] == "" or len_product > 1:
+            logging.warning("{} queries are not approved since there is more or less than one parameter in product column when version parameter is set".format(session['username']))
+            return render_template('query.html', error="The version can only be set when there is only one parameter in product column")
+    """
+    """
+    
+    cursor.close()
+    conn.close()
+    
+    """
+    If the rule is a new one, the server will triger BAR.py to do another query from Bugzilla.
+    This is a quick update. Therefore, I only implement one rule in this update.
+    The information of versions, products and profiles are not updated during this time.
+    This design probably will cause error since the profiles in our databases are not the latest.
+    If the query contains the latest profiles, it would cause error.
+    The solution is to trigger update information every 15 minutes.
+    """
+    for key in Need_Query_List: #This is a new rule
+        o_filename = BAR_OFILENAME;
+        check_sum = hashlib.md5(key).hexdigest()
+        filename = BAR_OPTION_DIRECTORY+check_sum+".p";
+        command = "python BAR.py";
         
         """
         This line is commented because of the 07/22 meeting.
-        This is lines is the first line.
-        In the bottom of the code, there is another line which modified Format_Rule.
+        This is lines is the second line.
+        In the bottom of the code, there is another line which modified Input_Rule.
         The reason and new method are defined in the comment of BAR.py
-        #Input_Rule = assigned_to+request.form['fix_by_product']+request.form['fix_by_version']+request.form['product']
+        # Format_Rule=assigned_to+":"+
+        request.form['fix_by_product']+":"+
+        request.form['fix_by_version']+":"+
+        request.form['fix_by_phase']+":"+
+        request.form['product']+"::\n"
         """
-        Input_Rule = assigned_to
-        Need_Query_List=[]
+        Format_Rule=key+":"+":"+":"+"::\n"
+        fp = open(filename, 'w')
+        fp.write(Format_Rule)
+        fp.close()
+        fp = open(o_filename, 'a')
+        fp.write(Format_Rule)
+        fp.close()
+        os.system(command + " --option " + filename + " --wo_update_information " + " --update " + " --full ")
+        os.system("rm " + filename)
+    
+    """
+    This should be modified to match the database
+    """
+    conn = MySQLdb.connect(host=LOCAL_DATABASE_HOST, user=LOCAL_DATABASE_USER, passwd=LOCAL_DATABASE_PW, db=LOCAL_DATABASE_DATABASE)
+    
+    
+    
+    people = "','".join(assigned_to.split(','))
         
-        logging.warning("{} queries for assigned_to:{}\t fix_by_product:{}\t fix_by_version:{}\t product:{}.".format(session['username'], assigned_to, request.form['fix_by_product'], request.form['fix_by_version'], request.form['product']))
-        
-        
-        """
-        The following iteration compares each profile name in the query.
-        It will pick the queries which are not queried before in order to avoid duplicate queries.
-        Needing query profiles will be kepy in Need_Query_List.
-        """
-        
-        for key in str(assigned_to).split(','):
-            check_sum = hashlib.md5(key).hexdigest()
-            sql = """select md5 from rules where md5 = '{}'""".format(check_sum)
-        
-            cursor = conn.cursor()
-            cursor.execute(sql)
-        
-            result = cursor.fetchone()
-            if not result:
-                Need_Query_List.append(key)
-        
-        """
-        This section is used for comparing input name with the database.
-        If the user types the wrong name, it would trigger the checking process
-        """
-        len_input=len(str(assigned_to).split(','))
-        if not len_input:
-            logging.warning("{} queries are not approved since the assigned column should not be empty.".format(session['username']))
-            return render_template('query.html', error="The assigned column should not be empty.")
-        
-        
-        sql = """select userid from profiles where login_name in ('{}')""".format("','".join(assigned_to.split(',')))
-        
-        cursor.execute(sql)
-        profile_result = cursor.fetchall()
-        profile_number = ",".join(map(str, (key[0] for key in profile_result)))
-        len_db=len(profile_result)
-        if len_db != len_input:
-            logging.warning("{} queries are not approved since the profile name is unfindable.".format(session['username']))
-            return render_template('query.html', error="The profile name is unfindable. \n Please corrent your spelling")
-        
-        """
-        This section is used for comparing input product name with the database.
-        If the user types the wrong name, it would trigger the checking process
-        """
-        if str(request.form['fix_by_product']) != "":
-            len_input=len(str(request.form['fix_by_product']).split(','))
-            sql = """select id from products where name in ('{}')""".format("','".join(request.form['fix_by_product'].split(',')))
-            cursor.execute(sql)
-            fix_by_product_result = cursor.fetchall()
-            fix_by_product_number = ",".join(map(str, (key[0] for key in fix_by_product_result)))
-            len_db=len(fix_by_product_result)
-            len_product = len(fix_by_product_result)
-            
-            if len_db < len_input:
-                logging.warning("{} queries are not approved since the product name is unfindable.".format(session['username']))
-                return render_template('query.html', error="The product name is unfindable. \n Please corrent your spelling")
-        else:
-            """
-            In order to match the query column of versions, the name should be product_id first.
-            This name should changed to fix_by_product_id after querying versions
-            """
-            fix_by_product_number = "product_id"
-        """
-        The version name has not been verified, since the version is hard to checked without auto complete boxes.
-        It should be done with multi-level select menu with javascript.
-        Because of the drop menu of bugzilla is done by brute-force style, I did not implement this version check in this script.
-        """
-        if str(request.form['fix_by_version']) != "":
-            len_input=len(str(request.form['fix_by_version']).split(','))
-            sql = """select id from versions 
-            where name in ('{}')
-            and product_id in ({})
-            """.format("','".join(request.form['fix_by_version'].split(',')),
-            fix_by_product_number)
-            cursor.execute(sql)
-            fix_by_version_result = cursor.fetchall()
-            fix_by_version_number = ",".join(map(str, (key[0] for key in fix_by_version_result)))
-            len_db=len(fix_by_version_result)
-            len_version = len(fix_by_version_result)
-            
-            if str(request.form['fix_by_version']) != "" and len_db < len_input:
-                logging.warning("{} queries are not approved since the version name is unfindable.".format(session['username']))
-                return render_template('query.html', error="The version name is unfindable. \n Please corrent your spelling")
-        else:
-            fix_by_version_number = "version_id"
-        
-        """
-        The processing of phase name is similar to the processing of version name
-        """
-        if str(request.form['fix_by_phase']) != "":
-            len_input=len(str(request.form['fix_by_phase']).split(','))
-            sql = """select id from phases 
-            where name in ('{}')
-            and version_id in ({})
-            """.format("','".join(request.form['fix_by_phase'].split(',')),
-            fix_by_version_number)
-            
-            cursor.execute(sql)
-            fix_by_phase_result = cursor.fetchall()
-            fix_by_phase_number = ",".join(map(str, (key[0] for key in fix_by_phase_result)))
-            len_db=len(fix_by_phase_result)
-            len_phase = len(fix_by_phase_result)
-            
-            if str(request.form['fix_by_phase']) != "" and len_db < len_input:
-                logging.warning("{} queries are not approved since the phase name is unfindable.".format(session['username']))
-                return render_template('query.html', error="The phase name is unfindable. \n Please corrent your spelling")
-        else:
-            fix_by_phase_number = "phase_id"
-        
-        
-        
-        
-        
-        
-        """
-        Change the product, version and phase number to "fix_by_product_xx"
-        """
-        if str(request.form['fix_by_product']) == "":
-            fix_by_product_number = "fix_by_product_id"
-        if str(request.form['fix_by_version']) == "":
-            fix_by_version_number = "fix_by_version_id"
-        if str(request.form['fix_by_phase']) == "":
-            fix_by_phase_number = "fix_by_phase_id"
-        
-        """
-        If the product number is larger than two, the length of version can only be zero.
-        """
-        if request.form['fix_by_version'] != "" or request.form['fix_by_phase'] != "":
-            if request.form['fix_by_product'] == "" or len_product > 1:
-                logging.warning("{} queries are not approved since there is more or less than one parameter in product column when version parameter is set".format(session['username']))
-                return render_template('query.html', error="The version can only be set when there is only one parameter in product column")
-        """
-        """
-        
-        cursor.close()
-        conn.close()
-        
-        """
-        If the rule is a new one, the server will triger BAR.py to do another query from Bugzilla.
-        This is a quick update. Therefore, I only implement one rule in this update.
-        The information of versions, products and profiles are not updated during this time.
-        This design probably will cause error since the profiles in our databases are not the latest.
-        If the query contains the latest profiles, it would cause error.
-        The solution is to trigger update information every 15 minutes.
-        """
-        for key in Need_Query_List: #This is a new rule
-            o_filename = BAR_OFILENAME;
-            check_sum = hashlib.md5(key).hexdigest()
-            filename = BAR_OPTION_DIRECTORY+check_sum+".p";
-            command = "python BAR.py";
-            
-            """
-            This line is commented because of the 07/22 meeting.
-            This is lines is the second line.
-            In the bottom of the code, there is another line which modified Input_Rule.
-            The reason and new method are defined in the comment of BAR.py
-            # Format_Rule=assigned_to+":"+
-            request.form['fix_by_product']+":"+
-            request.form['fix_by_version']+":"+
-            request.form['fix_by_phase']+":"+
-            request.form['product']+"::\n"
-            """
-            Format_Rule=key+":"+":"+":"+"::\n"
-            fp = open(filename, 'w')
-            fp.write(Format_Rule)
-            fp.close()
-            fp = open(o_filename, 'a')
-            fp.write(Format_Rule)
-            fp.close()
-            os.system(command + " --option " + filename + " --wo_update_information")
-            os.system("rm " + filename)
-        
-        """
-        This should be modified to match the database
-        """
-        conn = MySQLdb.connect(host=LOCAL_DATABASE_HOST, user=LOCAL_DATABASE_USER, passwd=LOCAL_DATABASE_PW, db=LOCAL_DATABASE_DATABASE)
-        
-        
-        
-        people = "','".join(assigned_to.split(','))
-            
-        sql = """SELECT * from bugs 
-        where assigned_to in ({}) 
-        and delta_ts between {} and {}
-        and keywords not like "%triage-accepted%"
-        ORDER by highlighted_by DESC, weight DESC, bug_id""".format(
-        profile_number,
-        Date_begin, 
-        Date_end)
-        
-        cursor = conn.cursor()
-        cursor.execute(sql)
-        columns = [column[0] for column in cursor.description]
-        impure_results = []
-        for row in cursor.fetchall():
-            impure_results.append(dict(zip(columns, row)))
-        
-        """
-        This process should be done twice since if we only do the first round, 
-        we can only retrieve the bug_fix_by_map results which are related to the product, version and phase information.
-        However, if this bug contains multiple fix_by_information, we want to show all the bug_fix_by_information of this bug.
-        """    
-        
+    sql = """SELECT * from bugs 
+    where assigned_to in ({}) 
+    and delta_ts between {} and {}
+    and keywords not like "%triage-accepted%"
+    ORDER by highlighted_by DESC, weight DESC, bug_id""".format(
+    profile_number,
+    Date_begin, 
+    Date_end)
+    
+    cursor = conn.cursor()
+    cursor.execute(sql)
+    columns = [column[0] for column in cursor.description]
+    impure_results = []
+    for row in cursor.fetchall():
+        impure_results.append(dict(zip(columns, row)))
+    
+    """
+    This process should be done twice since if we only do the first round, 
+    we can only retrieve the bug_fix_by_map results which are related to the product, version and phase information.
+    However, if this bug contains multiple fix_by_information, we want to show all the bug_fix_by_information of this bug.
+    """    
+    if impure_results:
         sql = """select bug_id, fix_by_product_rn, fix_by_version_rn, fix_by_phase_rn from bug_fix_by_map
         where bug_id in ({})
         and fix_by_product_id in ({})
@@ -709,97 +865,98 @@ def show_entries():
         fix_by_version_number,
         fix_by_phase_number)
         
-        bug_fix_by_results = Bug_Fix_By_SQL(sql, cursor)
+        bug_fix_by_results = bug_fix_by_SQL(sql, cursor)
+    else:
+        bug_fix_by_results = []
+   
+    """
+    We use this iteration to get all the id, and use another bug_fix_by_SQL to search all the ID_related information.
+    In the future, if you only want to retrieve the fix_by_s information related to specific version,
+    this parts of code can be removed directly without causing errors.
+    Remove Start from here!!!
+    """
+    ID_list=[]
+    for key in impure_results:
+        if key["bug_id"] in bug_fix_by_results.keys():
+            ID_list.append(key["bug_id"])
+    
+    if ID_list: #in order to avoud quering with a null list
+        sql = """select bug_id, fix_by_product_rn, fix_by_version_rn, fix_by_phase_rn from bug_fix_by_map
+        where bug_id in ({})
+        order by bug_id""".format(",".join(map(str, ID_list)))
+        bug_fix_by_results = bug_fix_by_SQL(sql, cursor)
+    
+    """
+    Remove Finish Here!!!
+    """
+    
+    
+    
+    
+    """
+    The bugs-results have to be purified by bug_fix_by_map since we only use assigned_id to query bugs-results
+    There are bugs which are not having the correct fix_by_entries in the impure_results conta
+    """
+    Pure_results=[]
+    for key in impure_results:
+        if key["bug_id"] in bug_fix_by_results.keys():
+            Pure_results.append(key)
+    
+    cursor.close()
+    conn.close()
+    
+    """
+    Finish Bugs_table generation.
+    The below parts are using to generate charts for triage-accepted
+    In order to match the form of bugzilla database, I change the name of variable to query.
+    The minimal unit is version, if programmers want to implement phase only, the code is similar to the product and version
+    """
+    
+    bz_query_product = "bug_fix_by_map.product_id" if fix_by_product_number == "fix_by_product_id" else fix_by_product_number
+    bz_query_version = "bug_fix_by_map.version_id" if fix_by_version_number == "fix_by_version_id" else fix_by_version_number
         
-       
-        """
-        We use this iteration to get all the id, and use another Bug_Fix_By_SQL to search all the ID_related information.
-        In the future, if you only want to retrieve the fix_by_s information related to specific version,
-        this parts of code can be removed directly without causing errors.
-        Remove Start from here!!!
-        """
-        ID_list=[]
-        for key in impure_results:
-            if key["bug_id"] in bug_fix_by_results.keys():
-                ID_list.append(key["bug_id"])
-        
-        if ID_list: #in order to avoud quering with a null list
-            sql = """select bug_id, fix_by_product_rn, fix_by_version_rn, fix_by_phase_rn from bug_fix_by_map
-            where bug_id in ({})
-            order by bug_id""".format(",".join(map(str, ID_list)))
-            bug_fix_by_results = Bug_Fix_By_SQL(sql, cursor)
-        
-        """
-        Remove Finish Here!!!
-        """
-        
-        
-        
-        
-        """
-        The bugs-results have to be purified by bug_fix_by_map since we only use assigned_id to query bugs-results
-        There are bugs which are not having the correct fix_by_entries in the impure_results conta
-        """
-        Pure_results=[]
-        for key in impure_results:
-            if key["bug_id"] in bug_fix_by_results.keys():
-                Pure_results.append(key)
-        
-        cursor.close()
-        conn.close()
-        
-        """
-        Finish Bugs_table generation.
-        The below parts are using to generate charts for triage-accepted
-        In order to match the form of bugzilla database, I change the name of variable to query.
-        The minimal unit is version, if programmers want to implement phase only, the code is similar to the product and version
-        """
-        
-        bz_query_product = "bug_fix_by_map.product_id" if fix_by_product_number == "fix_by_product_id" else fix_by_product_number
-        bz_query_version = "bug_fix_by_map.version_id" if fix_by_version_number == "fix_by_version_id" else fix_by_version_number
-            
-        
-        sql = """
-        select delta_ts from bugs, bug_fix_by_map
-        where assigned_to in ({}) 
-        and delta_ts>'{}' 
-        and keywords like '%triage-accepted%'
-        and bug_fix_by_map.bug_id = bugs.bug_id
-        and bug_fix_by_map.product_id = {}
-        and bug_fix_by_map.version_id = {}
-        """.format(profile_number, 
-        date.today() - relativedelta(months = 6) + relativedelta(day=1),
-        bz_query_product,
-        bz_query_version,
-        )
-        print sql
-        try:
-            global bzdb_conn
-            cursor = bzdb_conn.cursor()
-            cursor.execute(sql)
-        except (AttributeError, MySQLdb.OperationalError):
-            logging.warning("Bugzilla Database Reconnect")
-            bzdb_conn = MySQLdb.connect(host=BUGZILLA_DATABASE_HOST, port=BUGZILLA_DATABASE_PORT, user=BUGZILLA_DATABASE_USER, passwd=BUGZILLA_DATABASE_PW, db=BUGZILLA_DATABASE_DATABASE)
-            cursor = bzdb_conn.cursor()
-            cursor.execute(sql)
-        
-        date_bins = OrderedDict([(date.today() - relativedelta(months = key) + relativedelta(day = 1), 0) for key in range(0,7)])
-        
-        while True:
-            record = cursor.fetchone()
-            if not record:
+    
+    sql = """
+    select delta_ts from bugs, bug_fix_by_map
+    where assigned_to in ({}) 
+    and delta_ts>'{}' 
+    and keywords like '%triage-accepted%'
+    and bug_fix_by_map.bug_id = bugs.bug_id
+    and bug_fix_by_map.product_id = {}
+    and bug_fix_by_map.version_id = {}
+    """.format(profile_number, 
+    date.today() - relativedelta(months = 6) + relativedelta(day=1),
+    bz_query_product,
+    bz_query_version,
+    )
+
+    try:
+        global bzdb_conn
+        cursor = bzdb_conn.cursor()
+        cursor.execute(sql)
+    except (AttributeError, MySQLdb.OperationalError):
+        logging.warning("Bugzilla Database Reconnect")
+        bzdb_conn = MySQLdb.connect(host=BUGZILLA_DATABASE_HOST, port=BUGZILLA_DATABASE_PORT, user=BUGZILLA_DATABASE_USER, passwd=BUGZILLA_DATABASE_PW, db=BUGZILLA_DATABASE_DATABASE)
+        cursor = bzdb_conn.cursor()
+        cursor.execute(sql)
+    
+    date_bins = OrderedDict([(date.today() - relativedelta(months = key) + relativedelta(day = 1), 0) for key in range(0,7)])
+    
+    while True:
+        record = cursor.fetchone()
+        if not record:
+            break
+        query_date = record[0]
+        for key in range(0,7):
+            Up = datetime.now() - relativedelta(months = key) + relativedelta(day=1, months=+1) #The last day+1
+            Bot = datetime.now() - relativedelta(months = key) + relativedelta(day=1, days=-1)  #The first day-1
+            if  Up > query_date > Bot:
+                date_bins[date.today() - relativedelta(months = key) + relativedelta(day = 1)] += 1
                 break
-            query_date = record[0]
-            for key in range(0,7):
-                Up = datetime.now() - relativedelta(months = key) + relativedelta(day=1, months=+1) #The last day+1
-                Bot = datetime.now() - relativedelta(months = key) + relativedelta(day=1, days=-1)  #The first day-1
-                if  Up > query_date > Bot:
-                    date_bins[date.today() - relativedelta(months = key) + relativedelta(day = 1)] += 1
-                    break
-        date_results=[]
-        for key in date_bins:
-            date_results.append(dict(Month = month_name[key.month], Value = date_bins[key]))
-        date_results.reverse()
+    date_results=[]
+    for key in date_bins:
+        date_results.append(dict(Month = month_name[key.month], Value = date_bins[key]))
+    date_results.reverse()
     
     
     milestone_results=[]
@@ -828,12 +985,16 @@ def Admin_Custom_Webpage():
 
 @app.route('/Admin_Custom_Triage_Chart', methods=['GET', 'POST'])
 def Admin_Custom_Triage_Chart():
+    
     """
     This function is using to made chart of triage-accepted chart
+    Besides, in order to get weight and all the bugs(included resolved and closed), we have to do realtime calculation.
+    Therefore, we did not query bug from local database, we query all the data from bugzilla
     """
     
     if request.method == 'GET':
         return render_template('admin_custom_triage_chart.html')
+    
     
     """
     Connect to the local database
@@ -857,9 +1018,6 @@ def Admin_Custom_Triage_Chart():
     if not len_input:
         logging.warning("{} queries are not approved since the assigned column should not be empty.".format(session['username']))
         return render_template('admin_custom_triage_chart.html', error="The assigned column should not be empty.")
-    if len_input>1:
-        logging.warning("{} queries are not approved since the number of query profile can only be one.".format(session['username']))
-        return render_template('admin_custom_triage_chart.html', error="The number of query profile can only be one.")
     
     sql = """select userid from profiles where login_name in ('{}')""".format("','".join(assigned_to.split(',')))
         
@@ -883,9 +1041,8 @@ def Admin_Custom_Triage_Chart():
     """
     
     sql = """
-        select bug_when from bugs_activity where who in ({}) and bug_when>'{}' and fieldid = 12 and added = 'triage-accepted'
+        select bug_when, bug_id from bugs_activity where who in ({}) and bug_when>'{}' and fieldid = 12 and added = 'triage-accepted'
         """.format(profile_number, date.today() - relativedelta(months = 6) + relativedelta(day=1))
-    
     """
     Connect to bugzilla
     """
@@ -903,12 +1060,14 @@ def Admin_Custom_Triage_Chart():
     Then, we put all the bugs into each bin.
     """    
     date_bins = OrderedDict([(date.today() - relativedelta(months = key) + relativedelta(day = 1), 0) for key in range(0,7)])
-        
+    #Use this list to keep all the id record
+    TA_by_ID_list=[]
     while True:
-        record = cursor.fetchone()
-        if not record:
+        TA_by_record = cursor.fetchone()
+        if not TA_by_record:
             break
-        query_date = record[0]
+        query_date = TA_by_record[0]
+        TA_by_ID_list.append(TA_by_record[1])
         for key in range(0,7):
             Up = datetime.now() - relativedelta(months = key) + relativedelta(day=1, months=+1) #The last day+1
             Bot = datetime.now() - relativedelta(months = key) + relativedelta(day=1, days=-1)  #The first day-1
@@ -924,15 +1083,385 @@ def Admin_Custom_Triage_Chart():
     TA_by_results.reverse()
     
     
+    
     """
     Handle and chart the bugs which are triage-accepted and are owned by the user
     """
+    
+    sql = """
+        select delta_ts, bug_id from bugs where assigned_to in ({}) and delta_ts>'{}' and keywords like '%triage-accepted%'
+        """.format(profile_number, date.today() - relativedelta(months = 6) + relativedelta(day=1))
+    
+    cursor.execute(sql)
+    date_bins = OrderedDict([(date.today() - relativedelta(months = key) + relativedelta(day = 1), 0) for key in range(0,7)])
+    TA_Own_ID_list = []
+    while True:
+        TA_Own_record = cursor.fetchone()
+        if not TA_Own_record:
+            break
+        query_date = TA_Own_record[0]
+        TA_Own_ID_list.append(TA_Own_record[1])
+        for key in range(0,7):
+            Up = datetime.now() - relativedelta(months = key) + relativedelta(day=1, months=+1) #The last day+1
+            Bot = datetime.now() - relativedelta(months = key) + relativedelta(day=1, days=-1)  #The first day-1
+            if  Up > query_date > Bot:
+                date_bins[date.today() - relativedelta(months = key) + relativedelta(day = 1)] += 1
+                break
+    TA_Own_results=[]
+    for key in date_bins:
+        TA_Own_results.append(dict(Month = month_name[key.month], Value = date_bins[key]))
+    TA_Own_results.reverse()
+    
+    
+    """
+    Handle TA_by_results datatable
+    We have to converge the datatype from BID_record into list for flask and jinja2
+    """
+    TA_by_data_list = []
+    if TA_by_ID_list:
+        TA_by_data = id_to_full_data(TA_by_ID_list)
+        for key in TA_by_data.keys():
+            TA_by_data[key].data["fix_by_product_rn"] = TA_by_data[key].data["fix_by_product_rn"][0]
+            TA_by_data[key].data["fix_by_version_rn"] = TA_by_data[key].data["fix_by_version_rn"][0]
+            TA_by_data[key].data["fix_by_phase_rn"] = TA_by_data[key].data["fix_by_phase_rn"][0]
+            TA_by_data_list.append(TA_by_data[key].data)
+    """
+    Handle TA_Own_results datatable
+    """
+    TA_Own_data_list = []
+    if TA_Own_ID_list:
+        TA_Own_data = id_to_full_data(TA_Own_ID_list)
+        for key in TA_Own_data.keys():
+            TA_Own_data[key].data["fix_by_product_rn"] = TA_Own_data[key].data["fix_by_product_rn"][0]
+            TA_Own_data[key].data["fix_by_version_rn"] = TA_Own_data[key].data["fix_by_version_rn"][0]
+            TA_Own_data[key].data["fix_by_phase_rn"] = TA_Own_data[key].data["fix_by_phase_rn"][0]
+            TA_Own_data_list.append(TA_Own_data[key].data)
+    
+    
+    
+    
+    return render_template('admin_custom_triage_chart.html', TA_by_results = TA_by_results, TA_Own_results = TA_Own_results, chart_flag = True, assigned = assigned_to, TA_by_data = TA_by_data_list, TA_Own_data = TA_Own_data_list)
+
+@app.route('/Admin_Custom_Update', methods=['GET', 'POST'])
+def Admin_Custom_Update():
+    filename = BAR_OFILENAME;
+    command = "python BAR.py "
+    os.system(command + " --option " + filename + " --wo_update_information" + " --update")
+    return render_template('admin_custom.html', message = "Finish Update at {}".format(datetime.now().strftime(FMT_YMDHMS)))
+    
+
+@app.route('/Custom_Webpage', methods=['GET', 'POST'])
+def Custom_Webpage():
+    return render_template('custom_list.html')
+
+@app.route('/Custom_Alias', methods=['GET', 'POST'])
+def Custom_Alias():
+    from collections import defaultdict
+    
+    conn = MySQLdb.connect(host=LOCAL_DATABASE_HOST, user=LOCAL_DATABASE_USER, passwd=LOCAL_DATABASE_PW, db=LOCAL_DATABASE_DATABASE)
+    cursor = conn.cursor()
+    
+    profile_number = session["userid"]
+    
+    
+    if request.method=="POST":
+                
+        New_Alias_Map=defaultdict(lambda: defaultdict(str))
+        Old_Alias_Map=defaultdict(lambda: defaultdict(str))
+        Del_List = []
+        
+        for key in request.form.keys():
+            if "name_" in key:
+                rule_id = key.replace("name_", "")#Remove the Prefix of key
+                New_Alias_Map[rule_id]["alias_name"] = str(request.form[key])
+            elif "contents_" in key:
+                rule_id = key.replace("contents_", "")
+                New_Alias_Map[rule_id]["alias_contents"] = str(request.form[key])
+            elif "del_" in key:
+                rule_md5 = key.replace("del_", "")
+                Del_List.append(rule_md5)
+            elif "modify_" in key:
+                rule_md5 = key.replace("modify_", "")
+                Old_Alias_Map[rule_md5]["alias_contents"] = str(request.form[key])
+                Old_Alias_Map[rule_md5]["md5"] = rule_md5
+        
+        """
+        Rebuild New_Alias_Map into Update_Map
+        """
+        Update_Map = []
+        for key in New_Alias_Map:
+            New_Alias_Map[key]["userid"] = profile_number
+            alias_name = New_Alias_Map[key]["alias_name"]
+            New_Alias_Map[key]["md5"] = hashlib.md5(alias_name + str(profile_number)).hexdigest()
+            Update_Map.append(dict(New_Alias_Map[key]))
+            
+        
+        
+        """
+        Since the code modifies all the rules every time, the delete code should be executed below modify.
+        Otherwise, the delete progress will be failed
+        """
+        
+        """
+        Rebuild Old_Alias_Map into Modify_Map
+        """
+        Modify_Map = []
+        for key in Old_Alias_Map:
+            Modify_Map.append(dict(Old_Alias_Map[key]))
+        
+        for entry in Modify_Map:
+            sql="""
+            INSERT INTO custom_alias ({})
+            value ({}) 
+            ON DUPLICATE KEY UPDATE
+            {}
+            """.format(
+                ','.join(entry.keys()),
+                ','.join(map(str,(format_sql(k) for k in entry.values()))),
+                ','.join('{}={}'.format(k,format_sql(entry[k])) for k in entry)
+            )
+            cursor.execute(sql)
+        
+        
+        if Del_List:
+            sql="""
+            delete from custom_alias where md5 in ({})
+            """.format(",".join(map(format_sql,Del_List)))
+            cursor.execute(sql)
+        
+        for entry in Update_Map:
+            if entry["alias_name"]=="" or entry["alias_contents"]=="":
+                continue
+            sql="""
+                INSERT INTO custom_alias
+                            ({})
+                            VALUES
+                            ({})
+                            ON DUPLICATE KEY UPDATE
+                            {}
+            """.format(
+                        ','.join(entry.keys()),
+                        ','.join(map(str,(format_sql(k) for k in entry.values()))),
+                        ','.join('{}={}'.format(k,format_sql(entry[k])) for k in entry)
+            )
+            cursor.execute(sql)
+        #cursor.close()
+        conn.commit()
+        #conn.close()
+        
+    sql="""
+    select * from custom_alias where userid = {}
+    ORDER BY alias_name
+    """.format(profile_number)
+    
+    cursor.execute(sql)
+    columns = [column[0] for column in cursor.description]
+    results = []
+    for row in cursor.fetchall():
+        results.append(dict(zip(columns, row)))
+    
+    cursor.close()
+    conn.close()
+    print results
+    return render_template('custom_alias.html', alias = results)
+
+@app.route('/Custom_Setting', methods=['GET', 'POST'])
+def Custom_Setting():
+    """
+    This function handles the custom setting which is saved in local database.
+    The format of the setting could be found in Custom_Setting_Format.py
+    I use a dictionary to save all the data which is named as custom_setting.data
+    """
+    from Custom_Setting_Format import Custom_Setting
+    conn = MySQLdb.connect(host=LOCAL_DATABASE_HOST, user=LOCAL_DATABASE_USER, passwd=LOCAL_DATABASE_PW, db=LOCAL_DATABASE_DATABASE)
+    cursor = conn.cursor()
+    
+    if request.method == 'GET':
+        """
+        In get method, the program queries the data from database
+        """
+
+        profile_number = session["userid"]
+        
+        sql="""
+        select * from custom_setting where userid = {}
+        """.format(profile_number)
+        cursor.execute(sql)
+        
+        columns = [column[0] for column in cursor.description]
+        results = []
+        for row in cursor.fetchall():
+            results.append(dict(zip(columns, row)))
+        if results:
+            return render_template('custom_setting.html', 
+                care_member = results[0]["care_member"],
+                query_assignee = results[0]["query_assignee"],
+                query_product = results[0]["query_product"],
+                query_version = results[0]["query_version"],
+                query_phase = results[0]["query_phase"],
+                email_notification = results[0]["email_notification"]
+                )
+        else:
+            return render_template('custom_setting.html')
+    elif request.method == 'POST':
+        
+        """
+        In post method, the program updates the data in database, and return the latest values to the original webpage
+        In comparison with get method, in post method, we need to check the correctness of input
+        Checking Correctness is withdraw now since the time issue.
+        Without checking correctness here, the program can still execute properly because of the checking correctness in show_entries function
+        """
+        sql="""
+        select userid from profiles where login_name = '{}'
+        """.format(session["username"])
+        cursor.execute(sql)
+        profile_number = cursor.fetchone()[0]
+        
+        userid = profile_number
+        care_member = str(request.form["care_member"])
+        query_assignee = str(request.form["query_assignee"])
+        query_product = str(request.form["query_product"])
+        query_version = str(request.form["query_version"])
+        query_phase = str(request.form["query_phase"])
+        error=""
+        if request.form["email_notification"]:
+            try:
+                email_notification = int(request.form["email_notification"])
+                if not isinstance(email_notification, int) or email_notification < 0 :
+                    error = "Email notification should be integer >= 0"
+            except:
+                error = "Email notification should be integer >= 0"
+            """
+            email_notification should >=0 and should be integer
+            """
+        else:
+            email_notification = 0
+        """
+        @: (Cite symbol should not be used in care_member to avoid recursive checking)
+        """
+        if "@:" in care_member:
+            error = "@: cite symbol should not be used in care_member"
+        
+        if error:
+            sql="""
+            select * from custom_setting where userid = {}
+            """.format(profile_number)
+            cursor.execute(sql)
+            
+            columns = [column[0] for column in cursor.description]
+            results = []
+            for row in cursor.fetchall():
+                results.append(dict(zip(columns, row)))
+            if results:
+                return render_template('custom_setting.html', 
+                    care_member = results[0]["care_member"],
+                    query_assignee = results[0]["query_assignee"],
+                    query_product = results[0]["query_product"],
+                    query_version = results[0]["query_version"],
+                    query_phase = results[0]["query_phase"],
+                    email_notification = results[0]["email_notification"],
+                    error = error
+                    )
+            else:
+                return render_template('custom_setting.html', error=error)
+        
+        #purify care_member
+        #reduce ',' or space
+        
+        care_list=[]
+        for key in care_member.strip(',').split(','):
+            temp = key.strip(',')
+            temp = temp.strip()
+            care_list.append(temp)
+        care_member = ",".join(care_list)
+        
+        
+        C_S_Temp = Custom_Setting(
+                        userid = userid,
+                        care_member = care_member, 
+                        query_assignee = query_assignee,
+                        query_product = query_product,
+                        query_version = query_version,
+                        query_phase = query_phase,
+                        email_notification = email_notification)
+        
+        sql="""
+        INSERT INTO custom_setting
+                    ({})
+                    VALUES
+                    ({})
+                    ON DUPLICATE KEY UPDATE
+                    {}
+                    """.format(
+                    ','.join(C_S_Temp.data.keys()),
+                    ','.join(map(str,(format_sql(k) for k in C_S_Temp.data.values()))),
+                    ','.join('{}={}'.format(k,format_sql(C_S_Temp.data[k])) for k in C_S_Temp.data)
+                    )
+        cursor.execute(sql)
+        cursor.close()
+        conn.commit()
+        conn.close()
+        return render_template('custom_setting.html', 
+                care_member = care_member,
+                query_assignee = query_assignee,
+                query_product = query_product,
+                query_version = query_version,
+                query_phase = query_phase,
+                email_notification = email_notification,
+                message = "Finish Custom Editing at {}".format(datetime.now().strftime(FMT_YMDHMS))
+                )
+
+@app.route('/Chrome_Extension_Bugs', methods=['GET', 'POST'])
+def Chrome_Extension_Bugs():
+    conn = MySQLdb.connect(host=LOCAL_DATABASE_HOST, user=LOCAL_DATABASE_USER, passwd=LOCAL_DATABASE_PW, db=LOCAL_DATABASE_DATABASE)
+    cursor = conn.cursor()
+    sql = """
+    select weight, highlighted_by from bugs where bug_id = {}
+    """.format(str(request.form["id"]))
+    cursor.execute(sql)
+    result = cursor.fetchone()
+    
+    return str(result[0])+"_"+str(result[1])
+    
+
+@app.route('/Chrome_Extension/<int:number>', methods=['GET', 'POST'])
+def Chrome_Extension(number):
+
+    conn = MySQLdb.connect(host=LOCAL_DATABASE_HOST, user=LOCAL_DATABASE_USER, passwd=LOCAL_DATABASE_PW, db=LOCAL_DATABASE_DATABASE)
+    cursor = conn.cursor()
+    
+    sql = """ select bug_id from bugs where bug_id = {}
+    """.format(str(number))
+    cursor.execute(sql)
+    result = cursor.fetchone()
+    if not result:
+        ID_String = str(number)
+        command = "python BAR.py"
+        os.system(command + " --ID " + ID_String)
+    
+    
+    bzdb_conn = MySQLdb.connect(host=BUGZILLA_DATABASE_HOST, port=BUGZILLA_DATABASE_PORT, user=BUGZILLA_DATABASE_USER, passwd=BUGZILLA_DATABASE_PW, db=BUGZILLA_DATABASE_DATABASE)
+    cursor = bzdb_conn.cursor()        
+    
+    sql = """select assigned_to from bugs where bug_id = {}
+    """.format(str(number))
+    
+    cursor.execute(sql)
+    profile_number = cursor.fetchone()[0]
+    
+    sql = """select login_name, realname from profiles where userid= {}
+    """.format(profile_number)
+    
+    cursor.execute(sql)
+    profile_data = cursor.fetchone()
+    assigned = str(profile_data[0]) + " - (" + str(profile_data[1]) + ")"
     
     sql = """
         select delta_ts from bugs where assigned_to in ({}) and delta_ts>'{}' and keywords like '%triage-accepted%'
         """.format(profile_number, date.today() - relativedelta(months = 6) + relativedelta(day=1))
     
     cursor.execute(sql)
+    
     date_bins = OrderedDict([(date.today() - relativedelta(months = key) + relativedelta(day = 1), 0) for key in range(0,7)])
     while True:
         record = cursor.fetchone()
@@ -951,17 +1480,17 @@ def Admin_Custom_Triage_Chart():
     TA_Own_results.reverse()
     
     
-    return render_template('admin_custom_triage_chart.html', TA_by_results = TA_by_results, TA_Own_results = TA_Own_results, chart_flag = True, assigned = assigned_to)
-
-@app.route('/Admin_Custom_Update', methods=['GET', 'POST'])
-def Admin_Custom_Update():
-    filename = BAR_OFILENAME;
-    command = "python BAR.py "
-    os.system(command + " --option " + filename + " --wo_update_information" + " --update")
-    return render_template('admin_custom.html', message = "Finish Update at {}".format(datetime.now().strftime(FMT_YMDHMS)))
-
-
-
+    
+    return render_template('Chrome_Extension.html', TA_Own_results = TA_Own_results, assigned = assigned)
+    
+    
+    labels = '"' + '","'.join(k["Month"] for k in TA_Own_results) + '"'
+    data = ",".join(map(str, (k["Value"] for k in TA_Own_results)))
+    
+    
+    
+    
+    #Return a small webpage which contains two figures
 @app.route('/Admin_Custom_Email', methods=['GET', 'POST'])
 def Admin_Custom_Email():
     """
@@ -993,7 +1522,7 @@ def Admin_Custom_Email():
     sql = """select bug_id, fix_by_product_rn, fix_by_version_rn, fix_by_phase_rn from bug_fix_by_map
         where bug_id in ({})
         order by bug_id""".format(",".join(str(k["bug_id"]) for k in T_ETA_bug_results))
-    T_ETA_bug_fix_by_results = Bug_Fix_By_SQL(sql, cursor)
+    T_ETA_bug_fix_by_results = bug_fix_by_SQL(sql, cursor)
     
     """
     The second sql is aimed to find the bugs which are in ETA problems.
@@ -1014,7 +1543,7 @@ def Admin_Custom_Email():
         where bug_id in ({})
         order by bug_id""".format(",".join(str(k["bug_id"]) for k in ETA_bug_results))
     
-    ETA_bug_fix_by_results = Bug_Fix_By_SQL(sql, cursor)
+    ETA_bug_fix_by_results = bug_fix_by_SQL(sql, cursor)
     
     
     """
@@ -1042,7 +1571,7 @@ def Admin_Custom_Email():
     sql = """select bug_id, fix_by_product_rn, fix_by_version_rn, fix_by_phase_rn from bug_fix_by_map
         where bug_id in ({})
         order by bug_id""".format(",".join(str(k["bug_id"]) for k in W_U_bug_results))
-    W_U_bug_fix_by_results = Bug_Fix_By_SQL(sql, cursor)
+    W_U_bug_fix_by_results = bug_fix_by_SQL(sql, cursor)
     
     
     T_ETA_Message = EMAIL_WARNING_MESSAGE.format("'Should After ETA After Triage-accepted'")
@@ -1126,8 +1655,9 @@ def milestone_check(product, version):
         where milestone.phase_id in 
         (select id from phases where version_id = {}) 
         and milestone.phase_id = phases.id
+        ORDER by eta desc
     """.format(version)
-
+    #print sql
     cursor.execute(sql)
     
     columns = [column[0] for column in cursor.description]
@@ -1144,10 +1674,25 @@ def milestone_check(product, version):
             continue
         key["eta"] = key["eta"].date()
     
-    print results
+    #print results
     
     return results
 
+
+
+def format_sql(input_string):
+            from datetime import date
+            if isinstance(input_string, str):
+                return "'" + input_string + "'"
+            elif isinstance(input_string, int):
+                return input_string
+            elif isinstance(input_string, datetime):
+                return "'" + str(input_string) + "'"
+            elif isinstance(input_string, date):
+                return "'" + str(input_string) + "'"
+            else:
+                return input_string
+                
 #def sendemail(from_addr, to_addr_list, cc_addr_list, 
 def sendemail(from_addr, to_addr,
         subject, message, SMTP_SERVER='smtp.vmware.com'):
@@ -1177,20 +1722,46 @@ def autocomplete_profile():
     import json
     conn = MySQLdb.connect(host=LOCAL_DATABASE_HOST, user=LOCAL_DATABASE_USER, passwd=LOCAL_DATABASE_PW, db=LOCAL_DATABASE_DATABASE)
     
-    sql = """SELECT login_name from profiles 
-        where login_name like "%{}%" or
-        realname like "%{}%"
-        LIMIT 10""".format(request.args.get('term'), request.args.get('term'))
-        
-    cursor = conn.cursor()
-    cursor.execute(sql)
+    
     results = []
+    cursor = conn.cursor()
+    
+    if "@:" in request.args.get('term'):
+        term = str(request.args.get('term')).replace("@:","")
+    else:
+        term = str(request.args.get('term'))
+    
+    sql = """SELECT alias_name from custom_alias
+    where userid = {}
+    and alias_name like "%{}%"
+    """.format(session["userid"], term)
+    cursor.execute(sql)
     while True:
         record = cursor.fetchone()
         if not record:
             break
         results.append(record[0])
     
+    sql = """SELECT login_name from profiles 
+        where login_name like "%{}%" or
+        realname like "%{}%"
+        LIMIT 10""".format(term,term)
+        
+    cursor.execute(sql)
+    while True:
+        record = cursor.fetchone()
+        if not record:
+            break
+        results.append(record[0])
+    
+    """
+    Use to process cite-in
+    """
+    if "@:" in request.args.get('term'):
+        temp=[]
+        for key in results:
+            temp.append("@:"+key)
+        results=temp
     return json.dumps(results)
 
 @app.route('/autocomplete_product',methods=['GET'])
@@ -1256,17 +1827,114 @@ def autocomplete_phase():
     
     return json.dumps(results)
 
+
+"""
+This function turns the id into full data format in BAR.py
+The input of this function is ID-list, and the output will be BID_Record
+It only contains bugs and fix_by.
+If someone wants to implement longdescs in the future, it could cite or refer to Check_ID in BAR.py
+"""
+def id_to_full_data(ID_list):
     
+    """
+    This part handles the detail of bugs
+    """
+    sql="""
+    select {} from bugs
+    where bug_id in ({})
+    """.format(
+    ",".join(["bugs.{}".format(field) for field in gRecordSchema["bugs"]._fields]),
+    ",".join(map(str, ID_list))
+    )
+    cursor = bzdb_conn.cursor()
+    cursor.execute(sql)
+    columns = [column[0] for column in cursor.description]
+    Bugs_results = {}
+    for row in cursor.fetchall():
+        bug = dict(zip(columns, row))
+        Bugs_results[bug["bug_id"]] = bug
+    
+    """
+    This part handles the detail of fix_by
+    """
+    sql = """SELECT {} FROM bug_fix_by_map
+             WHERE bug_id in ({})""".format(
+            ",".join(["bug_fix_by_map.{}".format(field) for field in gRecordSchema["bug_fix_by_map"]._fields]),
+            ",".join(map(str, ID_list)))    
+    
+    
+    
+    cursor.execute(sql)
+    columns = [column[0] for column in cursor.description]
+    Fix_by_results = {}
+    for row in cursor.fetchall():
+        bug = dict(zip(columns, row))
+        Fix_by_results[bug["bug_id"]] = bug
+
+    """
+    Change dictionary name
+    id -> fix_by_id
+    bug_id -> bug_id
+    product_id -> fix_by_product_id
+    version_id -> fix_by_version_id
+    phase_id -> fix_by_phase_id
+    """
+    local_cursor = local_conn.cursor()
+    for idkey in Fix_by_results.keys():
+        entry = Fix_by_results[idkey]
+        entry["fix_by_id"] = entry.pop("id")
+        #entry["bug_id"] = entry.pop("bug_id")
+        entry["fix_by_product_id"] = entry.pop("product_id")
+        entry["fix_by_version_id"] = entry.pop("version_id")
+        entry["fix_by_phase_id"] = entry.pop("phase_id")
+        if entry["fix_by_product_id"] == 0:
+            entry["fix_by_product_rn"] = "Unknown"
+        else:
+            sql = """select name from products where id = {}""".format(entry["fix_by_product_id"])
+            local_cursor.execute(sql)
+            entry["fix_by_product_rn"] = local_cursor.fetchone()[0]
+        if entry["fix_by_version_id"] == 0:
+            entry["fix_by_version_rn"] = "Unknown"
+        else:
+            sql = """select name from versions where id = {}""".format(entry["fix_by_version_id"])
+            local_cursor.execute(sql)
+            entry["fix_by_version_rn"] = local_cursor.fetchone()[0]
+        if entry["fix_by_phase_id"] == 0:
+            entry["fix_by_phase_rn"] = "Unknown"
+        else:
+            sql = """select name from phases where id = {}""".format(entry["fix_by_phase_id"])
+            local_cursor.execute(sql)
+            entry["fix_by_phase_rn"] = local_cursor.fetchone()[0]
+    
+    
+    Total_results = {}
+    
+    for idkey in ID_list:
+        Total_results[idkey] = Original_SQL_data_to_BID_Record(bugs = [Bugs_results[idkey]], fix_by = [Fix_by_results[idkey]], conn = bzdb_conn)
+    Rule = Option()
+    for key in Total_results.keys():
+        Urgent_Test(Total_results[key], Rule, bzdb_conn, from_web_ui = True)
+        
+        
+    cursor.close()
+    local_cursor.close()
+    return Total_results
+
+
+
+
+
 
 """
 The idea of cascading autocomplete function can be referenced via
 http://stackoverflow.com/questions/2727859/jquery-autocomplete-using-extraparams-to-pass-additional-get-variables
 """
-def Bug_Fix_By_SQL(sql, cursor):
+def bug_fix_by_SQL(sql, cursor):
     """
     This is a small function helping me to retrieve the data from local database
     The taret is to process the bug_fix_by_map
     """
+    print sql
     cursor.execute(sql)
     bug_fix_by_results={}
     fix_by = cursor.fetchall()
@@ -1374,5 +2042,5 @@ if __name__ == '__main__':
     #logging.basicConfig(level=logging.DEBUG,format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p')
     initialize_logger(os.getcwd())
     logging.warning("Python Server is Initiated")
-    if not app.run(host='triagerobot.eng.vmware.com', debug=True):
+    if not app.run(host='127.0.0.1', debug=True):
         logging.warning("Python Server is Terminated")
