@@ -2047,5 +2047,5 @@ if __name__ == '__main__':
     #logging.basicConfig(level=logging.DEBUG,format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p')
     initialize_logger(os.getcwd())
     logging.warning("Python Server is Initiated")
-    if not app.run(host='127.0.0.1', debug=True):
+    if not app.run(host='triagerobot.eng.vmware.com', debug=True):
         logging.warning("Python Server is Terminated")

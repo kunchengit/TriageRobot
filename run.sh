@@ -1,4 +1,5 @@
 #!/bin/bash
+time = 0
 while [ 1 ];
 do 
   python BAR.py --option BAR_option/option.p --update --wo_update_information

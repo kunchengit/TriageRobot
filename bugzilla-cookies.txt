@@ -2,5 +2,5 @@
 # http://www.netscape.com/newsref/std/cookie_spec.html
 # This is a generated file!  Do not edit.
 
-bugzilla.eng.vmware.com	FALSE	/	FALSE	2145916800	Bugzilla_login	26702
-bugzilla.eng.vmware.com	FALSE	/	FALSE	2145916800	Bugzilla_logincookie	dvEQ1lPoLs
+bugzilla.eng.vmware.com	FALSE	/	FALSE	2145916800	Bugzilla_login	19367
+bugzilla.eng.vmware.com	FALSE	/	FALSE	2145916800	Bugzilla_logincookie	YXutcrc6wx
