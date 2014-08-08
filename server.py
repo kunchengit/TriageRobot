@@ -1413,15 +1413,11 @@ def Custom_Setting():
 
 @app.route('/Chrome_Extension_Bugs', methods=['GET', 'POST'])
 def Chrome_Extension_Bugs():
-    conn = MySQLdb.connect(host=LOCAL_DATABASE_HOST, user=LOCAL_DATABASE_USER, passwd=LOCAL_DATABASE_PW, db=LOCAL_DATABASE_DATABASE)
-    cursor = conn.cursor()
-    sql = """
-    select weight, highlighted_by from bugs where bug_id = {}
-    """.format(str(request.form["id"]))
-    cursor.execute(sql)
-    result = cursor.fetchone()
     
-    return str(result[0])+"_"+str(result[1])
+    ID = int(request.form["id"])
+    result = id_to_full_data([ID])
+    
+    return str(result[ID].data["weight"])+"_"+str(result[ID].data["highlighted_by"])
     
 
 @app.route('/Chrome_Extension/<int:number>', methods=['GET', 'POST'])
@@ -1846,8 +1842,17 @@ def id_to_full_data(ID_list):
     ",".join(["bugs.{}".format(field) for field in gRecordSchema["bugs"]._fields]),
     ",".join(map(str, ID_list))
     )
-    cursor = bzdb_conn.cursor()
-    cursor.execute(sql)
+    
+    try:
+        global bzdb_conn
+        cursor = bzdb_conn.cursor()
+        cursor.execute(sql)
+    except (AttributeError, MySQLdb.OperationalError):
+        logging.warning("Bugzilla Database Reconnect")
+        bzdb_conn = MySQLdb.connect(host=BUGZILLA_DATABASE_HOST, port=BUGZILLA_DATABASE_PORT, user=BUGZILLA_DATABASE_USER, passwd=BUGZILLA_DATABASE_PW, db=BUGZILLA_DATABASE_DATABASE)
+        cursor = bzdb_conn.cursor()
+        cursor.execute(sql)
+        
     columns = [column[0] for column in cursor.description]
     Bugs_results = {}
     for row in cursor.fetchall():

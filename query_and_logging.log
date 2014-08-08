@@ -1,1012 +1,636 @@
-WARNING - 2014-07-28 17:31:28,317 - Python Server is Initiated
-WARNING - 2014-07-28 17:31:30,265 - Python Server is Initiated
-WARNING - 2014-07-28 17:31:49,940 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-28 17:32:54,318 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-28 17:33:22,699 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-28 17:35:57,301 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-28 18:15:06,516 - Python Server is Initiated
-WARNING - 2014-07-28 18:15:37,002 - Python Server is Initiated
-WARNING - 2014-07-28 18:15:41,740 - Python Server is Initiated
-WARNING - 2014-07-28 19:24:43,095 - Python Server is Initiated
-WARNING - 2014-07-28 19:24:46,474 - Python Server is Initiated
-WARNING - 2014-07-28 19:24:51,082 - shinyeht logout successfully.
-WARNING - 2014-07-28 19:24:57,984 - shinyeht login into the bugzilla successfully.
-WARNING - 2014-07-28 19:25:06,371 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-28 19:25:28,628 - shinyeht add keywords:(future-low) to 1285687.
-WARNING - 2014-07-28 19:25:29,821 - shinyeht add keywords:(future-low) to 1284089.
-WARNING - 2014-07-28 19:25:45,243 - Python Server is Initiated
-WARNING - 2014-07-28 19:26:00,279 - Python Server is Initiated
-WARNING - 2014-07-28 19:27:05,665 - Python Server is Initiated
-WARNING - 2014-07-28 19:27:16,208 - shinyeht logout successfully.
-WARNING - 2014-07-28 19:27:27,643 - shinyeht login into the bugzilla successfully.
-WARNING - 2014-07-28 19:27:31,766 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-28 19:27:42,286 - shinyeht add keywords:(future-low) to 1285687.
-WARNING - 2014-07-28 19:27:43,078 - shinyeht add keywords:(future-low) to 1284089.
-WARNING - 2014-07-28 19:28:02,120 - Python Server is Initiated
-WARNING - 2014-07-28 19:28:10,260 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-28 19:29:00,035 - Python Server is Terminated
-WARNING - 2014-07-28 19:29:00,035 - Python Server is Terminated
-WARNING - 2014-07-28 19:29:03,448 - Python Server is Initiated
-WARNING - 2014-07-28 19:29:05,512 - Python Server is Initiated
-WARNING - 2014-07-28 19:29:25,705 - Python Server is Initiated
-WARNING - 2014-07-28 19:29:31,958 - shinyeht login into the bugzilla successfully.
-WARNING - 2014-07-28 19:29:35,690 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-28 19:29:45,807 - shinyeht add keywords:(future-low) to 1285687.
-WARNING - 2014-07-28 19:30:05,057 - Python Server is Initiated
-WARNING - 2014-07-28 19:30:21,384 - Python Server is Initiated
-WARNING - 2014-07-28 19:30:22,647 - shinyeht logout successfully.
-WARNING - 2014-07-28 19:30:28,908 - shinyeht login into the bugzilla successfully.
-WARNING - 2014-07-28 19:30:35,260 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-28 19:30:49,930 - shinyeht add keywords:(future-low) to 1285687.
-WARNING - 2014-07-28 19:31:34,908 - Python Server is Initiated
-WARNING - 2014-07-28 19:31:38,145 - shinyeht logout successfully.
-WARNING - 2014-07-28 19:31:49,519 - shinyeht login into the bugzilla successfully.
-WARNING - 2014-07-28 19:31:53,914 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-28 19:32:13,013 - shinyeht add keywords:(future-low) to 1285687.
-WARNING - 2014-07-28 19:32:42,046 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-28 19:33:05,154 - Python Server is Initiated
-WARNING - 2014-07-28 19:33:30,304 - shinyeht login into the bugzilla successfully.
-WARNING - 2014-07-28 19:33:34,400 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-28 19:33:47,644 - shinyeht add keywords:(future-low) to 1284089.
-WARNING - 2014-07-28 19:34:01,460 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-28 19:34:14,957 - shinyeht remove keywords:(future-low) to 1285687.
-WARNING - 2014-07-28 19:34:16,169 - shinyeht remove keywords:(future-low) to 1284089.
-WARNING - 2014-07-28 19:34:28,611 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-28 19:35:09,505 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-28 19:36:14,548 - shinyeht remove keywords:(cosmetic) to 1285687.
-WARNING - 2014-07-28 19:36:17,715 - shinyeht remove keywords:(cosmetic) to 1284089.
-WARNING - 2014-07-28 19:36:28,801 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-28 19:53:20,978 - Python Server is Terminated
-WARNING - 2014-07-28 19:53:20,987 - Python Server is Terminated
-WARNING - 2014-07-28 19:55:48,002 - Python Server is Initiated
-WARNING - 2014-07-28 19:55:50,033 - Python Server is Initiated
-WARNING - 2014-07-28 19:57:36,889 - Python Server is Terminated
-WARNING - 2014-07-28 19:57:36,889 - Python Server is Terminated
-WARNING - 2014-07-29 10:06:27,864 - Python Server is Initiated
-WARNING - 2014-07-29 10:06:29,538 - Python Server is Initiated
-WARNING - 2014-07-29 10:06:40,420 - shinyeht login into the bugzilla successfully.
-WARNING - 2014-07-29 10:06:50,081 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 10:17:17,309 - Python Server is Initiated
-WARNING - 2014-07-29 10:18:13,887 - Python Server is Initiated
-WARNING - 2014-07-29 10:18:19,975 - Python Server is Initiated
-WARNING - 2014-07-29 10:18:44,322 - Python Server is Initiated
-WARNING - 2014-07-29 10:22:14,106 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 10:24:47,370 - Python Server is Initiated
-WARNING - 2014-07-29 10:25:28,736 - Python Server is Initiated
-WARNING - 2014-07-29 10:25:52,822 - Python Server is Initiated
-WARNING - 2014-07-29 10:26:33,497 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 10:27:34,195 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 10:28:23,884 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 10:33:35,394 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 10:33:35,416 - Bugzilla Database Reconnect
-WARNING - 2014-07-29 10:33:51,370 - shinyeht queries for assigned_to:letian	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 10:36:23,892 - shinyeht queries for assigned_to:letian	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 10:37:18,390 - shinyeht queries for assigned_to:letian	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 10:39:44,811 - shinyeht queries for assigned_to:letian	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 10:41:40,620 - shinyeht queries for assigned_to:letian	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 10:42:18,385 - shinyeht queries for assigned_to:letian	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 10:43:23,044 - shinyeht queries for assigned_to:letian	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 10:43:54,559 - shinyeht queries for assigned_to:letian	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 10:47:58,899 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 10:50:09,956 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 10:51:29,803 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 10:52:03,255 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 11:00:05,313 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 11:00:05,320 - Bugzilla Database Reconnect
-WARNING - 2014-07-29 11:01:02,701 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 11:06:03,536 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 11:06:03,547 - Bugzilla Database Reconnect
-WARNING - 2014-07-29 11:06:16,298 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 11:06:41,015 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 11:07:37,488 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 11:08:15,206 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 11:08:46,234 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 11:09:20,324 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 11:09:55,607 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 11:10:36,563 - shinyeht queries for assigned_to:letian	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 11:19:42,111 - shinyeht queries for assigned_to:letian	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 11:19:42,127 - Bugzilla Database Reconnect
-WARNING - 2014-07-29 11:30:53,251 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 11:30:53,264 - Bugzilla Database Reconnect
-WARNING - 2014-07-29 11:32:06,529 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 11:33:00,005 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 11:36:01,532 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 11:44:32,447 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 11:44:32,471 - Bugzilla Database Reconnect
-WARNING - 2014-07-29 11:45:18,731 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 11:45:34,008 - shinyeht queries for assigned_to:letian	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 11:46:25,402 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 11:49:28,156 - shinyeht queries for assigned_to:letia	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 11:49:28,183 - shinyeht queries are not approved since the profile name is unfindable.
-WARNING - 2014-07-29 11:49:31,685 - shinyeht queries for assigned_to:letian	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 11:49:45,876 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 11:54:55,880 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 11:54:55,903 - Bugzilla Database Reconnect
-WARNING - 2014-07-29 11:56:00,162 - shinyeht queries for assigned_to:letian	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 12:52:24,089 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 12:52:24,104 - Bugzilla Database Reconnect
-WARNING - 2014-07-29 12:54:08,127 - shinyeht queries for assigned_to:letian	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 12:55:53,736 - shinyeht queries for assigned_to:letian	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 12:57:10,794 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 12:57:25,169 - shinyeht queries for assigned_to:letian	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 12:58:12,929 - Python Server is Initiated
-WARNING - 2014-07-29 12:58:32,859 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 12:58:56,062 - shinyeht queries for assigned_to:letian	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 13:00:17,616 - shinyeht queries for assigned_to:letian	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 13:01:27,610 - shinyeht queries for assigned_to:letian	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 13:01:53,658 - shinyeht queries for assigned_to:hillzhao	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 13:02:11,053 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 13:02:28,595 - shinyeht queries for assigned_to:letian	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 13:03:04,215 - shinyeht queries for assigned_to:letian	 fix_by_product:WS	 fix_by_version:	 product:.
-WARNING - 2014-07-29 13:03:27,684 - shinyeht logout successfully.
-WARNING - 2014-07-29 13:03:37,476 - metrictool-group login into the bugzilla successfully.
-WARNING - 2014-07-29 13:03:41,843 - metrictool-group queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 13:11:06,377 - metrictool-group queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 13:11:06,398 - Bugzilla Database Reconnect
-WARNING - 2014-07-29 13:11:27,090 - metrictool-group queries for assigned_to:letian	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 13:13:19,282 - metrictool-group queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 13:15:09,805 - metrictool-group queries for assigned_to:letian	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 13:16:40,545 - metrictool-group queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 13:18:17,810 - metrictool-group queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 13:21:52,597 - metrictool-group queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 13:24:34,333 - metrictool-group queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 13:25:04,412 - metrictool-group queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 13:26:41,877 - metrictool-group queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 13:30:20,214 - metrictool-group queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 13:31:56,175 - metrictool-group queries for assigned_to:shinyeht	 fix_by_product:vSphere	 fix_by_version:	 product:.
-WARNING - 2014-07-29 13:32:33,647 - metrictool-group queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 13:36:00,693 - metrictool-group queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 13:36:37,164 - metrictool-group queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 13:36:55,924 - metrictool-group queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 13:38:39,187 - metrictool-group queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 13:40:16,159 - Python Server is Initiated
-WARNING - 2014-07-29 13:40:36,848 - Python Server is Initiated
-WARNING - 2014-07-29 13:40:43,896 - metrictool-group queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 13:42:56,366 - metrictool-group queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 13:45:50,261 - metrictool-group queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 13:47:17,976 - metrictool-group queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 13:49:16,174 - metrictool-group queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 13:49:53,563 - shinyeht login into the bugzilla successfully.
-WARNING - 2014-07-29 13:49:59,668 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 13:52:05,122 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 13:53:49,485 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 13:54:16,820 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 13:55:22,122 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 13:56:14,781 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 13:57:43,327 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 13:59:05,338 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 14:00:08,371 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 14:00:35,476 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 14:01:23,657 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 14:03:13,943 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 14:04:12,932 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 14:06:54,440 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 14:08:34,940 - metrictool-group queries for assigned_to:letian	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 14:12:34,849 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 14:17:13,828 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 14:18:15,486 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 14:18:52,493 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 14:19:46,986 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 14:21:06,075 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 14:22:26,463 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 14:27:59,451 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 14:27:59,458 - Bugzilla Database Reconnect
-WARNING - 2014-07-29 14:28:19,874 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 14:28:51,068 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 14:29:18,533 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 14:30:23,005 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 14:34:29,577 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 14:37:59,380 - Python Server is Terminated
-WARNING - 2014-07-29 14:37:59,380 - Python Server is Terminated
-WARNING - 2014-07-29 14:38:04,381 - Python Server is Initiated
-WARNING - 2014-07-29 14:38:06,084 - Python Server is Initiated
-WARNING - 2014-07-29 14:38:09,999 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 14:39:51,909 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 14:40:08,718 - shinyeht queries for assigned_to:letian	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 14:41:54,794 - Python Server is Terminated
-WARNING - 2014-07-29 14:41:54,794 - Python Server is Terminated
-WARNING - 2014-07-29 14:42:17,901 - Python Server is Initiated
-WARNING - 2014-07-29 14:42:19,969 - Python Server is Initiated
-WARNING - 2014-07-29 14:42:36,158 - metrictool-group queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 14:46:39,289 - hillzhao login into the bugzilla successfully.
-WARNING - 2014-07-29 14:48:32,341 - hillzhao queries for assigned_to:hillzhao	 fix_by_product:vSphere	 fix_by_version:5.5 U3	 product:.
-WARNING - 2014-07-29 14:48:32,353 - Bugzilla Database Reconnect
-WARNING - 2014-07-29 14:48:44,668 - hillzhao queries for assigned_to:hillzhao	 fix_by_product:vSphere	 fix_by_version:5.1 U3	 product:.
-WARNING - 2014-07-29 14:49:20,542 - hillzhao queries for assigned_to:hillzhao	 fix_by_product:vSphere	 fix_by_version:	 product:.
-WARNING - 2014-07-29 14:49:44,201 - hillzhao queries for assigned_to:hillzhao	 fix_by_product:vSphere	 fix_by_version:5.1 U3	 product:.
-WARNING - 2014-07-29 14:50:00,443 - hillzhao queries for assigned_to:hillzhao	 fix_by_product:vSphere	 fix_by_version:5.5 U3	 product:.
-WARNING - 2014-07-29 14:50:08,200 - hillzhao queries for assigned_to:hillzhao	 fix_by_product:vSphere	 fix_by_version:5.1 U3	 product:.
-WARNING - 2014-07-29 14:50:50,632 - Python Server is Initiated
-WARNING - 2014-07-29 14:51:35,815 - Python Server is Initiated
-WARNING - 2014-07-29 14:51:44,547 - Python Server is Initiated
-WARNING - 2014-07-29 14:52:17,733 - Python Server is Initiated
-WARNING - 2014-07-29 14:52:19,505 - Python Server is Initiated
-WARNING - 2014-07-29 14:52:36,611 - metrictool-group queries for assigned_to:hillzhao	 fix_by_product:vSphere	 fix_by_version:5.1 U3	 product:.
-WARNING - 2014-07-29 14:52:58,493 - hillzhao queries for assigned_to:hillzhao	 fix_by_product:vSphere	 fix_by_version:5.1 U3	 product:.
-WARNING - 2014-07-29 14:53:16,154 - metrictool-group queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 14:53:20,467 - hillzhao queries for assigned_to:hillzhao	 fix_by_product:vSphere	 fix_by_version:5.1 U3	 product:.
-WARNING - 2014-07-29 15:23:29,947 - metrictool-group queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 15:23:29,956 - Bugzilla Database Reconnect
-WARNING - 2014-07-29 15:24:27,617 - metrictool-group queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 15:26:00,395 - metrictool-group queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 15:27:23,687 - metrictool-group queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 15:28:16,569 - metrictool-group queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 15:28:54,698 - metrictool-group queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 15:43:18,202 - metrictool-group queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 15:43:18,206 - Bugzilla Database Reconnect
-WARNING - 2014-07-29 15:44:24,173 - metrictool-group queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 15:50:35,222 - Python Server is Initiated
-WARNING - 2014-07-29 15:50:59,539 - Python Server is Initiated
-WARNING - 2014-07-29 15:51:10,163 - metrictool-group logout successfully.
-WARNING - 2014-07-29 15:51:15,346 - metrictool-group logout successfully.
-WARNING - 2014-07-29 15:51:21,409 - shinyeht login into the bugzilla successfully.
-WARNING - 2014-07-29 15:51:25,677 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 15:54:37,510 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 15:55:05,889 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 16:00:12,146 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 16:00:12,155 - Bugzilla Database Reconnect
-WARNING - 2014-07-29 16:00:30,427 - shinyeht login into the bugzilla successfully.
-WARNING - 2014-07-29 16:00:36,783 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 16:05:59,517 - Python Server is Initiated
-WARNING - 2014-07-29 16:06:33,522 - Python Server is Initiated
-WARNING - 2014-07-29 16:06:35,807 - shinyeht logout successfully.
-WARNING - 2014-07-29 16:06:45,778 - shinyeht login into the bugzilla successfully.
-WARNING - 2014-07-29 16:06:50,275 - shinyeht queries for assigned_to:letian	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 16:14:48,928 - shinyeht queries for assigned_to:letian	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 16:14:48,948 - Bugzilla Database Reconnect
-WARNING - 2014-07-29 16:15:57,104 - shinyeht queries for assigned_to:letian	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 16:16:44,875 - shinyeht login into the bugzilla successfully.
-WARNING - 2014-07-29 16:16:53,619 - shinyeht queries for assigned_to:letian	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 16:22:44,068 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 16:22:44,074 - Bugzilla Database Reconnect
-WARNING - 2014-07-29 16:23:19,114 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 16:23:39,312 - shinyeht login into the bugzilla successfully.
-WARNING - 2014-07-29 16:23:50,814 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 16:24:15,381 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 16:27:36,465 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 16:27:59,223 - shinyeht logout successfully.
-WARNING - 2014-07-29 16:28:07,411 - shinyeht login into the bugzilla successfully.
-WARNING - 2014-07-29 16:28:12,211 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 16:28:27,509 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 16:31:22,445 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 16:32:09,447 - shinyeht logout successfully.
-WARNING - 2014-07-29 16:32:15,235 - shinyeht login into the bugzilla successfully.
-WARNING - 2014-07-29 16:32:20,387 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 16:35:05,892 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 16:36:38,997 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 16:38:39,080 - shinyeht login into the bugzilla successfully.
-WARNING - 2014-07-29 16:38:43,310 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 16:40:15,516 - shinyeht logout successfully.
-WARNING - 2014-07-29 16:40:17,466 - shinyeht logout successfully.
-WARNING - 2014-07-29 16:40:24,006 - shinyeht login into the bugzilla successfully.
-WARNING - 2014-07-29 16:40:30,994 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 16:42:45,612 - shinyeht logout successfully.
-WARNING - 2014-07-29 16:42:53,001 - shinyeht login into the bugzilla successfully.
-WARNING - 2014-07-29 16:42:57,234 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 16:54:49,088 - shinyeht logout successfully.
-WARNING - 2014-07-29 16:54:57,703 - shinyeht login into the bugzilla successfully.
-WARNING - 2014-07-29 16:55:07,565 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 16:55:07,574 - Bugzilla Database Reconnect
-WARNING - 2014-07-29 16:57:31,702 - shinyeht logout successfully.
-WARNING - 2014-07-29 16:57:41,276 - shinyeht login into the bugzilla successfully.
-WARNING - 2014-07-29 16:57:48,775 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 17:00:24,075 - shinyeht logout successfully.
-WARNING - 2014-07-29 17:00:30,789 - shinyeht login into the bugzilla successfully.
-WARNING - 2014-07-29 17:00:35,241 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 17:03:00,921 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 17:06:39,440 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 17:06:54,844 - shinyeht login into the bugzilla successfully.
-WARNING - 2014-07-29 17:07:23,567 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 17:11:42,411 - shinyeht logout successfully.
-WARNING - 2014-07-29 17:11:48,989 - shinyeht login into the bugzilla successfully.
-WARNING - 2014-07-29 17:11:54,935 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 17:12:48,421 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 17:13:54,621 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 17:14:28,601 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 17:15:07,287 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 17:16:19,305 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 17:20:44,574 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 17:24:04,783 - shinyeht login into the bugzilla successfully.
-WARNING - 2014-07-29 17:24:44,934 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 17:28:16,896 - shinyeht logout successfully.
-WARNING - 2014-07-29 17:28:27,007 - shinyeht login into the bugzilla successfully.
-WARNING - 2014-07-29 17:28:30,952 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 17:28:54,397 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 17:31:53,288 - shinyeht logout successfully.
-WARNING - 2014-07-29 17:34:56,923 - shinyeht logout successfully.
-WARNING - 2014-07-29 17:35:04,115 - shinyeht login into the bugzilla successfully.
-WARNING - 2014-07-29 17:35:07,738 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 17:35:07,749 - Bugzilla Database Reconnect
-WARNING - 2014-07-29 17:36:16,972 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 17:36:36,737 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 17:37:03,269 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 17:38:26,852 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 17:55:22,307 - shinyeht logout successfully.
-WARNING - 2014-07-29 17:55:28,007 - shinyeht login into the bugzilla successfully.
-WARNING - 2014-07-29 17:55:32,941 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 17:55:32,950 - Bugzilla Database Reconnect
-WARNING - 2014-07-29 17:56:22,049 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 17:57:04,511 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 17:57:53,121 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 17:58:39,373 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 17:58:51,427 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 17:59:54,514 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 18:00:23,648 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 18:02:41,098 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 18:03:15,821 - shinyeht login into the bugzilla successfully.
-WARNING - 2014-07-29 18:03:20,136 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 18:03:52,924 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 18:04:40,994 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 18:06:03,888 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 18:07:28,004 - shinyeht queries for assigned_to:letian	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 18:10:39,517 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 18:10:48,734 - shinyeht queries for assigned_to:letian	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 18:11:49,626 - shinyeht queries for assigned_to:letian	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 18:12:14,686 - shinyeht login into the bugzilla successfully.
-WARNING - 2014-07-29 18:12:18,199 - shinyeht queries for assigned_to:letian	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 18:13:10,796 - shinyeht queries for assigned_to:letian	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 18:14:39,143 - shinyeht queries for assigned_to:letian	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 18:15:25,910 - shinyeht queries for assigned_to:letian	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 18:16:37,262 - shinyeht queries for assigned_to:letian	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 18:19:37,408 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 18:20:25,607 - shinyeht login into the bugzilla successfully.
-WARNING - 2014-07-29 18:20:29,907 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 18:26:10,903 - shinyeht queries for assigned_to:letian	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 18:26:10,939 - Bugzilla Database Reconnect
-WARNING - 2014-07-29 18:26:27,514 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 18:26:40,616 - shinyeht login into the bugzilla successfully.
-WARNING - 2014-07-29 18:26:45,862 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 18:27:36,088 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 18:27:58,704 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 18:29:01,548 - shinyeht queries for assigned_to:shinyehtt	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 18:29:01,618 - shinyeht queries are not approved since the profile name is unfindable.
-WARNING - 2014-07-29 18:29:05,389 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 18:29:19,617 - shinyeht queries for assigned_to:letian	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 18:31:16,634 - shinyeht queries for assigned_to:letian	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 18:32:15,547 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 18:32:26,919 - shinyeht login into the bugzilla successfully.
-WARNING - 2014-07-29 18:32:29,997 - shinyeht queries for assigned_to:	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 18:32:30,025 - shinyeht queries are not approved since the profile name is unfindable.
-WARNING - 2014-07-29 18:32:34,055 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 18:33:03,235 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 18:37:55,236 - shinyeht login into the bugzilla successfully.
-WARNING - 2014-07-29 18:37:59,365 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 18:42:43,199 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 18:43:02,154 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 18:43:27,415 - shinyeht login into the bugzilla successfully.
-WARNING - 2014-07-29 18:43:31,000 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 18:44:50,890 - shinyeht queries for assigned_to:letian	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 18:49:26,703 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 18:50:08,880 - shinyeht logout successfully.
-WARNING - 2014-07-29 18:50:16,798 - shinyeht login into the bugzilla successfully.
-WARNING - 2014-07-29 18:50:21,328 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 18:53:06,353 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 18:54:22,836 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 18:55:13,333 - shinyeht logout successfully.
-WARNING - 2014-07-29 18:55:18,921 - shinyeht login into the bugzilla successfully.
-WARNING - 2014-07-29 18:55:22,911 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 18:56:10,958 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 18:57:15,590 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 18:58:27,979 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 19:00:07,087 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 19:03:13,027 - shinyeht login into the bugzilla successfully.
-WARNING - 2014-07-29 19:03:17,904 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 19:05:13,504 - shinyeht logout successfully.
-WARNING - 2014-07-29 19:05:33,948 - shinyeht login into the bugzilla successfully.
-WARNING - 2014-07-29 19:05:37,958 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 19:11:04,404 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 19:11:04,415 - Bugzilla Database Reconnect
-WARNING - 2014-07-29 19:15:49,121 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 19:16:03,971 - shinyeht login into the bugzilla successfully.
-WARNING - 2014-07-29 19:16:09,164 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 19:17:36,911 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 19:18:19,050 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 19:21:12,079 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 19:21:35,617 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 19:22:07,039 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 19:22:34,974 - shinyeht login into the bugzilla successfully.
-WARNING - 2014-07-29 19:22:39,453 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 19:23:01,666 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 19:23:40,173 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 19:24:32,265 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 19:25:35,544 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 19:31:15,071 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 19:31:15,089 - Bugzilla Database Reconnect
-WARNING - 2014-07-29 19:31:38,311 - shinyeht login into the bugzilla successfully.
-WARNING - 2014-07-29 19:31:42,196 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 19:44:03,671 - shinyeht login into the bugzilla successfully.
-WARNING - 2014-07-29 19:44:10,538 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 19:44:10,550 - Bugzilla Database Reconnect
-WARNING - 2014-07-29 19:49:04,216 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 19:49:19,100 - shinyeht login into the bugzilla successfully.
-WARNING - 2014-07-29 19:49:23,420 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 19:50:49,614 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 19:52:44,336 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 19:53:45,773 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 19:56:09,832 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 19:57:12,724 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 19:57:35,527 - shinyeht login into the bugzilla successfully.
-WARNING - 2014-07-29 19:57:40,034 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-29 23:01:54,120 - hillzhao queries for assigned_to:hillzhao	 fix_by_product:vSphere	 fix_by_version:5.1 U3	 product:.
-WARNING - 2014-07-29 23:01:54,143 - Bugzilla Database Reconnect
-WARNING - 2014-07-29 23:02:09,586 - hillzhao queries for assigned_to:hillzhao	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-30 09:58:54,347 - shinyeht login into the bugzilla successfully.
-WARNING - 2014-07-30 09:59:06,240 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-30 09:59:06,251 - Bugzilla Database Reconnect
-WARNING - 2014-07-30 09:59:26,168 - shinyeht queries for assigned_to:letian	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-30 10:01:47,028 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-30 10:03:47,259 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-30 10:04:24,712 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-30 10:05:16,255 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-30 10:08:38,897 - Python Server is Initiated
-WARNING - 2014-07-30 10:08:51,163 - Python Server is Initiated
-WARNING - 2014-07-30 10:09:06,142 - shinyeht login into the bugzilla successfully.
-WARNING - 2014-07-30 10:09:10,340 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-30 10:09:29,495 - Python Server is Initiated
-WARNING - 2014-07-30 10:09:55,683 - Python Server is Initiated
-WARNING - 2014-07-30 10:10:52,164 - Python Server is Initiated
-WARNING - 2014-07-30 10:13:00,861 - Python Server is Initiated
-WARNING - 2014-07-30 10:13:02,769 - Python Server is Initiated
-WARNING - 2014-07-30 10:13:05,662 - shinyeht logout successfully.
-WARNING - 2014-07-30 10:13:12,209 - shinyeht login into the bugzilla successfully.
-WARNING - 2014-07-30 10:13:16,284 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-30 10:13:33,182 - Python Server is Initiated
-WARNING - 2014-07-30 10:13:42,209 - Python Server is Initiated
-WARNING - 2014-07-30 10:13:45,284 - Python Server is Initiated
-WARNING - 2014-07-30 10:14:53,548 - Python Server is Initiated
-WARNING - 2014-07-30 10:14:55,828 - Python Server is Initiated
-WARNING - 2014-07-30 10:14:56,139 - shinyeht logout successfully.
-WARNING - 2014-07-30 10:15:02,358 - shinyeht fails to login into the bugzilla.
-WARNING - 2014-07-30 10:15:13,692 - shinyeht login into the bugzilla successfully.
-WARNING - 2014-07-30 10:15:20,568 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-30 10:15:51,703 - Python Server is Initiated
-WARNING - 2014-07-30 10:16:08,933 - Python Server is Initiated
-WARNING - 2014-07-30 10:17:00,773 - Python Server is Initiated
-WARNING - 2014-07-30 10:17:05,688 - Python Server is Initiated
-WARNING - 2014-07-30 10:19:03,941 - Python Server is Initiated
-WARNING - 2014-07-30 10:19:08,861 - Python Server is Initiated
-WARNING - 2014-07-30 10:19:50,711 - Python Server is Initiated
-WARNING - 2014-07-30 10:19:52,719 - Python Server is Initiated
-WARNING - 2014-07-30 10:19:55,803 - shinyeht logout successfully.
-WARNING - 2014-07-30 10:20:03,899 - shinyeht login into the bugzilla successfully.
-WARNING - 2014-07-30 10:20:09,857 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-30 10:28:02,214 - Python Server is Initiated
-WARNING - 2014-07-30 10:28:04,391 - Python Server is Initiated
-WARNING - 2014-07-30 10:28:08,628 - shinyeht logout successfully.
-WARNING - 2014-07-30 10:28:38,736 - shinyeht login into the bugzilla successfully.
-WARNING - 2014-07-30 10:29:04,730 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-30 10:32:07,922 - Python Server is Initiated
-WARNING - 2014-07-30 10:32:23,136 - Python Server is Initiated
-WARNING - 2014-07-30 10:32:26,183 - Python Server is Initiated
-WARNING - 2014-07-30 10:32:35,268 - Python Server is Initiated
-WARNING - 2014-07-30 10:35:08,644 - Python Server is Initiated
-WARNING - 2014-07-30 10:35:23,793 - Python Server is Initiated
-WARNING - 2014-07-30 10:35:32,062 - Python Server is Initiated
-WARNING - 2014-07-30 10:35:37,054 - shinyeht logout successfully.
-WARNING - 2014-07-30 10:35:44,587 - shinyeht login into the bugzilla successfully.
-WARNING - 2014-07-30 10:35:48,772 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-30 10:36:24,714 - Python Server is Initiated
-WARNING - 2014-07-30 10:36:28,115 - Python Server is Initiated
-WARNING - 2014-07-30 10:36:46,559 - shinyeht login into the bugzilla successfully.
-WARNING - 2014-07-30 10:36:50,358 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-30 10:38:11,095 - Python Server is Initiated
-WARNING - 2014-07-30 10:38:22,337 - Python Server is Initiated
-WARNING - 2014-07-30 10:38:53,879 - Python Server is Initiated
-WARNING - 2014-07-30 10:39:03,132 - Python Server is Initiated
-WARNING - 2014-07-30 10:39:22,796 - Python Server is Initiated
-WARNING - 2014-07-30 10:39:25,007 - shinyeht logout successfully.
-WARNING - 2014-07-30 10:39:32,616 - shinyeht login into the bugzilla successfully.
-WARNING - 2014-07-30 10:39:36,885 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-30 10:40:15,706 - Python Server is Initiated
-WARNING - 2014-07-30 10:40:33,484 - shinyeht login into the bugzilla successfully.
-WARNING - 2014-07-30 10:40:36,869 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-30 10:41:00,122 - Python Server is Initiated
-WARNING - 2014-07-30 10:41:05,198 - Python Server is Initiated
-WARNING - 2014-07-30 10:41:11,451 - shinyeht logout successfully.
-WARNING - 2014-07-30 10:41:18,617 - shinyeht login into the bugzilla successfully.
-WARNING - 2014-07-30 10:41:22,691 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-30 10:41:59,184 - Python Server is Initiated
-WARNING - 2014-07-30 10:42:03,043 - shinyeht logout successfully.
-WARNING - 2014-07-30 10:42:09,490 - shinyeht login into the bugzilla successfully.
-WARNING - 2014-07-30 10:42:13,128 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-30 10:43:06,692 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-30 10:48:26,314 - Python Server is Initiated
-WARNING - 2014-07-30 10:48:41,675 - Python Server is Initiated
-WARNING - 2014-07-30 10:49:05,302 - Python Server is Initiated
-WARNING - 2014-07-30 10:49:23,053 - Python Server is Initiated
-WARNING - 2014-07-30 10:49:28,380 - Python Server is Initiated
-WARNING - 2014-07-30 10:51:02,646 - Python Server is Initiated
-WARNING - 2014-07-30 10:51:44,075 - Python Server is Initiated
-WARNING - 2014-07-30 10:52:00,944 - Python Server is Initiated
-WARNING - 2014-07-30 10:52:34,592 - Python Server is Initiated
-WARNING - 2014-07-30 10:52:43,375 - Python Server is Initiated
-WARNING - 2014-07-30 11:03:35,718 - Python Server is Initiated
-WARNING - 2014-07-30 11:03:37,618 - Python Server is Initiated
-WARNING - 2014-07-30 11:03:38,399 - shinyeht logout successfully.
-WARNING - 2014-07-30 11:03:48,887 - shinyeht login into the bugzilla successfully.
-WARNING - 2014-07-30 11:03:53,776 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-30 11:05:22,996 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-30 11:06:38,626 - Python Server is Initiated
-WARNING - 2014-07-30 11:06:40,613 - Python Server is Initiated
-WARNING - 2014-07-30 11:06:42,718 - shinyeht logout successfully.
-WARNING - 2014-07-30 11:06:51,520 - shinyeht login into the bugzilla successfully.
-WARNING - 2014-07-30 11:06:55,243 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-30 11:07:30,248 - Python Server is Initiated
-WARNING - 2014-07-30 11:07:35,583 - shinyeht logout successfully.
-WARNING - 2014-07-30 11:07:41,840 - shinyeht login into the bugzilla successfully.
-WARNING - 2014-07-30 11:07:46,422 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-30 11:08:48,361 - Python Server is Initiated
-WARNING - 2014-07-30 11:09:15,761 - Python Server is Initiated
-WARNING - 2014-07-30 11:09:41,455 - shinyeht login into the bugzilla successfully.
-WARNING - 2014-07-30 11:09:45,570 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-30 11:11:26,007 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-30 11:12:27,962 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-30 11:13:27,161 - Python Server is Initiated
-WARNING - 2014-07-30 11:13:33,144 - Python Server is Terminated
-WARNING - 2014-07-30 11:13:33,146 - Python Server is Terminated
-WARNING - 2014-07-30 11:13:36,000 - Python Server is Initiated
-WARNING - 2014-07-30 11:13:38,007 - Python Server is Initiated
-WARNING - 2014-07-30 11:13:38,322 - shinyeht logout successfully.
-WARNING - 2014-07-30 11:13:45,041 - shinyeht login into the bugzilla successfully.
-WARNING - 2014-07-30 11:13:49,670 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-30 11:17:29,096 - Python Server is Initiated
-WARNING - 2014-07-30 11:18:29,132 - Python Server is Initiated
-WARNING - 2014-07-30 11:19:08,458 - Python Server is Initiated
-WARNING - 2014-07-30 11:19:18,814 - Python Server is Initiated
-WARNING - 2014-07-30 11:19:24,928 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-30 11:19:38,821 - shinyeht login into the bugzilla successfully.
-WARNING - 2014-07-30 11:19:44,910 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-30 11:24:01,614 - Python Server is Initiated
-WARNING - 2014-07-30 11:24:10,632 - Python Server is Initiated
-WARNING - 2014-07-30 11:25:22,274 - Python Server is Initiated
-WARNING - 2014-07-30 11:25:29,713 - shinyeht logout successfully.
-WARNING - 2014-07-30 11:25:36,459 - shinyeht login into the bugzilla successfully.
-WARNING - 2014-07-30 11:25:40,340 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-30 11:26:25,095 - Python Server is Initiated
-WARNING - 2014-07-30 11:26:59,405 - Python Server is Initiated
-WARNING - 2014-07-30 11:29:41,319 - Python Server is Initiated
-WARNING - 2014-07-30 11:29:43,405 - Python Server is Initiated
-WARNING - 2014-07-30 11:29:44,640 - shinyeht logout successfully.
-WARNING - 2014-07-30 11:29:52,446 - shinyeht login into the bugzilla successfully.
-WARNING - 2014-07-30 11:29:56,775 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-30 11:31:09,886 - Python Server is Initiated
-WARNING - 2014-07-30 11:31:13,031 - shinyeht logout successfully.
-WARNING - 2014-07-30 11:31:20,180 - shinyeht login into the bugzilla successfully.
-WARNING - 2014-07-30 11:31:23,916 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-30 11:32:25,618 - Python Server is Initiated
-WARNING - 2014-07-30 11:32:40,805 - Python Server is Initiated
-WARNING - 2014-07-30 11:32:48,884 - Python Server is Initiated
-WARNING - 2014-07-30 11:33:19,204 - Python Server is Initiated
-WARNING - 2014-07-30 11:33:31,296 - Python Server is Initiated
-WARNING - 2014-07-30 11:33:35,392 - Python Server is Initiated
-WARNING - 2014-07-30 11:34:03,785 - Python Server is Initiated
-WARNING - 2014-07-30 11:34:12,036 - Python Server is Initiated
-WARNING - 2014-07-30 11:35:38,608 - Python Server is Initiated
-WARNING - 2014-07-30 11:35:40,742 - Python Server is Initiated
-WARNING - 2014-07-30 11:35:44,906 - shinyeht logout successfully.
-WARNING - 2014-07-30 11:35:51,844 - shinyeht login into the bugzilla successfully.
-WARNING - 2014-07-30 11:35:55,581 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-30 11:36:24,165 - Python Server is Initiated
-WARNING - 2014-07-30 11:36:37,897 - shinyeht logout successfully.
-WARNING - 2014-07-30 11:36:44,005 - shinyeht login into the bugzilla successfully.
-WARNING - 2014-07-30 11:36:48,086 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-30 11:38:33,449 - Python Server is Initiated
-WARNING - 2014-07-30 11:38:37,755 - Python Server is Initiated
-WARNING - 2014-07-30 11:38:47,951 - Python Server is Initiated
-WARNING - 2014-07-30 11:39:04,090 - Python Server is Initiated
-WARNING - 2014-07-30 11:41:06,060 - Python Server is Initiated
-WARNING - 2014-07-30 11:41:11,271 - Python Server is Initiated
-WARNING - 2014-07-30 12:29:07,130 - Python Server is Initiated
-WARNING - 2014-07-30 12:33:09,343 - Python Server is Initiated
-WARNING - 2014-07-30 12:33:11,282 - Python Server is Initiated
-WARNING - 2014-07-30 12:34:00,279 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-30 12:34:11,731 - shinyeht login into the bugzilla successfully.
-WARNING - 2014-07-30 12:34:15,639 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-30 12:34:51,217 - Python Server is Initiated
-WARNING - 2014-07-30 12:35:12,502 - shinyeht logout successfully.
-WARNING - 2014-07-30 12:35:18,785 - shinyeht login into the bugzilla successfully.
-WARNING - 2014-07-30 12:35:23,018 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-30 12:36:08,094 - Python Server is Initiated
-WARNING - 2014-07-30 12:36:17,999 - shinyeht logout successfully.
-WARNING - 2014-07-30 12:36:25,594 - shinyeht login into the bugzilla successfully.
-WARNING - 2014-07-30 12:36:29,606 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-30 12:38:07,078 - Python Server is Initiated
-WARNING - 2014-07-30 12:38:15,937 - Python Server is Initiated
-WARNING - 2014-07-30 12:38:27,021 - Python Server is Initiated
-WARNING - 2014-07-30 12:38:32,248 - Python Server is Initiated
-WARNING - 2014-07-30 12:38:43,925 - shinyeht logout successfully.
-WARNING - 2014-07-30 12:38:52,540 - shinyeht login into the bugzilla successfully.
-WARNING - 2014-07-30 12:38:56,525 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-30 12:39:20,834 - Python Server is Initiated
-WARNING - 2014-07-30 12:39:25,763 - shinyeht logout successfully.
-WARNING - 2014-07-30 12:39:32,135 - shinyeht login into the bugzilla successfully.
-WARNING - 2014-07-30 12:39:36,149 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-30 12:40:08,314 - Python Server is Initiated
-WARNING - 2014-07-30 12:40:14,636 - shinyeht logout successfully.
-WARNING - 2014-07-30 12:40:20,604 - shinyeht login into the bugzilla successfully.
-WARNING - 2014-07-30 12:40:24,307 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-30 12:41:55,384 - Python Server is Initiated
-WARNING - 2014-07-30 12:50:46,474 - Python Server is Initiated
-WARNING - 2014-07-30 13:02:03,422 - Python Server is Initiated
-WARNING - 2014-07-30 13:02:05,413 - Python Server is Initiated
-WARNING - 2014-07-30 13:02:08,679 - shinyeht logout successfully.
-WARNING - 2014-07-30 13:02:17,780 - shinyeht login into the bugzilla successfully.
-WARNING - 2014-07-30 13:02:22,931 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-30 13:03:02,837 - Python Server is Initiated
-WARNING - 2014-07-30 13:03:08,295 - shinyeht logout successfully.
-WARNING - 2014-07-30 13:03:16,960 - shinyeht login into the bugzilla successfully.
-WARNING - 2014-07-30 13:03:20,682 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-30 13:03:59,401 - Python Server is Initiated
-WARNING - 2014-07-30 13:04:41,581 - Python Server is Initiated
-WARNING - 2014-07-30 13:04:49,526 - Python Server is Initiated
-WARNING - 2014-07-30 13:05:12,964 - shinyeht logout successfully.
-WARNING - 2014-07-30 13:05:19,942 - shinyeht login into the bugzilla successfully.
-WARNING - 2014-07-30 13:05:23,517 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-30 13:05:58,876 - Python Server is Initiated
-WARNING - 2014-07-30 13:06:17,031 - Python Server is Initiated
-WARNING - 2014-07-30 13:06:39,164 - Python Server is Initiated
-WARNING - 2014-07-30 13:06:45,509 - Python Server is Initiated
-WARNING - 2014-07-30 13:06:46,906 - shinyeht logout successfully.
-WARNING - 2014-07-30 13:06:58,846 - shinyeht login into the bugzilla successfully.
-WARNING - 2014-07-30 13:07:03,628 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-30 13:07:28,592 - Python Server is Initiated
-WARNING - 2014-07-30 13:07:31,611 - shinyeht logout successfully.
-WARNING - 2014-07-30 13:07:37,061 - shinyeht login into the bugzilla successfully.
-WARNING - 2014-07-30 13:07:43,868 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-30 13:08:25,209 - Python Server is Initiated
-WARNING - 2014-07-30 13:09:43,414 - shinyeht logout successfully.
-WARNING - 2014-07-30 13:09:47,327 - shinyeht login into the bugzilla successfully.
-WARNING - 2014-07-30 13:09:50,856 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-30 13:12:10,291 - Python Server is Initiated
-WARNING - 2014-07-30 13:13:47,236 - Python Server is Initiated
-WARNING - 2014-07-30 13:14:59,907 - Python Server is Initiated
-WARNING - 2014-07-30 13:16:49,840 - Python Server is Initiated
-WARNING - 2014-07-30 13:17:14,911 - Python Server is Initiated
-WARNING - 2014-07-30 13:17:26,158 - Python Server is Initiated
-WARNING - 2014-07-30 13:17:52,355 - Python Server is Initiated
-WARNING - 2014-07-30 13:18:21,354 - Python Server is Initiated
-WARNING - 2014-07-30 13:19:26,851 - Python Server is Initiated
-WARNING - 2014-07-30 13:19:38,197 - Python Server is Initiated
-WARNING - 2014-07-30 13:19:46,067 - Python Server is Initiated
-WARNING - 2014-07-30 13:19:52,780 - shinyeht logout successfully.
-WARNING - 2014-07-30 13:19:55,610 - shinyeht login into the bugzilla successfully.
-WARNING - 2014-07-30 13:19:58,962 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-30 13:20:19,802 - shinyeht processings are not approved since the product name '' is wrong.
-WARNING - 2014-07-30 13:20:19,811 - shinyeht processings are not approved since the version name '' is wrong.
-WARNING - 2014-07-30 13:20:52,887 - Python Server is Initiated
-WARNING - 2014-07-30 13:21:36,333 - Python Server is Initiated
-WARNING - 2014-07-30 13:21:53,747 - Python Server is Initiated
-WARNING - 2014-07-30 13:21:56,211 - shinyeht logout successfully.
-WARNING - 2014-07-30 13:21:58,894 - shinyeht login into the bugzilla successfully.
-WARNING - 2014-07-30 13:22:02,317 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-30 13:23:26,671 - Python Server is Initiated
-WARNING - 2014-07-30 13:23:30,125 - shinyeht logout successfully.
-WARNING - 2014-07-30 13:23:33,130 - shinyeht login into the bugzilla successfully.
-WARNING - 2014-07-30 13:23:36,733 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-30 13:25:16,735 - Python Server is Initiated
-WARNING - 2014-07-30 13:25:22,942 - Python Server is Initiated
-WARNING - 2014-07-30 13:25:26,269 - shinyeht logout successfully.
-WARNING - 2014-07-30 13:25:29,826 - shinyeht login into the bugzilla successfully.
-WARNING - 2014-07-30 13:25:33,213 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-30 13:26:28,588 - Python Server is Initiated
-WARNING - 2014-07-30 13:26:42,692 - Python Server is Initiated
-WARNING - 2014-07-30 13:26:49,740 - Python Server is Initiated
-WARNING - 2014-07-30 13:28:52,312 - Python Server is Initiated
-WARNING - 2014-07-30 13:28:54,380 - Python Server is Initiated
-WARNING - 2014-07-30 13:28:58,532 - shinyeht logout successfully.
-WARNING - 2014-07-30 13:29:02,027 - shinyeht login into the bugzilla successfully.
-WARNING - 2014-07-30 13:29:04,832 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-30 13:31:18,337 - shinyeht processings are not approved since the phase name '' is wrong.
-WARNING - 2014-07-30 13:32:12,149 - Python Server is Initiated
-WARNING - 2014-07-30 13:32:57,595 - Python Server is Initiated
-WARNING - 2014-07-30 13:33:51,153 - Python Server is Initiated
-WARNING - 2014-07-30 13:35:19,962 - Python Server is Initiated
-WARNING - 2014-07-30 13:35:25,756 - shinyeht logout successfully.
-WARNING - 2014-07-30 13:35:28,549 - shinyeht login into the bugzilla successfully.
-WARNING - 2014-07-30 13:35:32,042 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-30 13:35:47,636 - shinyeht processings are not approved since the version name '' is wrong.
-WARNING - 2014-07-30 13:36:14,593 - Python Server is Initiated
-WARNING - 2014-07-30 13:36:17,749 - Python Server is Initiated
-WARNING - 2014-07-30 13:36:29,329 - shinyeht logout successfully.
-WARNING - 2014-07-30 13:36:32,200 - shinyeht login into the bugzilla successfully.
-WARNING - 2014-07-30 13:36:35,609 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-30 13:36:54,379 - shinyeht processings are not approved since the product name '' is wrong.
-WARNING - 2014-07-30 13:37:49,730 - Python Server is Initiated
-WARNING - 2014-07-30 13:37:59,620 - shinyeht logout successfully.
-WARNING - 2014-07-30 13:38:03,925 - shinyeht login into the bugzilla successfully.
-WARNING - 2014-07-30 13:38:07,391 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-30 13:40:49,343 - Python Server is Initiated
-WARNING - 2014-07-30 13:41:01,974 - Python Server is Initiated
-WARNING - 2014-07-30 13:41:04,160 - shinyeht logout successfully.
-WARNING - 2014-07-30 13:41:07,153 - shinyeht login into the bugzilla successfully.
-WARNING - 2014-07-30 13:41:10,878 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-30 13:41:57,108 - shinyeht processings are not approved since the product name 'ffff' is wrong.
-WARNING - 2014-07-30 13:46:14,860 - Python Server is Initiated
-WARNING - 2014-07-30 13:46:17,067 - Python Server is Initiated
-WARNING - 2014-07-30 13:46:23,149 - shinyeht logout successfully.
-WARNING - 2014-07-30 13:46:25,498 - shinyeht login into the bugzilla successfully.
-WARNING - 2014-07-30 13:46:28,807 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-30 13:49:54,116 - Python Server is Initiated
-WARNING - 2014-07-30 13:50:01,571 - shinyeht logout successfully.
-WARNING - 2014-07-30 13:50:04,622 - shinyeht login into the bugzilla successfully.
-WARNING - 2014-07-30 13:50:07,943 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-30 13:51:31,331 - Python Server is Initiated
-WARNING - 2014-07-30 13:51:58,710 - Python Server is Initiated
-WARNING - 2014-07-30 13:52:41,178 - Python Server is Initiated
-WARNING - 2014-07-30 13:52:46,357 - Python Server is Initiated
-WARNING - 2014-07-30 13:53:17,442 - Python Server is Initiated
-WARNING - 2014-07-30 13:53:49,822 - Python Server is Initiated
-WARNING - 2014-07-30 13:53:59,823 - Python Server is Initiated
-WARNING - 2014-07-30 13:54:19,810 - Python Server is Initiated
-WARNING - 2014-07-30 13:54:27,670 - Python Server is Initiated
-WARNING - 2014-07-30 13:54:34,741 - Python Server is Initiated
-WARNING - 2014-07-30 13:54:40,779 - Python Server is Initiated
-WARNING - 2014-07-30 13:57:33,551 - Python Server is Initiated
-WARNING - 2014-07-30 13:57:35,523 - Python Server is Initiated
-WARNING - 2014-07-30 13:57:37,768 - shinyeht logout successfully.
-WARNING - 2014-07-30 13:57:41,783 - shinyeht login into the bugzilla successfully.
-WARNING - 2014-07-30 13:57:45,811 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-30 13:58:42,850 - Python Server is Initiated
-WARNING - 2014-07-30 13:58:47,195 - Python Server is Initiated
-WARNING - 2014-07-30 13:58:50,265 - shinyeht logout successfully.
-WARNING - 2014-07-30 13:58:53,156 - shinyeht login into the bugzilla successfully.
-WARNING - 2014-07-30 13:58:57,377 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-30 14:00:04,885 - Python Server is Initiated
-WARNING - 2014-07-30 14:00:13,179 - Python Server is Initiated
-WARNING - 2014-07-30 14:00:13,525 - shinyeht logout successfully.
-WARNING - 2014-07-30 14:00:20,141 - shinyeht login into the bugzilla successfully.
-WARNING - 2014-07-30 14:00:23,661 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-30 14:02:57,833 - Python Server is Initiated
-WARNING - 2014-07-30 14:03:54,311 - Python Server is Initiated
-WARNING - 2014-07-30 14:06:55,925 - Python Server is Initiated
-WARNING - 2014-07-30 14:07:55,648 - Python Server is Initiated
-WARNING - 2014-07-30 14:08:12,947 - Python Server is Initiated
-WARNING - 2014-07-30 14:09:16,001 - Python Server is Initiated
-WARNING - 2014-07-30 14:09:24,212 - Python Server is Initiated
-WARNING - 2014-07-30 14:09:44,307 - Python Server is Initiated
-WARNING - 2014-07-30 14:09:55,453 - Python Server is Initiated
-WARNING - 2014-07-30 14:10:00,556 - Python Server is Initiated
-WARNING - 2014-07-30 14:11:13,364 - Python Server is Initiated
-WARNING - 2014-07-30 14:12:06,874 - Python Server is Initiated
-WARNING - 2014-07-30 14:12:24,264 - Python Server is Initiated
-WARNING - 2014-07-30 14:12:40,171 - shinyeht logout successfully.
-WARNING - 2014-07-30 14:12:43,082 - shinyeht login into the bugzilla successfully.
-WARNING - 2014-07-30 14:12:46,815 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-30 14:15:33,935 - Python Server is Initiated
-WARNING - 2014-07-30 14:15:40,960 - Python Server is Initiated
-WARNING - 2014-07-30 14:16:00,290 - Python Server is Initiated
-WARNING - 2014-07-30 14:16:05,612 - shinyeht logout successfully.
-WARNING - 2014-07-30 14:16:08,834 - shinyeht login into the bugzilla successfully.
-WARNING - 2014-07-30 14:16:12,074 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-30 14:37:17,106 - Python Server is Initiated
-WARNING - 2014-07-30 14:37:58,554 - Python Server is Initiated
-WARNING - 2014-07-30 19:06:37,086 - Python Server is Initiated
-WARNING - 2014-07-30 19:06:38,908 - Python Server is Initiated
-WARNING - 2014-07-30 19:06:42,933 - shinyeht logout successfully.
-WARNING - 2014-07-30 19:06:46,015 - shinyeht login into the bugzilla successfully.
-WARNING - 2014-07-30 19:06:49,565 - shinyeht queries for assigned_to:letian	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-30 19:07:04,040 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-30 19:08:58,634 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-30 19:09:10,949 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-31 10:10:33,273 - Python Server is Initiated
-WARNING - 2014-07-31 10:10:35,537 - Python Server is Initiated
-WARNING - 2014-07-31 10:10:58,944 - Python Server is Initiated
-WARNING - 2014-07-31 10:11:08,972 - Python Server is Initiated
-WARNING - 2014-07-31 10:12:04,383 - Python Server is Initiated
-WARNING - 2014-07-31 10:12:20,625 - Python Server is Initiated
-WARNING - 2014-07-31 10:12:26,857 - Python Server is Initiated
-WARNING - 2014-07-31 10:19:32,288 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-31 10:19:32,300 - Bugzilla Database Reconnect
-WARNING - 2014-07-31 10:23:12,412 - Python Server is Initiated
-WARNING - 2014-07-31 10:24:46,693 - shinyeht queries for assigned_to:letian	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-31 10:26:06,934 - shinyeht logout successfully.
-WARNING - 2014-07-31 10:26:10,684 - shinyeht login into the bugzilla successfully.
-WARNING - 2014-07-31 10:26:31,068 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:vSphere	 fix_by_version:5.1 U3	 product:.
-WARNING - 2014-07-31 10:26:42,863 - shinyeht add keywords:(cosmetic) to 1285687.
-WARNING - 2014-07-31 10:27:01,967 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-31 10:35:19,103 - Python Server is Initiated
-WARNING - 2014-07-31 10:53:15,323 - Python Server is Initiated
-WARNING - 2014-07-31 10:53:17,923 - Python Server is Initiated
-WARNING - 2014-07-31 11:05:15,520 - Python Server is Initiated
-WARNING - 2014-07-31 11:05:32,961 - Python Server is Initiated
-WARNING - 2014-07-31 11:05:47,406 - Python Server is Initiated
-WARNING - 2014-07-31 11:11:01,622 - Python Server is Initiated
-WARNING - 2014-07-31 11:11:03,768 - Python Server is Initiated
-WARNING - 2014-07-31 11:11:17,945 - Python Server is Initiated
-WARNING - 2014-07-31 11:11:34,034 - Python Server is Initiated
-WARNING - 2014-07-31 11:14:15,748 - Python Server is Initiated
-WARNING - 2014-07-31 11:16:25,264 - Python Server is Initiated
-WARNING - 2014-07-31 11:17:05,675 - Python Server is Initiated
-WARNING - 2014-07-31 11:18:59,736 - Python Server is Initiated
-WARNING - 2014-07-31 11:19:19,058 - Python Server is Initiated
-WARNING - 2014-07-31 11:19:57,987 - Python Server is Initiated
-WARNING - 2014-07-31 11:21:06,894 - Python Server is Initiated
-WARNING - 2014-07-31 11:21:29,145 - Python Server is Initiated
-WARNING - 2014-07-31 11:22:53,130 - Python Server is Initiated
-WARNING - 2014-07-31 11:23:02,295 - Python Server is Initiated
-WARNING - 2014-07-31 11:23:27,588 - Python Server is Initiated
-WARNING - 2014-07-31 11:26:37,501 - Python Server is Initiated
-WARNING - 2014-07-31 11:26:39,476 - Python Server is Initiated
-WARNING - 2014-07-31 11:26:41,701 - shinyeht logout successfully.
-WARNING - 2014-07-31 11:26:44,344 - shinyeht login into the bugzilla successfully.
-WARNING - 2014-07-31 11:30:56,549 - Python Server is Initiated
-WARNING - 2014-07-31 11:31:36,931 - Python Server is Initiated
-WARNING - 2014-07-31 11:31:45,700 - Python Server is Initiated
-WARNING - 2014-07-31 11:33:18,525 - Python Server is Initiated
-WARNING - 2014-07-31 11:33:20,528 - Python Server is Initiated
-WARNING - 2014-07-31 11:34:26,021 - Python Server is Initiated
-WARNING - 2014-07-31 11:34:49,224 - Python Server is Initiated
-WARNING - 2014-07-31 11:35:00,356 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-31 11:35:09,813 - shinyeht login into the bugzilla successfully.
-WARNING - 2014-07-31 11:35:13,806 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-31 11:36:04,187 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:vSphere	 fix_by_version:5.1 U3	 product:.
-WARNING - 2014-07-31 11:38:16,206 - Python Server is Initiated
-WARNING - 2014-07-31 11:39:35,071 - Python Server is Initiated
-WARNING - 2014-07-31 11:39:42,356 - Python Server is Initiated
-WARNING - 2014-07-31 11:39:46,011 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-31 11:40:00,459 - Python Server is Initiated
-WARNING - 2014-07-31 11:40:02,427 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-31 11:40:22,958 - Python Server is Initiated
-WARNING - 2014-07-31 11:40:27,324 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-31 11:40:39,075 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:vSphere	 fix_by_version:5.1 U3	 product:.
-WARNING - 2014-07-31 11:40:48,147 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-31 11:41:57,050 - Python Server is Initiated
-WARNING - 2014-07-31 11:42:02,127 - Python Server is Initiated
-WARNING - 2014-07-31 11:42:09,600 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-31 11:42:24,220 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:vSphere	 fix_by_version:5.1 U3	 product:.
-WARNING - 2014-07-31 11:45:05,005 - Python Server is Initiated
-WARNING - 2014-07-31 11:47:03,127 - Python Server is Initiated
-WARNING - 2014-07-31 11:47:11,287 - Python Server is Initiated
-WARNING - 2014-07-31 11:49:03,537 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-31 11:49:42,301 - shinyeht queries for assigned_to:letian,hillzhao,shinyeht,hxie,chwang	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-31 13:11:17,466 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-31 13:11:17,477 - Bugzilla Database Reconnect
-WARNING - 2014-07-31 13:13:44,876 - shinyeht queries for assigned_to:letian	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-31 13:14:52,687 - shinyeht queries for assigned_to:letian	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-31 13:21:55,250 - shinyeht logout successfully.
-WARNING - 2014-07-31 13:22:10,790 - metric-group fails to login into the bugzilla.
-WARNING - 2014-07-31 13:22:21,378 - metricgroup fails to login into the bugzilla.
-WARNING - 2014-07-31 13:22:29,796 - shinyeht login into the bugzilla successfully.
-WARNING - 2014-07-31 13:22:42,152 - shinyeht logout successfully.
-WARNING - 2014-07-31 13:22:56,742 - fangchiw login into the bugzilla successfully.
-WARNING - 2014-07-31 13:23:54,437 - fangchiw queries for assigned_to:hillzhao,fangchiw,letian,shiyaoy	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-31 13:23:54,543 - Bugzilla Database Reconnect
-WARNING - 2014-07-31 14:44:43,743 - letian login into the bugzilla successfully.
-WARNING - 2014-07-31 14:44:49,016 - fangchiw queries for assigned_to:hillzhao,fangchiw,letian,shiyaoy	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-31 14:44:49,045 - Bugzilla Database Reconnect
-WARNING - 2014-07-31 14:48:45,819 - letian queries for assigned_to:	 fix_by_product:	 fix_by_version:5.1 u3	 product:.
-WARNING - 2014-07-31 14:48:45,821 - letian queries are not approved since the profile name is unfindable.
-WARNING - 2014-07-31 14:49:22,891 - letian queries for assigned_to:letian,fangchiw,shiyaoy	 fix_by_product:	 fix_by_version:5.1 u3	 product:.
-WARNING - 2014-07-31 14:49:22,931 - letian queries are not approved since there is more or less than one parameter in product column when version parameter is set
-WARNING - 2014-07-31 14:50:04,270 - letian queries for assigned_to:letian,fangchiw,letian	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-31 14:50:04,297 - letian queries are not approved since the profile name is unfindable.
-WARNING - 2014-07-31 14:50:12,839 - letian queries for assigned_to:letian	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-31 14:52:09,485 - fangchiw logout successfully.
-WARNING - 2014-07-31 14:52:12,813 - shinyeht login into the bugzilla successfully.
-WARNING - 2014-07-31 14:52:32,815 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-31 14:53:23,033 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-31 14:53:39,209 - shinyeht queries for assigned_to:letian	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-31 14:59:03,364 - Python Server is Initiated
-WARNING - 2014-07-31 14:59:25,731 - Python Server is Initiated
-WARNING - 2014-07-31 14:59:57,761 - Python Server is Initiated
-WARNING - 2014-07-31 15:00:36,237 - Python Server is Initiated
-WARNING - 2014-07-31 15:01:02,885 - Python Server is Initiated
-WARNING - 2014-07-31 15:01:45,428 - Python Server is Initiated
-WARNING - 2014-07-31 15:02:12,673 - Python Server is Initiated
-WARNING - 2014-07-31 15:02:30,888 - Python Server is Initiated
-WARNING - 2014-07-31 15:02:48,285 - Python Server is Initiated
-WARNING - 2014-07-31 15:03:22,028 - Python Server is Initiated
-WARNING - 2014-07-31 15:04:08,572 - Python Server is Initiated
-WARNING - 2014-07-31 15:08:47,527 - Python Server is Initiated
-WARNING - 2014-07-31 15:10:12,890 - Python Server is Initiated
-WARNING - 2014-07-31 15:10:15,029 - Python Server is Initiated
-WARNING - 2014-07-31 15:10:41,564 - Python Server is Initiated
-WARNING - 2014-07-31 15:10:50,760 - Python Server is Initiated
-WARNING - 2014-07-31 15:11:35,678 - Python Server is Initiated
-WARNING - 2014-07-31 15:20:05,712 - Python Server is Initiated
-WARNING - 2014-07-31 15:20:08,875 - Python Server is Initiated
-WARNING - 2014-07-31 15:20:14,139 - Python Server is Initiated
-WARNING - 2014-07-31 15:20:19,304 - Python Server is Initiated
-WARNING - 2014-07-31 15:29:30,185 - Python Server is Initiated
-WARNING - 2014-07-31 16:44:13,297 - Python Server is Initiated
-WARNING - 2014-07-31 16:44:21,650 - Python Server is Initiated
-WARNING - 2014-07-31 16:44:28,934 - Python Server is Initiated
-WARNING - 2014-07-31 16:45:06,661 - Python Server is Initiated
-WARNING - 2014-07-31 16:45:28,009 - Python Server is Initiated
-WARNING - 2014-07-31 16:45:36,353 - Python Server is Initiated
-WARNING - 2014-07-31 16:45:41,554 - Python Server is Initiated
-WARNING - 2014-07-31 16:46:04,018 - Python Server is Initiated
-WARNING - 2014-07-31 16:46:10,775 - Python Server is Initiated
-WARNING - 2014-07-31 17:22:28,293 - Python Server is Initiated
-WARNING - 2014-07-31 17:23:08,661 - Python Server is Initiated
-WARNING - 2014-07-31 17:23:21,786 - Python Server is Initiated
-WARNING - 2014-07-31 17:23:47,649 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:vSphere	 fix_by_version:5.1 U3	 product:.
-WARNING - 2014-07-31 17:25:51,659 - Python Server is Initiated
-WARNING - 2014-07-31 17:25:57,812 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:vSphere	 fix_by_version:5.1 U3	 product:.
-WARNING - 2014-07-31 17:30:22,830 - Python Server is Initiated
-WARNING - 2014-07-31 17:30:30,264 - Python Server is Initiated
-WARNING - 2014-07-31 17:32:09,804 - Python Server is Initiated
-WARNING - 2014-07-31 17:32:12,967 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:vSphere	 fix_by_version:5.1 U3	 product:.
-WARNING - 2014-07-31 17:33:32,685 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:vSphere	 fix_by_version:5.1 U3	 product:.
-WARNING - 2014-07-31 17:34:07,039 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:vSphere	 fix_by_version:5.1 U3	 product:.
-WARNING - 2014-07-31 17:35:00,445 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:vSphere	 fix_by_version:5.1 U3	 product:.
-WARNING - 2014-07-31 17:35:40,838 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:vSphere	 fix_by_version:5.1 U3	 product:.
-WARNING - 2014-07-31 17:37:25,283 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:vSphere	 fix_by_version:5.1 U3b	 product:.
-WARNING - 2014-07-31 17:37:32,134 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:vSphere	 fix_by_version:5.1 U3	 product:.
-WARNING - 2014-07-31 17:37:48,074 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:ESX	 fix_by_version:5.0 EP6	 product:.
-WARNING - 2014-07-31 17:37:53,809 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:ESX	 fix_by_version:5.0 EP3	 product:.
-WARNING - 2014-07-31 17:38:02,103 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:ESX	 fix_by_version:5.0 U3	 product:.
-WARNING - 2014-07-31 17:42:10,873 - Python Server is Initiated
-WARNING - 2014-07-31 17:42:45,154 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:ESX	 fix_by_version:5.0 U3	 product:.
-WARNING - 2014-07-31 17:43:53,047 - Python Server is Initiated
-WARNING - 2014-07-31 17:44:11,151 - Python Server is Initiated
-WARNING - 2014-07-31 17:44:34,031 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:ESX	 fix_by_version:5.0 U3	 product:.
-WARNING - 2014-07-31 17:44:39,781 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:ESX	 fix_by_version:5.0 U3	 product:.
-WARNING - 2014-07-31 17:45:55,273 - Python Server is Initiated
-WARNING - 2014-07-31 17:45:58,476 - Python Server is Initiated
-WARNING - 2014-07-31 17:45:59,508 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:ESX	 fix_by_version:5.0 U3	 product:.
-WARNING - 2014-07-31 17:46:46,027 - Python Server is Initiated
-WARNING - 2014-07-31 17:48:13,956 - Python Server is Initiated
-WARNING - 2014-07-31 17:49:16,565 - Python Server is Initiated
-WARNING - 2014-07-31 17:49:35,814 - Python Server is Initiated
-WARNING - 2014-07-31 17:49:39,859 - Python Server is Initiated
-WARNING - 2014-07-31 17:50:02,411 - Python Server is Initiated
-WARNING - 2014-07-31 17:50:16,607 - Python Server is Initiated
-WARNING - 2014-07-31 17:50:28,669 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:ESX	 fix_by_version:	 product:.
-WARNING - 2014-07-31 17:50:43,003 - Python Server is Initiated
-WARNING - 2014-07-31 17:50:52,091 - Python Server is Initiated
-WARNING - 2014-07-31 17:51:33,709 - Python Server is Initiated
-WARNING - 2014-07-31 17:52:02,120 - Python Server is Initiated
-WARNING - 2014-07-31 17:52:04,576 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:ESX	 fix_by_version:	 product:.
-WARNING - 2014-07-31 17:52:04,742 - Bugzilla Database Reconnect
-WARNING - 2014-07-31 17:52:25,532 - Python Server is Initiated
-WARNING - 2014-07-31 17:52:26,693 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:ESX	 fix_by_version:	 product:.
-WARNING - 2014-07-31 17:52:26,868 - Bugzilla Database Reconnect
-WARNING - 2014-07-31 17:52:48,975 - Python Server is Initiated
-WARNING - 2014-07-31 17:52:55,435 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:ESX	 fix_by_version:	 product:.
-WARNING - 2014-07-31 17:52:55,602 - Bugzilla Database Reconnect
-WARNING - 2014-07-31 17:53:41,637 - Python Server is Initiated
-WARNING - 2014-07-31 17:53:52,913 - Python Server is Initiated
-WARNING - 2014-07-31 17:53:54,795 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:ESX	 fix_by_version:	 product:.
-WARNING - 2014-07-31 17:53:54,979 - Bugzilla Database Reconnect
-WARNING - 2014-07-31 17:54:40,718 - Python Server is Initiated
-WARNING - 2014-07-31 17:58:32,193 - Python Server is Initiated
-WARNING - 2014-07-31 17:58:34,365 - Python Server is Initiated
-WARNING - 2014-07-31 17:58:41,522 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:ESX	 fix_by_version:	 product:.
-WARNING - 2014-07-31 17:58:41,775 - Bugzilla Database Reconnect
-WARNING - 2014-07-31 17:59:03,134 - Python Server is Initiated
-WARNING - 2014-07-31 17:59:04,560 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:ESX	 fix_by_version:	 product:.
-WARNING - 2014-07-31 17:59:13,712 - shinyeht queries for assigned_to:letian	 fix_by_product:ESX	 fix_by_version:	 product:.
-WARNING - 2014-07-31 17:59:18,889 - shinyeht queries for assigned_to:letian	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-31 17:59:19,148 - Bugzilla Database Reconnect
-WARNING - 2014-07-31 18:01:04,822 - Python Server is Initiated
-WARNING - 2014-07-31 18:01:07,209 - shinyeht queries for assigned_to:letian	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-31 18:01:08,397 - Bugzilla Database Reconnect
-WARNING - 2014-07-31 18:01:46,457 - Python Server is Initiated
-WARNING - 2014-07-31 18:01:50,953 - shinyeht queries for assigned_to:letian	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-31 18:01:51,124 - Bugzilla Database Reconnect
-WARNING - 2014-07-31 18:02:05,704 - Python Server is Initiated
-WARNING - 2014-07-31 18:02:09,203 - shinyeht queries for assigned_to:letian	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-31 18:02:09,409 - Bugzilla Database Reconnect
-WARNING - 2014-07-31 18:02:41,006 - Python Server is Initiated
-WARNING - 2014-07-31 18:03:16,653 - Python Server is Initiated
-WARNING - 2014-07-31 18:03:20,608 - shinyeht queries for assigned_to:letian	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-31 18:03:20,852 - Bugzilla Database Reconnect
-WARNING - 2014-07-31 18:03:36,414 - Python Server is Initiated
-WARNING - 2014-07-31 18:03:42,191 - shinyeht queries for assigned_to:letian	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-31 18:03:42,473 - Bugzilla Database Reconnect
-WARNING - 2014-07-31 18:04:57,764 - Python Server is Initiated
-WARNING - 2014-07-31 18:04:58,693 - shinyeht queries for assigned_to:letian	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-31 18:05:11,619 - shinyeht queries for assigned_to:letian	 fix_by_product:vsphere	 fix_by_version:	 product:.
-WARNING - 2014-07-31 18:05:29,674 - shinyeht queries for assigned_to:letian	 fix_by_product:vsphere	 fix_by_version:5.1 U3	 product:.
-WARNING - 2014-07-31 18:06:14,737 - Python Server is Initiated
-WARNING - 2014-07-31 18:07:12,659 - Python Server is Initiated
-WARNING - 2014-07-31 18:07:16,860 - Python Server is Initiated
-WARNING - 2014-07-31 18:11:26,721 - shinyeht queries for assigned_to:letian	 fix_by_product:vsphere	 fix_by_version:5.1 U3	 product:.
-WARNING - 2014-07-31 18:11:53,843 - shinyeht queries for assigned_to:letian	 fix_by_product:vSphere	 fix_by_version:	 product:.
-WARNING - 2014-07-31 18:12:08,805 - shinyeht queries for assigned_to:letian	 fix_by_product:vSphere	 fix_by_version:5.1 U3	 product:.
-WARNING - 2014-07-31 18:12:31,508 - shinyeht queries for assigned_to:letian	 fix_by_product:vSphere	 fix_by_version:5.1 U3	 product:.
-WARNING - 2014-07-31 18:13:47,212 - shinyeht queries for assigned_to:letian	 fix_by_product:vSphere	 fix_by_version:5.1 U3	 product:.
-WARNING - 2014-07-31 18:14:01,568 - shinyeht queries for assigned_to:letian	 fix_by_product:	 fix_by_version:	 product:.
-WARNING - 2014-07-31 18:14:27,311 - shinyeht queries for assigned_to:letian	 fix_by_product:ESX	 fix_by_version:5.0 U3	 product:.
-WARNING - 2014-08-01 10:12:55,399 - fangchiw login into the bugzilla successfully.
+WARNING - 2014-08-05 10:34:00,219 - Python Server is Initiated
+WARNING - 2014-08-05 10:34:02,270 - Python Server is Initiated
+WARNING - 2014-08-05 10:35:32,596 - Python Server is Initiated
+WARNING - 2014-08-05 10:36:26,340 - Python Server is Initiated
+WARNING - 2014-08-05 10:36:56,906 - Python Server is Initiated
+WARNING - 2014-08-05 10:38:03,851 - Python Server is Initiated
+WARNING - 2014-08-05 10:38:12,096 - Python Server is Initiated
+WARNING - 2014-08-05 10:38:35,423 - Python Server is Initiated
+WARNING - 2014-08-05 10:39:18,326 - Python Server is Initiated
+WARNING - 2014-08-05 10:39:20,803 - Python Server is Initiated
+WARNING - 2014-08-05 10:39:39,268 - Python Server is Initiated
+WARNING - 2014-08-05 10:40:57,280 - Python Server is Initiated
+WARNING - 2014-08-05 10:42:14,453 - Python Server is Initiated
+WARNING - 2014-08-05 10:43:46,712 - Python Server is Initiated
+WARNING - 2014-08-05 10:44:17,575 - Python Server is Initiated
+WARNING - 2014-08-05 10:44:42,006 - Python Server is Initiated
+WARNING - 2014-08-05 10:45:06,576 - Python Server is Initiated
+WARNING - 2014-08-05 10:45:34,871 - Python Server is Initiated
+WARNING - 2014-08-05 10:49:39,459 - Python Server is Initiated
+WARNING - 2014-08-05 10:49:45,370 - Python Server is Initiated
+WARNING - 2014-08-05 10:49:54,358 - Python Server is Initiated
+WARNING - 2014-08-05 10:49:57,267 - Python Server is Initiated
+WARNING - 2014-08-05 10:50:00,275 - Python Server is Initiated
+WARNING - 2014-08-05 10:50:11,228 - Python Server is Initiated
+WARNING - 2014-08-05 10:50:45,450 - Python Server is Initiated
+WARNING - 2014-08-05 10:51:37,766 - Python Server is Initiated
+WARNING - 2014-08-05 10:52:07,154 - Python Server is Initiated
+WARNING - 2014-08-05 10:52:39,486 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
+WARNING - 2014-08-05 10:53:38,085 - Python Server is Initiated
+WARNING - 2014-08-05 10:53:57,324 - Python Server is Initiated
+WARNING - 2014-08-05 10:54:37,463 - Python Server is Initiated
+WARNING - 2014-08-05 10:55:14,643 - Python Server is Initiated
+WARNING - 2014-08-05 10:56:11,280 - shinyeht logout successfully.
+WARNING - 2014-08-05 10:56:17,629 - shinyeht login into the bugzilla successfully.
+WARNING - 2014-08-05 10:56:22,712 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:	 fix_by_version:	 product:.
+WARNING - 2014-08-05 11:05:33,060 - Python Server is Initiated
+WARNING - 2014-08-05 11:07:51,499 - Python Server is Initiated
+WARNING - 2014-08-05 11:07:53,431 - Python Server is Initiated
+WARNING - 2014-08-05 11:07:54,757 - shinyeht logout successfully.
+WARNING - 2014-08-05 11:07:58,060 - shinyeht login into the bugzilla successfully.
+WARNING - 2014-08-05 11:09:04,374 - Python Server is Initiated
+WARNING - 2014-08-05 11:09:07,017 - shinyeht logout successfully.
+WARNING - 2014-08-05 11:09:09,964 - shinyeht login into the bugzilla successfully.
+WARNING - 2014-08-05 11:09:29,799 - Python Server is Initiated
+WARNING - 2014-08-05 11:09:39,915 - Python Server is Initiated
+WARNING - 2014-08-05 11:09:40,396 - shinyeht logout successfully.
+WARNING - 2014-08-05 11:09:45,127 - shinyeht login into the bugzilla successfully.
+WARNING - 2014-08-05 11:09:59,180 - Python Server is Initiated
+WARNING - 2014-08-05 11:10:52,795 - Python Server is Initiated
+WARNING - 2014-08-05 11:11:00,343 - shinyeht logout successfully.
+WARNING - 2014-08-05 11:11:03,598 - shinyeht login into the bugzilla successfully.
+WARNING - 2014-08-05 11:11:30,048 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:vSphere	 fix_by_version:5.5 U3	 product:.
+WARNING - 2014-08-05 11:18:08,516 - Python Server is Initiated
+WARNING - 2014-08-05 11:24:03,909 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:vSphere	 fix_by_version:	 product:.
+WARNING - 2014-08-05 11:24:03,918 - Bugzilla Database Reconnect
+WARNING - 2014-08-05 11:24:35,605 - shinyeht logout successfully.
+WARNING - 2014-08-05 11:24:38,287 - shinyeht login into the bugzilla successfully.
+WARNING - 2014-08-05 11:25:37,546 - shinyeht logout successfully.
+WARNING - 2014-08-05 11:25:45,556 - shinyeht login into the bugzilla successfully.
+WARNING - 2014-08-05 11:26:55,474 - Python Server is Initiated
+WARNING - 2014-08-05 11:27:29,892 - Python Server is Initiated
+WARNING - 2014-08-05 11:27:32,100 - Python Server is Initiated
+WARNING - 2014-08-05 11:36:39,431 - Python Server is Initiated
+WARNING - 2014-08-05 13:05:11,704 - Python Server is Initiated
+WARNING - 2014-08-05 13:42:16,558 - Python Server is Initiated
+WARNING - 2014-08-05 13:42:18,664 - Python Server is Initiated
+WARNING - 2014-08-05 13:46:50,016 - Python Server is Initiated
+WARNING - 2014-08-05 13:46:51,993 - Python Server is Initiated
+WARNING - 2014-08-05 13:49:09,554 - Python Server is Initiated
+WARNING - 2014-08-05 13:50:54,612 - Python Server is Initiated
+WARNING - 2014-08-05 13:51:01,555 - Python Server is Initiated
+WARNING - 2014-08-05 13:57:21,474 - Python Server is Initiated
+WARNING - 2014-08-05 13:57:23,425 - Python Server is Initiated
+WARNING - 2014-08-05 13:57:47,826 - Python Server is Initiated
+WARNING - 2014-08-05 13:58:04,043 - Python Server is Initiated
+WARNING - 2014-08-05 13:58:19,985 - Python Server is Initiated
+WARNING - 2014-08-05 13:59:37,092 - Python Server is Initiated
+WARNING - 2014-08-05 14:02:01,390 - Python Server is Initiated
+WARNING - 2014-08-05 14:02:04,567 - Python Server is Initiated
+WARNING - 2014-08-05 14:02:31,851 - Python Server is Initiated
+WARNING - 2014-08-05 14:03:03,162 - Python Server is Initiated
+WARNING - 2014-08-05 14:03:54,635 - Python Server is Initiated
+WARNING - 2014-08-05 14:03:56,473 - Python Server is Initiated
+WARNING - 2014-08-05 14:07:07,011 - Python Server is Initiated
+WARNING - 2014-08-05 14:08:36,180 - Python Server is Initiated
+WARNING - 2014-08-05 14:08:43,398 - Python Server is Initiated
+WARNING - 2014-08-05 14:09:54,907 - Python Server is Initiated
+WARNING - 2014-08-05 14:09:57,979 - Python Server is Initiated
+WARNING - 2014-08-05 14:10:16,175 - Python Server is Initiated
+WARNING - 2014-08-05 14:10:44,460 - Python Server is Initiated
+WARNING - 2014-08-05 14:10:57,678 - Python Server is Initiated
+WARNING - 2014-08-05 14:12:13,418 - Python Server is Initiated
+WARNING - 2014-08-05 14:12:15,445 - Python Server is Initiated
+WARNING - 2014-08-05 14:13:55,693 - Python Server is Initiated
+WARNING - 2014-08-05 14:13:58,124 - Python Server is Initiated
+WARNING - 2014-08-05 14:14:23,625 - Python Server is Initiated
+WARNING - 2014-08-05 14:14:39,994 - Python Server is Initiated
+WARNING - 2014-08-05 14:14:43,191 - Python Server is Initiated
+WARNING - 2014-08-05 14:14:48,347 - Python Server is Initiated
+WARNING - 2014-08-05 14:15:05,560 - Python Server is Initiated
+WARNING - 2014-08-05 14:15:10,793 - Python Server is Initiated
+WARNING - 2014-08-05 14:26:06,800 - Python Server is Initiated
+WARNING - 2014-08-05 14:41:08,778 - Python Server is Initiated
+WARNING - 2014-08-05 14:48:34,988 - Python Server is Initiated
+WARNING - 2014-08-05 14:48:37,080 - Python Server is Initiated
+WARNING - 2014-08-05 14:50:52,497 - Python Server is Initiated
+WARNING - 2014-08-05 14:51:07,676 - Python Server is Initiated
+WARNING - 2014-08-05 14:51:12,999 - Python Server is Initiated
+WARNING - 2014-08-05 14:51:56,770 - Python Server is Initiated
+WARNING - 2014-08-05 14:52:49,442 - Python Server is Initiated
+WARNING - 2014-08-05 14:53:19,824 - Python Server is Initiated
+WARNING - 2014-08-05 14:53:52,113 - Python Server is Initiated
+WARNING - 2014-08-05 14:54:12,430 - Python Server is Initiated
+WARNING - 2014-08-05 14:55:44,518 - Python Server is Initiated
+WARNING - 2014-08-05 14:55:46,375 - Python Server is Initiated
+WARNING - 2014-08-05 14:56:59,052 - Python Server is Initiated
+WARNING - 2014-08-05 14:57:18,475 - Python Server is Initiated
+WARNING - 2014-08-05 15:03:27,394 - Python Server is Initiated
+WARNING - 2014-08-05 15:03:29,406 - Python Server is Initiated
+WARNING - 2014-08-05 15:04:31,008 - Python Server is Initiated
+WARNING - 2014-08-05 15:04:37,018 - Python Server is Initiated
+WARNING - 2014-08-05 15:04:42,328 - Python Server is Initiated
+WARNING - 2014-08-05 16:04:36,981 - Python Server is Initiated
+WARNING - 2014-08-05 16:05:38,796 - Python Server is Initiated
+WARNING - 2014-08-05 16:05:50,193 - Python Server is Initiated
+WARNING - 2014-08-05 16:06:36,883 - Python Server is Initiated
+WARNING - 2014-08-05 16:06:41,194 - Python Server is Initiated
+WARNING - 2014-08-05 16:06:48,367 - Python Server is Initiated
+WARNING - 2014-08-05 16:06:55,562 - shinyeht queries for assigned_to:shinyeht	 fix_by_product:vSphere	 fix_by_version:5.5 U3	 product:.
+WARNING - 2014-08-05 16:07:14,553 - Python Server is Initiated
+WARNING - 2014-08-05 16:07:57,935 - Python Server is Initiated
+WARNING - 2014-08-05 16:08:16,002 - shinyeht queries for assigned_to:shinyeht,letian,hillzhao	 fix_by_product:	 fix_by_version:	 product:.
+WARNING - 2014-08-05 16:10:12,512 - Python Server is Initiated
+WARNING - 2014-08-05 16:10:25,821 - Python Server is Initiated
+WARNING - 2014-08-05 16:10:32,148 - Python Server is Initiated
+WARNING - 2014-08-05 16:11:04,669 - Python Server is Initiated
+WARNING - 2014-08-05 16:11:25,129 - shinyeht queries for assigned_to:shinyeht,hillzhao,letian	 fix_by_product:vSphere	 fix_by_version:	 product:.
+WARNING - 2014-08-05 16:12:35,861 - Python Server is Initiated
+WARNING - 2014-08-05 16:12:37,289 - shinyeht queries for assigned_to:shinyeht,hillzhao,letian	 fix_by_product:vSphere	 fix_by_version:	 product:.
+WARNING - 2014-08-05 16:13:02,342 - Python Server is Initiated
+WARNING - 2014-08-05 16:13:06,017 - shinyeht queries for assigned_to:shinyeht,hillzhao,letian	 fix_by_product:vSphere	 fix_by_version:	 product:.
+WARNING - 2014-08-05 16:13:43,252 - Python Server is Initiated
+WARNING - 2014-08-05 16:14:34,775 - Python Server is Initiated
+WARNING - 2014-08-05 16:14:58,109 - Python Server is Initiated
+WARNING - 2014-08-05 16:15:16,406 - Python Server is Initiated
+WARNING - 2014-08-05 16:20:38,392 - Python Server is Initiated
+WARNING - 2014-08-05 16:20:40,359 - Python Server is Initiated
+WARNING - 2014-08-05 16:21:53,297 - shinyeht queries for assigned_to:shinyeht,letian,cpd-platform,mkang,hllzhao,shanpeic	 fix_by_product:	 fix_by_version:	 product:.
+WARNING - 2014-08-05 16:21:53,324 - shinyeht queries are not approved since the profile name is unfindable.
+WARNING - 2014-08-05 16:22:13,247 - Python Server is Initiated
+WARNING - 2014-08-05 16:22:14,036 - shinyeht queries for assigned_to:shinyeht,letian,cpd-platform,mkang,hllzhao,shanpeic	 fix_by_product:	 fix_by_version:	 product:.
+WARNING - 2014-08-05 16:22:14,042 - shinyeht queries are not approved since the profile name is unfindable.
+WARNING - 2014-08-05 16:22:34,426 - Python Server is Initiated
+WARNING - 2014-08-05 16:22:37,645 - shinyeht queries for assigned_to:shinyeht,letian,cpd-platform,mkang,hllzhao,shanpeic	 fix_by_product:	 fix_by_version:	 product:.
+WARNING - 2014-08-05 16:22:37,648 - shinyeht queries are not approved since the profile name is unfindable.
+WARNING - 2014-08-05 16:23:39,253 - Python Server is Initiated
+WARNING - 2014-08-05 16:23:42,322 - shinyeht queries for assigned_to:shinyeht,letian,cpd-platform,mkang,hllzhao,shanpeic	 fix_by_product:	 fix_by_version:	 product:.
+WARNING - 2014-08-05 16:23:42,328 - shinyeht queries are not approved since the profile name is unfindable.
+WARNING - 2014-08-05 16:24:54,154 - Python Server is Initiated
+WARNING - 2014-08-05 16:25:10,591 - shinyeht queries for assigned_to:shinyeht,letian,cpd-platform,mkang,hllzhao,shanpeic	 fix_by_product:	 fix_by_version:	 product:.
+WARNING - 2014-08-05 16:25:10,594 - shinyeht queries are not approved since the profile name is unfindable.
+WARNING - 2014-08-05 16:26:03,486 - shinyeht queries for assigned_to:shinyeht,letian,cpd-platform,hillzhao,shanpeic,mkang, hillzhao	 fix_by_product:	 fix_by_version:	 product:.
+WARNING - 2014-08-05 16:26:03,510 - shinyeht queries are not approved since the profile name is unfindable.
+WARNING - 2014-08-05 16:27:27,904 - Python Server is Initiated
+WARNING - 2014-08-05 16:27:37,402 - Python Server is Initiated
+WARNING - 2014-08-05 16:27:59,846 - Python Server is Initiated
+WARNING - 2014-08-05 16:28:06,005 - Python Server is Initiated
+WARNING - 2014-08-05 16:28:16,241 - Python Server is Initiated
+WARNING - 2014-08-05 16:28:23,603 - Python Server is Initiated
+WARNING - 2014-08-05 16:28:29,594 - Python Server is Initiated
+WARNING - 2014-08-05 16:28:54,983 - Python Server is Initiated
+WARNING - 2014-08-05 16:29:06,150 - Python Server is Initiated
+WARNING - 2014-08-05 16:29:19,442 - Python Server is Initiated
+WARNING - 2014-08-05 16:29:54,268 - Python Server is Initiated
+WARNING - 2014-08-05 16:29:57,199 - shinyeht queries for assigned_to:shinyeht,letian,cpd-platform,hillzhao,shanpeic,mkang, hillzhao	 fix_by_product:	 fix_by_version:	 product:.
+WARNING - 2014-08-05 16:31:05,994 - Python Server is Initiated
+WARNING - 2014-08-05 16:31:08,192 - shinyeht queries for assigned_to:shinyeht,letian,cpd-platform,hillzhao,shanpeic,mkang, hillzhao	 fix_by_product:	 fix_by_version:	 product:.
+WARNING - 2014-08-05 16:31:21,269 - Python Server is Initiated
+WARNING - 2014-08-05 16:31:24,661 - shinyeht queries for assigned_to:shinyeht,letian,cpd-platform,hillzhao,shanpeic,mkang, hillzhao	 fix_by_product:	 fix_by_version:	 product:.
+WARNING - 2014-08-05 16:31:24,668 - shinyeht queries are not approved since the profile name is unfindable.
+WARNING - 2014-08-05 16:31:51,788 - Python Server is Initiated
+WARNING - 2014-08-05 16:31:53,740 - shinyeht queries for assigned_to:shinyeht,letian,cpd-platform,hillzhao,shanpeic,mkang, hillzhao	 fix_by_product:	 fix_by_version:	 product:.
+WARNING - 2014-08-05 16:31:53,747 - shinyeht queries are not approved since the profile name is unfindable.
+WARNING - 2014-08-05 16:32:23,169 - Python Server is Initiated
+WARNING - 2014-08-05 16:32:41,350 - Python Server is Initiated
+WARNING - 2014-08-05 16:33:16,583 - Python Server is Initiated
+WARNING - 2014-08-05 16:33:18,671 - Python Server is Initiated
+WARNING - 2014-08-05 16:33:20,867 - shinyeht queries for assigned_to:shinyeht,letian,cpd-platform,hillzhao,shanpeic,mkang, hillzhao	 fix_by_product:	 fix_by_version:	 product:.
+WARNING - 2014-08-05 16:33:20,872 - shinyeht queries are not approved since the profile name is unfindable.
+WARNING - 2014-08-05 16:33:25,654 - shinyeht queries for assigned_to:shinyeht,letian,cpd-platform,hillzhao,shanpeic,mkang, hillzhao	 fix_by_product:	 fix_by_version:	 product:.
+WARNING - 2014-08-05 16:33:25,675 - shinyeht queries are not approved since the profile name is unfindable.
+WARNING - 2014-08-05 16:33:40,074 - Python Server is Initiated
+WARNING - 2014-08-05 16:33:51,301 - Python Server is Initiated
+WARNING - 2014-08-05 16:33:52,576 - shinyeht queries for assigned_to:shinyeht,letian,cpd-platform,hillzhao,shanpeic,mkang, hillzhao	 fix_by_product:	 fix_by_version:	 product:.
+WARNING - 2014-08-05 16:33:52,581 - shinyeht queries are not approved since the profile name is unfindable.
+WARNING - 2014-08-05 16:34:43,908 - Python Server is Initiated
+WARNING - 2014-08-05 16:34:45,613 - shinyeht queries for assigned_to:shinyeht,letian,cpd-platform,shanpeic,mkang, hillzhao,hillzhao	 fix_by_product:	 fix_by_version:	 product:.
+WARNING - 2014-08-05 16:34:45,636 - shinyeht queries are not approved since the profile name is unfindable.
+WARNING - 2014-08-05 16:35:24,826 - Python Server is Initiated
+WARNING - 2014-08-05 16:35:26,547 - shinyeht queries for assigned_to:shinyeht,letian,cpd-platform,shanpeic,mkang, hillzhao,hillzhao	 fix_by_product:	 fix_by_version:	 product:.
+WARNING - 2014-08-05 16:35:26,553 - shinyeht queries are not approved since the profile name is unfindable.
+WARNING - 2014-08-05 16:35:39,286 - Python Server is Initiated
+WARNING - 2014-08-05 16:35:42,379 - shinyeht queries for assigned_to:shinyeht,letian,cpd-platform,shanpeic,mkang, hillzhao,hillzhao	 fix_by_product:	 fix_by_version:	 product:.
+WARNING - 2014-08-05 16:35:42,384 - shinyeht queries are not approved since the profile name is unfindable.
+WARNING - 2014-08-05 16:36:33,911 - Python Server is Initiated
+WARNING - 2014-08-05 16:36:35,942 - shinyeht queries for assigned_to:shinyeht,letian,cpd-platform,shanpeic,mkang, hillzhao,hillzhao	 fix_by_product:	 fix_by_version:	 product:.
+WARNING - 2014-08-05 16:36:35,950 - shinyeht queries are not approved since the profile name is unfindable.
+WARNING - 2014-08-05 16:38:06,149 - Python Server is Initiated
+WARNING - 2014-08-05 16:38:51,556 - Python Server is Initiated
+WARNING - 2014-08-05 16:38:53,776 - Python Server is Initiated
+WARNING - 2014-08-05 16:39:08,111 - Python Server is Initiated
+WARNING - 2014-08-05 16:39:13,243 - Python Server is Initiated
+WARNING - 2014-08-05 16:39:26,500 - Python Server is Initiated
+WARNING - 2014-08-05 16:39:29,563 - shinyeht queries for assigned_to:mkang,shanpeic,letian, hillzhao,hillzhao,cpd-platform,shinyeht	 fix_by_product:	 fix_by_version:	 product:.
+WARNING - 2014-08-05 16:39:29,614 - shinyeht queries are not approved since the profile name is unfindable.
+WARNING - 2014-08-05 16:40:18,061 - Python Server is Initiated
+WARNING - 2014-08-05 16:41:50,173 - Python Server is Initiated
+WARNING - 2014-08-05 16:41:52,078 - Python Server is Initiated
+WARNING - 2014-08-05 16:41:54,385 - shinyeht queries for assigned_to:mkang,shanpeic,letian,hillzhao,cpd-platform,shinyeht	 fix_by_product:	 fix_by_version:	 product:.
+WARNING - 2014-08-05 16:41:55,449 - shinyeht queries for assigned_to:mkang,shanpeic,letian,hillzhao,cpd-platform,shinyeht	 fix_by_product:	 fix_by_version:	 product:.
+WARNING - 2014-08-05 16:42:23,385 - shinyeht queries for assigned_to:test1	 fix_by_product:vSphere	 fix_by_version:	 product:.
+WARNING - 2014-08-05 16:42:23,406 - shinyeht queries are not approved since the profile name is unfindable.
+WARNING - 2014-08-05 16:42:37,530 - Python Server is Initiated
+WARNING - 2014-08-05 16:42:51,597 - Python Server is Initiated
+WARNING - 2014-08-05 16:43:03,711 - Python Server is Initiated
+WARNING - 2014-08-05 16:43:07,708 - Python Server is Initiated
+WARNING - 2014-08-05 16:43:26,803 - Python Server is Initiated
+WARNING - 2014-08-05 16:43:29,482 - shinyeht queries for assigned_to:ejklqwejrklqwer	 fix_by_product:	 fix_by_version:	 product:.
+WARNING - 2014-08-05 16:43:29,501 - shinyeht queries are not approved since the profile name is unfindable.
+WARNING - 2014-08-05 16:44:03,267 - Python Server is Initiated
+WARNING - 2014-08-05 16:44:03,875 - shinyeht queries for assigned_to:asdfasdfasdf	 fix_by_product:	 fix_by_version:	 product:.
+WARNING - 2014-08-05 16:44:03,895 - shinyeht queries are not approved since the profile name is unfindable.
+WARNING - 2014-08-05 16:44:12,355 - Python Server is Initiated
+WARNING - 2014-08-05 16:44:23,654 - Python Server is Initiated
+WARNING - 2014-08-05 16:44:27,214 - shinyeht queries for assigned_to:qwerqwer	 fix_by_product:	 fix_by_version:	 product:.
+WARNING - 2014-08-05 16:44:27,240 - shinyeht queries are not approved since the profile name is unfindable.
+WARNING - 2014-08-05 16:44:49,695 - Python Server is Initiated
+WARNING - 2014-08-05 16:45:02,986 - Python Server is Initiated
+WARNING - 2014-08-05 16:45:05,551 - shinyeht queries for assigned_to:ASDASDA	 fix_by_product:	 fix_by_version:	 product:.
+WARNING - 2014-08-05 16:45:05,570 - shinyeht queries are not approved since the profile name is unfindable.
+WARNING - 2014-08-05 16:46:21,303 - letian logout successfully.
+WARNING - 2014-08-05 16:46:29,462 - letian login into the bugzilla successfully.
+WARNING - 2014-08-05 16:47:44,031 - letian queries for assigned_to:chwang,fangchiw	 fix_by_product:vSphere	 fix_by_version:	 product:.
+WARNING - 2014-08-05 16:48:12,746 - Python Server is Initiated
+WARNING - 2014-08-05 16:48:24,042 - Python Server is Initiated
+WARNING - 2014-08-05 16:48:30,234 - Python Server is Initiated
+WARNING - 2014-08-05 16:49:21,901 - Python Server is Initiated
+WARNING - 2014-08-05 16:49:33,988 - Python Server is Initiated
+WARNING - 2014-08-05 16:49:44,123 - Python Server is Initiated
+WARNING - 2014-08-05 16:49:54,217 - Python Server is Initiated
+WARNING - 2014-08-05 16:50:25,648 - Python Server is Initiated
+WARNING - 2014-08-05 16:52:27,919 - Python Server is Initiated
+WARNING - 2014-08-05 16:53:24,745 - Python Server is Initiated
+WARNING - 2014-08-05 16:53:33,744 - Python Server is Initiated
+WARNING - 2014-08-05 16:53:45,009 - Python Server is Initiated
+WARNING - 2014-08-05 16:54:13,486 - Python Server is Initiated
+WARNING - 2014-08-05 16:54:16,583 - Python Server is Initiated
+WARNING - 2014-08-05 16:55:59,255 - Python Server is Initiated
+WARNING - 2014-08-05 16:56:01,245 - Python Server is Initiated
+WARNING - 2014-08-05 16:57:56,145 - Python Server is Initiated
+WARNING - 2014-08-05 16:58:25,464 - Python Server is Initiated
+WARNING - 2014-08-05 16:59:05,002 - Python Server is Initiated
+WARNING - 2014-08-05 16:59:22,235 - Python Server is Initiated
+WARNING - 2014-08-05 16:59:26,568 - Python Server is Initiated
+WARNING - 2014-08-05 17:00:02,020 - Python Server is Initiated
+WARNING - 2014-08-05 17:00:20,246 - Python Server is Initiated
+WARNING - 2014-08-05 17:00:40,007 - Python Server is Initiated
+WARNING - 2014-08-05 17:01:04,374 - Python Server is Initiated
+WARNING - 2014-08-05 17:01:38,702 - Python Server is Initiated
+WARNING - 2014-08-05 17:02:17,311 - Python Server is Initiated
+WARNING - 2014-08-05 17:03:02,759 - Python Server is Initiated
+WARNING - 2014-08-05 17:03:32,966 - shinyeht logout successfully.
+WARNING - 2014-08-05 17:03:55,443 - Python Server is Initiated
+WARNING - 2014-08-05 17:03:59,487 - Python Server is Initiated
+WARNING - 2014-08-05 17:04:05,899 - Python Server is Initiated
+WARNING - 2014-08-05 17:04:08,296 - shinyeht login into the bugzilla successfully.
+WARNING - 2014-08-05 17:05:13,743 - Python Server is Initiated
+WARNING - 2014-08-05 17:05:17,807 - Python Server is Initiated
+WARNING - 2014-08-05 17:05:21,761 - Python Server is Initiated
+WARNING - 2014-08-05 17:05:31,374 - shinyeht queries for assigned_to:hillzhao,letian	 fix_by_product:vSphere	 fix_by_version:	 product:.
+WARNING - 2014-08-05 17:23:29,184 - shinyeht queries for assigned_to:shinyeht,letian,cpd-pladform,hillzhao	 fix_by_product:	 fix_by_version:	 product:.
+WARNING - 2014-08-05 17:23:29,212 - shinyeht queries are not approved since the profile name is unfindable.
+WARNING - 2014-08-05 17:23:52,193 - shinyeht queries for assigned_to:shinyeht,letian,cpd-platform,hillzhao	 fix_by_product:	 fix_by_version:	 product:.
+WARNING - 2014-08-05 17:23:52,236 - Bugzilla Database Reconnect
+WARNING - 2014-08-05 17:24:36,585 - shinyeht queries for assigned_to:shinyeht,letian,hillzhao	 fix_by_product:vSphere	 fix_by_version:	 product:.
+WARNING - 2014-08-05 17:24:45,614 - shinyeht queries for assigned_to:shinyeht,gdfgfdg,hillzhao	 fix_by_product:vSphere	 fix_by_version:	 product:.
+WARNING - 2014-08-05 17:24:45,639 - shinyeht queries are not approved since the profile name is unfindable.
+WARNING - 2014-08-06 07:41:49,558 - shinyeht login into the bugzilla successfully.
+WARNING - 2014-08-06 07:42:00,179 - shinyeht queries for assigned_to:shinyeht,letian,hillzhao	 fix_by_product:vSphere	 fix_by_version:	 product:.
+WARNING - 2014-08-06 07:42:00,203 - Bugzilla Database Reconnect
+WARNING - 2014-08-06 07:42:29,017 - shinyeht queries for assigned_to:shinyeht,letian,hillzhao	 fix_by_product:vSphere	 fix_by_version:5.1 U3	 product:.
+WARNING - 2014-08-06 07:42:46,873 - shinyeht queries for assigned_to:shinyeht,letian,hillzhao	 fix_by_product:ESX	 fix_by_version:5.0 U3	 product:.
+WARNING - 2014-08-06 07:45:22,878 - shinyeht queries for assigned_to:shinyeht,letian,hillzhao	 fix_by_product:vSphere	 fix_by_version:	 product:.
+WARNING - 2014-08-06 08:08:56,747 - hillzhao logout successfully.
+WARNING - 2014-08-06 08:09:07,753 - hillzhao fails to login into the bugzilla.
+WARNING - 2014-08-06 08:09:18,321 - hillzhao login into the bugzilla successfully.
+WARNING - 2014-08-06 08:10:33,710 - hillzhao queries for assigned_to:mkang,nmukuri,shanpeic,letian,weili,chwang,shiyaoy,hfu,zhoum,hillzhao,mkuznetsov,cpd-platform,monitor-cpd-guru,ssundararaman,vbhakta,hxie,hosted-cpd-guru	 fix_by_product:vSphere	 fix_by_version:5.1 U3	 product:.
+WARNING - 2014-08-06 08:10:33,795 - Bugzilla Database Reconnect
+WARNING - 2014-08-06 10:09:06,347 - Python Server is Initiated
+WARNING - 2014-08-06 10:09:24,580 - Python Server is Initiated
+WARNING - 2014-08-06 10:09:49,952 - Python Server is Initiated
+WARNING - 2014-08-06 10:15:01,259 - Python Server is Initiated
+WARNING - 2014-08-06 10:15:19,488 - Python Server is Initiated
+WARNING - 2014-08-06 10:16:05,181 - Python Server is Initiated
+WARNING - 2014-08-06 10:16:18,799 - shinyeht logout successfully.
+WARNING - 2014-08-06 10:16:21,670 - shinyeht login into the bugzilla successfully.
+WARNING - 2014-08-06 10:18:22,590 - Python Server is Initiated
+WARNING - 2014-08-06 11:31:23,735 - fangchiw login into the bugzilla successfully.
+WARNING - 2014-08-06 11:44:06,228 - Python Server is Initiated
+WARNING - 2014-08-06 11:44:08,151 - Python Server is Initiated
+WARNING - 2014-08-06 11:44:08,878 - shinyeht logout successfully.
+WARNING - 2014-08-06 11:44:11,920 - shinyeht login into the bugzilla successfully.
+WARNING - 2014-08-06 11:44:16,765 - shinyeht logout successfully.
+WARNING - 2014-08-06 14:03:08,234 - Python Server is Initiated
+WARNING - 2014-08-06 14:04:55,321 - Python Server is Initiated
+WARNING - 2014-08-06 14:11:20,200 - Python Server is Initiated
+WARNING - 2014-08-06 14:11:23,294 - Python Server is Initiated
+WARNING - 2014-08-06 14:11:32,419 - Python Server is Initiated
+WARNING - 2014-08-06 14:12:11,082 - Python Server is Initiated
+WARNING - 2014-08-06 14:12:14,221 - Python Server is Initiated
+WARNING - 2014-08-06 14:12:27,450 - Python Server is Initiated
+WARNING - 2014-08-06 14:13:17,193 - Python Server is Initiated
+WARNING - 2014-08-06 14:14:11,742 - Python Server is Initiated
+WARNING - 2014-08-06 14:14:51,253 - Python Server is Initiated
+WARNING - 2014-08-06 14:15:00,488 - Python Server is Initiated
+WARNING - 2014-08-06 14:49:18,759 - Python Server is Initiated
+WARNING - 2014-08-06 14:49:21,095 - Python Server is Initiated
+WARNING - 2014-08-06 14:54:19,140 - Python Server is Initiated
+WARNING - 2014-08-06 14:54:31,297 - Python Server is Initiated
+WARNING - 2014-08-06 15:00:04,191 - Python Server is Initiated
+WARNING - 2014-08-06 15:00:06,357 - Python Server is Initiated
+WARNING - 2014-08-06 15:00:30,813 - Python Server is Initiated
+WARNING - 2014-08-06 15:02:36,027 - Python Server is Initiated
+WARNING - 2014-08-06 15:02:43,047 - Python Server is Initiated
+WARNING - 2014-08-06 15:02:50,987 - Python Server is Initiated
+WARNING - 2014-08-06 15:02:57,059 - Python Server is Initiated
+WARNING - 2014-08-06 15:03:03,078 - Python Server is Initiated
+WARNING - 2014-08-06 15:03:11,192 - Python Server is Initiated
+WARNING - 2014-08-06 15:03:23,487 - Python Server is Initiated
+WARNING - 2014-08-06 15:03:50,474 - Python Server is Initiated
+WARNING - 2014-08-06 15:03:59,676 - Python Server is Initiated
+WARNING - 2014-08-06 15:04:08,013 - Python Server is Initiated
+WARNING - 2014-08-06 15:05:22,976 - Python Server is Initiated
+WARNING - 2014-08-06 15:06:00,317 - Python Server is Initiated
+WARNING - 2014-08-06 15:06:02,415 - Python Server is Initiated
+WARNING - 2014-08-06 15:06:35,996 - Python Server is Initiated
+WARNING - 2014-08-06 15:06:48,206 - Python Server is Initiated
+WARNING - 2014-08-06 15:13:18,315 - Python Server is Initiated
+WARNING - 2014-08-06 15:13:47,713 - Python Server is Initiated
+WARNING - 2014-08-06 15:14:18,235 - Python Server is Initiated
+WARNING - 2014-08-06 15:14:36,664 - Python Server is Initiated
+WARNING - 2014-08-06 15:16:27,784 - Python Server is Initiated
+WARNING - 2014-08-06 15:17:50,640 - Python Server is Initiated
+WARNING - 2014-08-06 15:18:19,482 - hillzhao logout successfully.
+WARNING - 2014-08-06 15:18:27,132 - hillzhao login into the bugzilla successfully.
+WARNING - 2014-08-06 15:18:30,199 - Python Server is Initiated
+WARNING - 2014-08-06 15:20:04,821 - hillzhao queries for assigned_to:m,k,a,n,g,,,n,m,u,k,u,r,i,,,s,h,a,n,p,e,i,c,,,l,e,t,i,a,n,,,w,e,i,l,i,,,c,h,w,a,n,g,,,s,h,i,y,a,o,y,,,h,f,u,,,z,h,o,u,m,,,h,i,l,l,z,h,a,o,,,m,k,u,z,n,e,t,s,o,v,,,c,p,d,-,p,l,a,t,f,o,r,m,,,m,o,n,i,t,o,r,-,c,p,d,-,g,u,r,u,,,s,s,u,n,d,a,r,a,r,a,m,a,n,,,v,b,h,a,k,t,a,,,h,x,i,e,,,h,o,s,t,e,d,-,c,p,d,-,g,u,r,u	 fix_by_product:vSphere	 fix_by_version:5.5 U3	 product:.
+WARNING - 2014-08-06 15:20:04,962 - hillzhao queries are not approved since the profile name is unfindable.
+WARNING - 2014-08-06 15:20:15,998 - hillzhao queries for assigned_to:m,k,a,n,g,,,n,m,u,k,u,r,i,,,s,h,a,n,p,e,i,c,,,l,e,t,i,a,n,,,w,e,i,l,i,,,c,h,w,a,n,g,,,s,h,i,y,a,o,y,,,h,f,u,,,z,h,o,u,m,,,h,i,l,l,z,h,a,o,,,m,k,u,z,n,e,t,s,o,v,,,c,p,d,-,p,l,a,t,f,o,r,m,,,m,o,n,i,t,o,r,-,c,p,d,-,g,u,r,u,,,s,s,u,n,d,a,r,a,r,a,m,a,n,,,v,b,h,a,k,t,a,,,h,x,i,e,,,h,o,s,t,e,d,-,c,p,d,-,g,u,r,u	 fix_by_product:vSphere	 fix_by_version:5.5 U3	 product:.
+WARNING - 2014-08-06 15:20:16,074 - hillzhao queries are not approved since the profile name is unfindable.
+WARNING - 2014-08-06 15:21:10,869 - shinyeht queries for assigned_to:s,h,i,n,y,e,h,t,,,h,i,l,l,z,h,a,o,,,c,h,w,a,n,g,,,l,e,t,i,a,n	 fix_by_product:	 fix_by_version:	 product:.
+WARNING - 2014-08-06 15:21:10,906 - shinyeht queries are not approved since the profile name is unfindable.
+WARNING - 2014-08-06 15:28:18,777 - Python Server is Initiated
+WARNING - 2014-08-06 15:28:20,826 - Python Server is Initiated
+WARNING - 2014-08-06 15:28:52,446 - shinyeht queries for assigned_to:shinyeht,hillzhao,chwang,@:shinyeht,letian	 fix_by_product:	 fix_by_version:	 product:.
+WARNING - 2014-08-06 15:28:52,469 - shinyeht queries are not approved since the profile name is unfindable.
+WARNING - 2014-08-06 15:29:13,594 - Python Server is Initiated
+WARNING - 2014-08-06 15:29:42,015 - Python Server is Initiated
+WARNING - 2014-08-06 15:29:54,044 - Python Server is Initiated
+WARNING - 2014-08-06 15:29:55,886 - shinyeht queries for assigned_to:shinyeht,hillzhao,chwang,@:shinyeht,letian	 fix_by_product:	 fix_by_version:	 product:.
+WARNING - 2014-08-06 15:29:55,891 - shinyeht queries are not approved since the profile name is unfindable.
+WARNING - 2014-08-06 15:30:39,663 - Python Server is Initiated
+WARNING - 2014-08-06 15:32:04,611 - Python Server is Initiated
+WARNING - 2014-08-06 15:32:35,018 - Python Server is Initiated
+WARNING - 2014-08-06 15:32:38,374 - shinyeht queries for assigned_to:shinyeht,hillzhao,chwang,@:shinyeht,letian	 fix_by_product:	 fix_by_version:	 product:.
+WARNING - 2014-08-06 15:32:38,378 - shinyeht queries are not approved since the profile name is unfindable.
+WARNING - 2014-08-06 15:33:06,454 - Python Server is Initiated
+WARNING - 2014-08-06 15:33:10,492 - Python Server is Initiated
+WARNING - 2014-08-06 15:33:14,713 - shinyeht queries for assigned_to:shinyeht,hillzhao,chwang,@:shinyeht,letian	 fix_by_product:	 fix_by_version:	 product:.
+WARNING - 2014-08-06 15:33:14,716 - shinyeht queries are not approved since the profile name is unfindable.
+WARNING - 2014-08-06 15:33:31,911 - Python Server is Initiated
+WARNING - 2014-08-06 15:33:36,341 - shinyeht queries for assigned_to:shinyeht,hillzhao,chwang,@:shinyeht,letian	 fix_by_product:	 fix_by_version:	 product:.
+WARNING - 2014-08-06 15:33:36,346 - shinyeht queries are not approved since the profile name is unfindable.
+WARNING - 2014-08-06 15:33:55,989 - Python Server is Initiated
+WARNING - 2014-08-06 15:34:21,162 - Python Server is Initiated
+WARNING - 2014-08-06 15:34:22,093 - shinyeht queries for assigned_to:shinyeht,hillzhao,chwang,@:shinyeht,letian	 fix_by_product:	 fix_by_version:	 product:.
+WARNING - 2014-08-06 15:34:22,096 - shinyeht queries are not approved since the profile name is unfindable.
+WARNING - 2014-08-06 15:34:41,328 - Python Server is Initiated
+WARNING - 2014-08-06 15:34:42,428 - shinyeht queries for assigned_to:fangchiw,shinyeht,letian,chwang,hillzhao	 fix_by_product:	 fix_by_version:	 product:.
+WARNING - 2014-08-06 15:36:29,492 - shinyeht queries for assigned_to:chwang,letian,@fangchiw,hillzhao	 fix_by_product:	 fix_by_version:	 product:.
+WARNING - 2014-08-06 15:36:29,527 - shinyeht queries are not approved since the profile name is unfindable.
+WARNING - 2014-08-06 15:36:44,649 - shinyeht queries for assigned_to:,chwang,letian,shinyeht,hillzhao	 fix_by_product:	 fix_by_version:	 product:.
+WARNING - 2014-08-06 15:36:44,740 - shinyeht queries are not approved since the profile name is unfindable.
+WARNING - 2014-08-06 15:36:57,819 - shinyeht queries for assigned_to:,chwang,letian,shinyeht,hillzhao	 fix_by_product:	 fix_by_version:	 product:.
+WARNING - 2014-08-06 15:36:57,822 - shinyeht queries are not approved since the profile name is unfindable.
+WARNING - 2014-08-06 15:39:26,162 - Python Server is Initiated
+WARNING - 2014-08-06 15:41:24,048 - Python Server is Initiated
+WARNING - 2014-08-06 15:41:26,099 - Python Server is Initiated
+WARNING - 2014-08-06 15:41:47,383 - Python Server is Initiated
+WARNING - 2014-08-06 15:42:19,936 - Python Server is Initiated
+WARNING - 2014-08-06 15:43:02,435 - Python Server is Initiated
+WARNING - 2014-08-06 15:43:10,916 - Python Server is Initiated
+WARNING - 2014-08-06 15:43:30,675 - Python Server is Initiated
+WARNING - 2014-08-06 15:43:52,044 - Python Server is Initiated
+WARNING - 2014-08-06 15:44:22,559 - Python Server is Initiated
+WARNING - 2014-08-06 15:44:28,867 - Python Server is Initiated
+WARNING - 2014-08-06 15:44:34,047 - Python Server is Initiated
+WARNING - 2014-08-06 15:45:04,235 - shinyeht queries for assigned_to:@shinyeht	 fix_by_product:	 fix_by_version:	 product:.
+WARNING - 2014-08-06 15:45:04,264 - shinyeht queries are not approved since the profile name is unfindable.
+WARNING - 2014-08-06 15:45:07,923 - shinyeht queries for assigned_to:shinyeht,fangchiw,letian	 fix_by_product:	 fix_by_version:	 product:.
+WARNING - 2014-08-06 15:47:57,619 - Python Server is Initiated
+WARNING - 2014-08-06 15:48:07,748 - Python Server is Initiated
+WARNING - 2014-08-06 15:48:23,273 - Python Server is Initiated
+WARNING - 2014-08-06 15:50:11,630 - Python Server is Initiated
+WARNING - 2014-08-06 15:51:06,392 - Python Server is Initiated
+WARNING - 2014-08-06 15:51:09,207 - shinyeht queries for assigned_to:,letian	 fix_by_product:	 fix_by_version:	 product:.
+WARNING - 2014-08-06 15:51:09,243 - shinyeht queries are not approved since the profile name is unfindable.
+WARNING - 2014-08-06 15:51:17,493 - shinyeht queries for assigned_to:letian	 fix_by_product:	 fix_by_version:	 product:.
+WARNING - 2014-08-06 15:51:23,822 - shinyeht queries for assigned_to:	 fix_by_product:	 fix_by_version:	 product:.
+WARNING - 2014-08-06 15:51:23,871 - shinyeht queries are not approved since the profile name is unfindable.
+WARNING - 2014-08-06 15:51:30,637 - shinyeht queries for assigned_to:,letian	 fix_by_product:	 fix_by_version:	 product:.
+WARNING - 2014-08-06 15:51:30,640 - shinyeht queries are not approved since the profile name is unfindable.
+WARNING - 2014-08-06 15:51:40,862 - Python Server is Initiated
+WARNING - 2014-08-06 15:52:04,414 - Python Server is Initiated
+WARNING - 2014-08-06 15:52:12,202 - shinyeht queries for assigned_to:letian	 fix_by_product:	 fix_by_version:	 product:.
+WARNING - 2014-08-06 15:52:17,589 - shinyeht queries for assigned_to:	 fix_by_product:	 fix_by_version:	 product:.
+WARNING - 2014-08-06 15:52:17,590 - shinyeht queries are not approved since the profile name is unfindable.
+WARNING - 2014-08-06 15:52:30,081 - shinyeht queries for assigned_to:shinyeht,fangchiw,letian	 fix_by_product:	 fix_by_version:	 product:.
+WARNING - 2014-08-06 15:53:35,801 - Python Server is Terminated
+WARNING - 2014-08-06 15:53:35,802 - Python Server is Terminated
+WARNING - 2014-08-06 17:01:24,287 - Python Server is Initiated
+WARNING - 2014-08-06 17:01:27,200 - Python Server is Initiated
+WARNING - 2014-08-06 17:01:36,535 - shinyeht login into the bugzilla successfully.
+WARNING - 2014-08-07 12:14:19,492 - Python Server is Initiated
+WARNING - 2014-08-07 12:25:18,988 - shinyeht queries for assigned_to:hillzhao	 fix_by_product:	 fix_by_version:	 product:.
+WARNING - 2014-08-07 12:25:39,117 - shinyeht queries for assigned_to:hillzhao	 fix_by_product:	 fix_by_version:	 product:.
+WARNING - 2014-08-07 12:25:47,234 - shinyeht queries for assigned_to:hillzhao	 fix_by_product:vSphere	 fix_by_version:5.1 U3	 product:.
+WARNING - 2014-08-07 12:26:38,246 - Python Server is Initiated
+WARNING - 2014-08-07 12:26:39,884 - shinyeht queries for assigned_to:hillzhao	 fix_by_product:vSphere	 fix_by_version:5.1 U3	 product:.
+WARNING - 2014-08-07 12:28:21,498 - shinyeht queries for assigned_to:hillzhao	 fix_by_product:	 fix_by_version:	 product:.
+WARNING - 2014-08-07 12:30:16,384 - Python Server is Initiated
+WARNING - 2014-08-07 12:30:20,112 - shinyeht queries for assigned_to:hillzhao	 fix_by_product:	 fix_by_version:	 product:.
+WARNING - 2014-08-07 12:30:39,099 - shinyeht queries for assigned_to:hillzhao	 fix_by_product:	 fix_by_version:	 product:.
+WARNING - 2014-08-07 12:33:25,224 - Python Server is Initiated
+WARNING - 2014-08-07 12:33:31,450 - shinyeht queries for assigned_to:chwang	 fix_by_product:	 fix_by_version:	 product:.
+WARNING - 2014-08-07 12:33:50,343 - Python Server is Initiated
+WARNING - 2014-08-07 12:33:55,494 - shinyeht queries for assigned_to:chwang	 fix_by_product:	 fix_by_version:	 product:.
+WARNING - 2014-08-07 14:01:49,409 - Bugzilla Database Reconnect
+WARNING - 2014-08-07 14:18:46,040 - Python Server is Initiated
+WARNING - 2014-08-07 14:19:03,072 - Python Server is Initiated
+WARNING - 2014-08-07 14:19:14,244 - Python Server is Initiated
+WARNING - 2014-08-07 14:22:03,880 - Python Server is Initiated
+WARNING - 2014-08-07 14:22:14,011 - Python Server is Initiated
+WARNING - 2014-08-07 14:23:28,609 - Python Server is Initiated
+WARNING - 2014-08-07 14:25:58,633 - Python Server is Initiated
+WARNING - 2014-08-07 14:27:06,042 - Python Server is Initiated
+WARNING - 2014-08-07 14:27:23,140 - Python Server is Initiated
+WARNING - 2014-08-07 14:28:06,416 - Python Server is Initiated
+WARNING - 2014-08-07 14:28:22,328 - Python Server is Initiated
+WARNING - 2014-08-07 14:28:39,461 - Python Server is Initiated
+WARNING - 2014-08-07 14:29:44,141 - Python Server is Initiated
+WARNING - 2014-08-07 14:29:52,285 - Python Server is Initiated
+WARNING - 2014-08-07 14:30:32,627 - Python Server is Initiated
+WARNING - 2014-08-07 14:30:38,753 - Python Server is Initiated
+WARNING - 2014-08-07 14:30:49,748 - Python Server is Initiated
+WARNING - 2014-08-07 14:31:02,724 - Python Server is Initiated
+WARNING - 2014-08-07 14:31:05,696 - Python Server is Initiated
+WARNING - 2014-08-07 14:31:28,862 - Python Server is Initiated
+WARNING - 2014-08-07 14:31:40,953 - Python Server is Initiated
+WARNING - 2014-08-07 14:32:40,606 - Python Server is Initiated
+WARNING - 2014-08-07 14:32:43,686 - Python Server is Initiated
+WARNING - 2014-08-07 14:33:06,921 - Python Server is Initiated
+WARNING - 2014-08-07 14:33:30,141 - Python Server is Initiated
+WARNING - 2014-08-07 14:34:15,446 - Python Server is Initiated
+WARNING - 2014-08-07 14:36:41,983 - Python Server is Initiated
+WARNING - 2014-08-07 14:42:03,513 - Python Server is Initiated
+WARNING - 2014-08-07 14:42:05,623 - Python Server is Initiated
+WARNING - 2014-08-07 14:44:08,136 - Python Server is Initiated
+WARNING - 2014-08-07 14:44:53,477 - Python Server is Initiated
+WARNING - 2014-08-07 14:45:12,735 - Python Server is Initiated
+WARNING - 2014-08-07 14:46:59,605 - Python Server is Initiated
+WARNING - 2014-08-07 14:47:59,024 - Python Server is Initiated
+WARNING - 2014-08-07 14:49:06,056 - Python Server is Initiated
+WARNING - 2014-08-07 14:49:24,459 - Python Server is Initiated
+WARNING - 2014-08-07 14:49:33,024 - Python Server is Initiated
+WARNING - 2014-08-07 14:50:04,350 - Python Server is Initiated
+WARNING - 2014-08-07 14:50:55,403 - Python Server is Initiated
+WARNING - 2014-08-07 14:51:47,396 - Python Server is Initiated
+WARNING - 2014-08-07 14:52:15,412 - Python Server is Initiated
+WARNING - 2014-08-07 14:53:30,759 - Python Server is Initiated
+WARNING - 2014-08-07 14:54:16,090 - Python Server is Initiated
+WARNING - 2014-08-07 14:54:29,654 - Python Server is Initiated
+WARNING - 2014-08-07 14:54:42,810 - Python Server is Initiated
+WARNING - 2014-08-07 14:55:20,259 - Python Server is Initiated
+WARNING - 2014-08-07 14:55:56,521 - Python Server is Initiated
+WARNING - 2014-08-07 14:56:00,529 - Python Server is Initiated
+WARNING - 2014-08-07 14:56:28,757 - Python Server is Initiated
+WARNING - 2014-08-07 14:57:00,945 - Python Server is Initiated
+WARNING - 2014-08-07 14:57:04,910 - Python Server is Initiated
+WARNING - 2014-08-07 14:58:16,448 - Python Server is Initiated
+WARNING - 2014-08-07 14:58:19,532 - Python Server is Initiated
+WARNING - 2014-08-07 14:59:12,937 - Python Server is Initiated
+WARNING - 2014-08-07 14:59:35,271 - Python Server is Initiated
+WARNING - 2014-08-07 14:59:46,429 - Python Server is Initiated
+WARNING - 2014-08-07 15:00:39,126 - Python Server is Initiated
+WARNING - 2014-08-07 15:01:21,768 - Python Server is Initiated
+WARNING - 2014-08-07 15:01:28,884 - Python Server is Initiated
+WARNING - 2014-08-07 15:03:24,489 - Python Server is Initiated
+WARNING - 2014-08-07 15:04:50,419 - Python Server is Initiated
+WARNING - 2014-08-07 15:10:20,941 - Python Server is Initiated
+WARNING - 2014-08-07 15:11:10,308 - Python Server is Initiated
+WARNING - 2014-08-07 15:11:30,614 - Python Server is Initiated
+WARNING - 2014-08-07 15:12:49,999 - Python Server is Initiated
+WARNING - 2014-08-07 15:13:00,127 - Python Server is Initiated
+WARNING - 2014-08-07 15:13:07,302 - Python Server is Initiated
+WARNING - 2014-08-07 15:13:29,640 - Python Server is Terminated
+WARNING - 2014-08-07 15:13:29,641 - Python Server is Terminated
+WARNING - 2014-08-07 15:13:45,359 - Python Server is Initiated
+WARNING - 2014-08-07 15:13:47,190 - Python Server is Initiated
+WARNING - 2014-08-07 15:14:22,413 - Python Server is Initiated
+WARNING - 2014-08-07 15:14:41,439 - Python Server is Terminated
+WARNING - 2014-08-07 15:14:41,441 - Python Server is Terminated
+WARNING - 2014-08-07 15:14:44,091 - Python Server is Initiated
+WARNING - 2014-08-07 15:14:46,304 - Python Server is Initiated
+WARNING - 2014-08-07 15:15:01,478 - Python Server is Initiated
+WARNING - 2014-08-07 15:15:31,806 - Python Server is Initiated
+WARNING - 2014-08-07 15:15:37,018 - Python Server is Initiated
+WARNING - 2014-08-07 15:15:51,886 - Python Server is Terminated
+WARNING - 2014-08-07 15:15:51,886 - Python Server is Terminated
+WARNING - 2014-08-07 15:16:56,162 - Python Server is Initiated
+WARNING - 2014-08-07 15:16:58,245 - Python Server is Initiated
+WARNING - 2014-08-07 15:17:42,672 - Python Server is Initiated
+WARNING - 2014-08-07 15:18:03,896 - Python Server is Initiated
+WARNING - 2014-08-07 15:18:59,515 - Python Server is Initiated
+WARNING - 2014-08-07 15:19:18,742 - Python Server is Initiated
+WARNING - 2014-08-07 15:20:41,723 - Python Server is Initiated
+WARNING - 2014-08-07 15:26:34,003 - Python Server is Initiated
+WARNING - 2014-08-07 15:26:48,107 - Python Server is Initiated
+WARNING - 2014-08-07 15:26:52,983 - Python Server is Initiated
+WARNING - 2014-08-07 15:27:59,539 - Python Server is Initiated
+WARNING - 2014-08-07 15:28:11,582 - Python Server is Initiated
+WARNING - 2014-08-07 15:28:19,650 - Python Server is Initiated
+WARNING - 2014-08-07 15:28:35,752 - Python Server is Initiated
+WARNING - 2014-08-07 15:28:54,991 - Python Server is Initiated
+WARNING - 2014-08-07 15:29:34,386 - Python Server is Initiated
+WARNING - 2014-08-07 15:31:37,681 - Python Server is Initiated
+WARNING - 2014-08-07 15:34:06,115 - Python Server is Initiated
+WARNING - 2014-08-07 15:34:08,280 - Python Server is Initiated
+WARNING - 2014-08-07 15:37:05,551 - Python Server is Initiated
+WARNING - 2014-08-07 15:45:30,234 - Python Server is Initiated
+WARNING - 2014-08-07 15:45:32,026 - Python Server is Initiated
+WARNING - 2014-08-07 15:46:01,448 - Python Server is Initiated
+WARNING - 2014-08-07 15:47:48,260 - Python Server is Initiated
+WARNING - 2014-08-07 15:48:05,300 - Python Server is Initiated
+WARNING - 2014-08-07 15:48:12,215 - Python Server is Initiated
+WARNING - 2014-08-07 15:48:58,537 - Python Server is Initiated
+WARNING - 2014-08-07 15:49:19,711 - Python Server is Initiated
+WARNING - 2014-08-07 15:50:36,162 - Python Server is Initiated
+WARNING - 2014-08-07 15:50:54,081 - Python Server is Initiated
+WARNING - 2014-08-07 15:51:12,076 - Python Server is Initiated
+WARNING - 2014-08-07 15:55:15,268 - Python Server is Initiated
+WARNING - 2014-08-07 15:55:17,408 - Python Server is Initiated
+WARNING - 2014-08-07 15:56:12,240 - Python Server is Initiated
+WARNING - 2014-08-07 15:56:24,243 - Python Server is Initiated
+WARNING - 2014-08-07 15:56:51,575 - Python Server is Initiated
+WARNING - 2014-08-07 15:56:57,571 - Python Server is Initiated
+WARNING - 2014-08-07 15:57:05,549 - Python Server is Initiated
+WARNING - 2014-08-07 15:57:13,610 - Python Server is Initiated
+WARNING - 2014-08-07 15:59:54,564 - Python Server is Initiated
+WARNING - 2014-08-07 15:59:56,522 - Python Server is Initiated
+WARNING - 2014-08-07 16:00:59,993 - Python Server is Initiated
+WARNING - 2014-08-07 16:02:00,451 - Python Server is Initiated
+WARNING - 2014-08-07 16:04:50,635 - Python Server is Initiated
+WARNING - 2014-08-07 16:04:52,600 - Python Server is Initiated
+WARNING - 2014-08-07 16:05:55,985 - Python Server is Initiated
+WARNING - 2014-08-07 16:06:58,345 - Python Server is Initiated
+WARNING - 2014-08-07 16:07:20,547 - Python Server is Initiated
+WARNING - 2014-08-07 16:08:21,948 - Python Server is Initiated
+WARNING - 2014-08-07 16:08:57,127 - Python Server is Initiated
+WARNING - 2014-08-07 16:10:25,777 - Python Server is Initiated
+WARNING - 2014-08-07 16:10:54,227 - Python Server is Initiated
+WARNING - 2014-08-07 16:11:21,550 - Python Server is Initiated
+WARNING - 2014-08-07 16:11:27,505 - Python Server is Initiated
+WARNING - 2014-08-07 16:11:33,548 - Python Server is Initiated
+WARNING - 2014-08-07 16:13:30,631 - Python Server is Initiated
+WARNING - 2014-08-07 16:13:35,796 - Python Server is Initiated
+WARNING - 2014-08-07 16:13:59,942 - Python Server is Initiated
+WARNING - 2014-08-07 16:16:57,201 - Python Server is Initiated
+WARNING - 2014-08-07 16:19:06,952 - Python Server is Initiated
+WARNING - 2014-08-07 16:19:30,992 - Python Server is Initiated
+WARNING - 2014-08-07 16:20:10,229 - Python Server is Initiated
+WARNING - 2014-08-07 16:20:25,288 - Python Server is Initiated
+WARNING - 2014-08-07 16:20:40,317 - Python Server is Initiated
+WARNING - 2014-08-07 16:21:14,548 - Python Server is Initiated
+WARNING - 2014-08-07 16:21:32,820 - Python Server is Initiated
+WARNING - 2014-08-07 16:27:26,555 - Python Server is Initiated
+WARNING - 2014-08-07 16:27:38,518 - Python Server is Initiated
+WARNING - 2014-08-07 16:27:42,520 - Python Server is Initiated
+WARNING - 2014-08-07 16:30:01,431 - Python Server is Initiated
+WARNING - 2014-08-07 16:30:03,229 - Python Server is Initiated
+WARNING - 2014-08-07 16:36:31,739 - Python Server is Initiated
+WARNING - 2014-08-07 16:43:39,863 - Python Server is Initiated
+WARNING - 2014-08-07 16:52:37,594 - Bugzilla Database Reconnect
+WARNING - 2014-08-07 17:02:14,257 - Python Server is Initiated
+WARNING - 2014-08-07 17:02:33,301 - Python Server is Initiated
+WARNING - 2014-08-07 17:03:18,544 - Python Server is Initiated
+WARNING - 2014-08-07 17:03:41,606 - Python Server is Initiated
+WARNING - 2014-08-07 17:08:44,717 - Python Server is Initiated
+WARNING - 2014-08-07 17:11:37,725 - shinyeht queries for assigned_to:hillzhao	 fix_by_product:	 fix_by_version:	 product:.
+WARNING - 2014-08-07 17:13:46,756 - Python Server is Initiated
+WARNING - 2014-08-07 17:13:49,280 - Python Server is Initiated
+WARNING - 2014-08-07 17:14:29,723 - Python Server is Initiated
+WARNING - 2014-08-07 17:27:24,032 - Python Server is Initiated
+WARNING - 2014-08-07 17:27:25,984 - Python Server is Initiated
+WARNING - 2014-08-07 17:42:22,755 - Python Server is Initiated
+WARNING - 2014-08-07 17:56:12,034 - shinyeht queries for assigned_to:@chwang	 fix_by_product:	 fix_by_version:	 product:.
+WARNING - 2014-08-07 17:56:12,070 - shinyeht queries are not approved since the profile name is unfindable.
+WARNING - 2014-08-07 17:56:18,558 - shinyeht queries for assigned_to:	 fix_by_product:	 fix_by_version:	 product:.
+WARNING - 2014-08-07 17:56:18,574 - shinyeht queries are not approved since the profile name is unfindable.
+WARNING - 2014-08-08 09:34:43,114 - Python Server is Initiated
+WARNING - 2014-08-08 09:36:48,698 - Python Server is Initiated
+WARNING - 2014-08-08 09:37:50,345 - Python Server is Initiated
+WARNING - 2014-08-08 09:38:32,742 - Python Server is Initiated
+WARNING - 2014-08-08 09:39:01,931 - Python Server is Initiated
+WARNING - 2014-08-08 09:39:38,474 - Python Server is Initiated
+WARNING - 2014-08-08 09:39:47,690 - Python Server is Initiated
+WARNING - 2014-08-08 09:50:35,026 - Python Server is Terminated
+WARNING - 2014-08-08 09:50:35,028 - Python Server is Terminated
+WARNING - 2014-08-08 09:51:08,240 - Python Server is Initiated
+WARNING - 2014-08-08 09:51:10,307 - Python Server is Initiated
+WARNING - 2014-08-08 09:59:34,181 - Python Server is Terminated
+WARNING - 2014-08-08 09:59:34,182 - Python Server is Terminated
+WARNING - 2014-08-08 10:01:08,925 - Python Server is Initiated
+WARNING - 2014-08-08 10:01:10,821 - Python Server is Initiated
+WARNING - 2014-08-08 10:52:07,059 - Bugzilla Database Reconnect
+WARNING - 2014-08-08 11:23:41,511 - Bugzilla Database Reconnect

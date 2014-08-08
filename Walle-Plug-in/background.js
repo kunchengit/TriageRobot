@@ -1,6 +1,26 @@
 // Array to hold callback functions
 var callbacks = []; 
 
+function getDomainFromUrl(url){
+	var host = "null";
+	if(typeof url == "undefined" || null == url)
+		url = window.location.href;
+	var regex = /.*\:\/\/([^\/]*).*/;
+	var match = url.match(regex);
+	if(typeof match != "undefined" && null != match)
+		host = match[1];
+	return host;
+}
+
+function checkForValidUrl(tabId, changeInfo, tab) {
+	if(getDomainFromUrl(tab.url).toLowerCase()=="bugzilla.eng.vmware.com"){
+		chrome.pageAction.show(tabId);
+	}
+};
+
+chrome.tabs.onUpdated.addListener(checkForValidUrl);
+
+
 // This function is called onload in the popup code
 function getPageInfo(callback) { 
     // Add the callback to the queue

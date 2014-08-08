@@ -88,6 +88,21 @@ create table milestone (phase_id mediumint,
                         eta datetime,
                         PRIMARY KEY(phase_id))
 
+create table custom_alias(userid mediumint,
+                        alias_name varchar(255),
+                        alias_contents varchar(1023),
+                        md5 varchar(255),
+                        PRIMARY KEY(md5))
+                        
+create table custom_setting (userid mediumint,
+                        care_member varchar(1023),
+                        query_assignee varchar(255),
+                        query_product varchar(255),
+                        query_version varchar(255),
+                        query_phase varchar(255),
+                        email_notification mediumint,
+                        email_last_send datetime,
+                        PRIMARY KEY(userid))
 
 CREATE EVENT daily_clear on schedule every 1 day comment 'Clear expired update record' 
 DO delete from TriageRobot.update_information where update_time < date_add(NOW(), INTERVAL -1 day);

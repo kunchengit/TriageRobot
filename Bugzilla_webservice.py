@@ -193,7 +193,7 @@ class BugzillaServer(object):
             self.server.Bug.add_fix_bys(bug_id, fix_by_information)
         except xmlrpclib.Fault, err:
             print "A fault occurred when add fix_by_information"
-            self.server.Bug.add_fix_bys(bug_id, fix_by_information)
+            #self.server.Bug.add_fix_bys(bug_id, fix_by_information)
             return False
         return True
     
@@ -204,7 +204,7 @@ class BugzillaServer(object):
         except xmlrpclib.Fault, err:
             print "A fault occurred when remove fix_by_information"
             return False
-        self.server.Bug.remove_fix_bys(bug_id, fix_by_information)
+        #self.server.Bug.remove_fix_bys(bug_id, fix_by_information)
         return True
     
     

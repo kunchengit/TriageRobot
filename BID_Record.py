@@ -71,6 +71,79 @@ class BID_Record:
         return "%s" % (",".join(map(str, [p for p in self.data.items()])))    
         #return "%d %d %s %s %d %s %d %s %d %s %s %s %s %s" % (self.bug_id, self.assigned_to, self.assigned_rn, self.short_desc, self.product_id, self.product_rn, self.category_id, self.category_rn, self.component_id, self.component_rn, self.bug_status, self.keywords, self.resolution, self.delta_ts)
 
+
+"""
+This function turns the rawdata which retrieve from bugzilla into our rawdata model for urgentest
+"""
+
+def Original_SQL_data_to_BID_Record(bugs="", fix_by="", longdescs="", conn=""):
+    #The input type of bugs should be a list-dictionary [{}]
+    sb = BID_Record()
+    
+    sdata = sb.data
+    """
+    Process bugs map
+    """
+    sdata.update(bugs[0])
+    if "cf_attempted" not in sdata or not sdata["cf_attempted"]:
+        sdata["cf_attempted"] = 0
+    if "cf_failed" not in sdata or not sdata["cf_failed"]:
+        sdata["cf_failed"] = 0
+    if "cf_reported_by" not in sdata or not sdata["cf_reported_by"]:
+        sdata["cf_reported_by"] = cf_eta
+    
+    if not conn:
+        log.error("Error in Connection, Oroginal_SQL_data_to_BID_Record BAR.py")
+        return "Error in Connection, Oroginal_SQL_data_to_BID_Record BAR.py"
+        
+    cursor = conn.cursor()
+    sql="""
+        select profiles.login_name as assigned_rn, 
+        products.name as product_rn, 
+        categories.name as category_rn, 
+        components.name as component_rn
+        from profiles, products, categories, components
+        where profiles.userid = {}
+        and products.id = {}
+        and categories.id = {}
+        and components.id = {}
+    """.format(sdata["assigned_to"], sdata["product_id"], sdata["category_id"], sdata["component_id"])
+    
+    cursor.execute(sql)
+    columns = [column[0] for column in cursor.description]
+    rn_results = []
+    for row in cursor.fetchall():
+            rn_results.append(dict(zip(columns, row)))
+    sdata.update(rn_results[0])
+    
+    """
+    Process fix_by_map
+    The fix_by_information in sql reuslt is list-dictionary type
+    However, in original frame, it is list-type
+    Therefore, I use this function to transform the id type into original format
+    """
+    if fix_by:
+        BUG_FIX_BY_KEY = ["fix_by_product_rn", "fix_by_product_id", "fix_by_version_rn", "fix_by_version_id", "fix_by_phase_rn", "fix_by_phase_id", "fix_by_id"]
+        for okey in BUG_FIX_BY_KEY:
+            sdata[okey] = []
+            for ikey in fix_by:
+                sdata[okey].append(ikey[okey])
+        
+    
+    """
+    Process Comment
+    The idea of this part is similar to the previous codes which are processing fix_by_map
+    """
+    if longdescs:
+        LONGDESCS_KEY = ["ld_who", "ld_text", "ld_when", "ld_id"]
+        for okey in LONGDESCS_KEY:
+            sdata[okey] = []
+            for ikey in longdescs:
+                sdata[okey].append(ikey[okey])
+    
+    return sb
+
+
 """
 The function of Rawdata_to_Saver function is to facilitate the process of combining the rawdata with the database, and regenerating a new data structure for saving information
 This function can be replaced by programmers
@@ -135,7 +208,13 @@ def Rawdata_to_BID_Record(sb, db):
     return result
     
 class Option:
-    def __init__(self, assigned_rn, fix_by_product_rn, fix_by_version_rn, product_rn, D_begin, D_end):#Set default Value
+    def __init__(self, 
+        assigned_rn="", 
+        fix_by_product_rn="", 
+        fix_by_version_rn="", 
+        product_rn="", 
+        D_begin="", 
+        D_end=""):#Set default Value
         
         """
         After the after meeting in 7/22 afternoon, the bug_fix_by_product, version, product, and time are never be considered by queries.

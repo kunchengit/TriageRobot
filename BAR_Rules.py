@@ -3,13 +3,13 @@ from collections import namedtuple, defaultdict, OrderedDict # Python 2.7
 
 RULE_PATH = "BAR_option/rule.p"
 
-def Urgent_Test(subject, rule, conn):
+#The conn should be the connection between local computer and bugzilla database
+def Urgent_Test(subject, rule, conn, from_web_ui = False):
     Match_Model = Rule_Match(subject, rule, conn)
     """
     Need to implement orderedDict and the related should be kept in the last item,
     since the related test costs lots of time
     """
-    
     sdata = subject.data
     """
     Check weight
@@ -17,9 +17,14 @@ def Urgent_Test(subject, rule, conn):
     sdata["weight"] = Match_Model.Weight_Calculation()
     """
     Check bug_fix_by_map
+    However, if this query is initiated by web_ui, this check should be skipped
+    Acutally, after the modification in 07/22, this function could be removed since we not specifiy fix_by_s information in rule.
+    However, in order to keep interface open, I did not remove this function
     """
-    if rule and Match_Model.Match_fix() == False:
-        return "Uncared"
+    if not from_web_ui:
+        if rule and Match_Model.Match_fix() == False:
+            return "Uncared"
+            
     Match_Func = OrderedDict([
                 ("keywords" , Match_Model.Match_keywords),
                 ("parent/child-fix", Match_Model.Match_related),
@@ -27,6 +32,7 @@ def Urgent_Test(subject, rule, conn):
                 #("duplicate-fix", Match_Model.Match_duplicated)
                 ])
     Result = []
+    
     for Match_index, Match_func in Match_Func.items():
         function_result = Match_func()
         if function_result:
@@ -207,7 +213,7 @@ class Rule_Match:
         return Total_Weight
     def Match_ETA(self):
         sdata = self.subject.data
-        if "cf_eta" not in sdata.keys():
+        if "cf_eta" not in sdata.keys() or not sdata["cf_eta"]:
             return
         else:
             now = datetime.now()
