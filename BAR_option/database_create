@@ -89,7 +89,7 @@ create table milestone (phase_id mediumint,
                         name varchar(255),
                         weight float(4,2),
                         eta datetime,
-                        PRIMARY KEY(phase_id)
+                        PRIMARY KEY(phase_id, name)
 );
 
 create table custom_alias(userid mediumint,
