@@ -56,8 +56,8 @@ app = Flask(__name__)
 app.secret_key = 'B1Z298g/3y2 R~lHHbjaN]LWX/,?RT'
 cache = SimpleCache(default_timeout=300)
 BUGZILLA_URL = 'https://bugzilla.eng.vmware.com/xmlrpc.cgi'
-BAR_OPTION_DIRECTORY = "BAR_option/"
-CUSTOM_OPTION_DIRECTORY = "Custom_Setting/"
+BAR_OPTION_DIRECTORY = os.path.join(os.path.abspath(os.path.dirname(__file__)), "BAR_option/")
+CUSTOM_OPTION_DIRECTORY = os.path.join(os.path.abspath(os.path.dirname(__file__)), "Custom_Setting/")
 
 BAR_OFILENAME = BAR_OPTION_DIRECTORY + "option.p"
 BAR_ADMINFILE = BAR_OPTION_DIRECTORY + "admin.p"
@@ -2047,5 +2047,6 @@ if __name__ == '__main__':
     #logging.basicConfig(level=logging.DEBUG,format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p')
     initialize_logger(os.getcwd())
     logging.warning("Python Server is Initiated")
-    if not app.run(host='triagerobot.eng.vmware.com', debug=True):
+    #if not app.run(host='triagerobot.eng.vmware.com', debug=True):
+    if not app.run(host="0.0.0.0", debug=True):
         logging.warning("Python Server is Terminated")
