@@ -9,6 +9,10 @@ from cookielib import CookieJar
 from operator import itemgetter
 import pprint
 
+# we have to force ssl to use TLSv1 protocal
+import ssl
+from functools import partial
+ssl.wrap_socket = partial(ssl.wrap_socket, ssl_version=ssl.PROTOCOL_TLSv1)
 
 BUGZILLA_URL = 'https://bugzilla.eng.vmware.com/xmlrpc.cgi'
 options = None
