@@ -187,13 +187,14 @@ class BugzillaDB(object):
             Shinyeh 0701
             """
             self.product_id = []
-            for okey in gOption.get("product"):
-                for key in self.db_index["products"]:
-                    if self.db_index["products"][key].name == okey:
-                        self.product_id.append(str(key))
-                        break;
-                else:
-                    self.product_id.append("bugs.product_id")
+            if gOption:
+                for okey in gOption.get("product"):
+                    for key in self.db_index["products"]:
+                        if self.db_index["products"][key].name == okey:
+                            self.product_id.append(str(key))
+                            break;
+                    else:
+                        self.product_id.append("bugs.product_id")
             return self
         except MySQLdb.Error, e:
             gLogger.error("Error %d: %s" % (e.args[0], e.args[1]))
@@ -1424,6 +1425,12 @@ if __name__ == "__main__":
         print "Finish Update Milestone"
         exit()
     
+    if args.wo_update_information:
+        with BugzillaDB() as bzdb:
+            Update_Information()
+            print "Finish Update Profiles"
+            exit()
+
     try:
         f = open(args.option[0], "r")
     except:
@@ -1542,8 +1549,6 @@ if __name__ == "__main__":
     check_resolved = False
     Total_Result = Match_and_Output(Rules, Query_result, check_resolved)
     
-    if args.wo_update_information:
-        Update_Information()
     
     if args.update:
         Connect_With_OurDB(Total_Result, Rules, args.update, Update_end)
