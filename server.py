@@ -56,8 +56,9 @@ app = Flask(__name__)
 app.secret_key = 'B1Z298g/3y2 R~lHHbjaN]LWX/,?RT'
 cache = SimpleCache(default_timeout=300)
 BUGZILLA_URL = 'https://bugzilla.eng.vmware.com/xmlrpc.cgi'
-BAR_OPTION_DIRECTORY = os.path.join(os.path.abspath(os.path.dirname(__file__)), "BAR_option/")
-CUSTOM_OPTION_DIRECTORY = os.path.join(os.path.abspath(os.path.dirname(__file__)), "Custom_Setting/")
+SCRIPTS_DIR = os.path.abspath(os.path.dirname(__file__))
+BAR_OPTION_DIRECTORY = os.path.join(SCRIPTS_DIR, "BAR_option/")
+CUSTOM_OPTION_DIRECTORY = os.path.join(SCRIPTS_DIR, "Custom_Setting/")
 
 BAR_OFILENAME = BAR_OPTION_DIRECTORY + "option.p"
 BAR_ADMINFILE = BAR_OPTION_DIRECTORY + "admin.p"
@@ -452,7 +453,7 @@ def Entries_Processing():
     """
 
     ID_String = " ".join(map(str,Update_List.keys()))
-    command = "python BAR.py"
+    command = "cd %s; python BAR.py" %SCRIPTS_DIR
     os.system(command + " --ID " + ID_String)
     
     
@@ -619,11 +620,6 @@ def Show_Entries():
     processing_cite_results = list(set(processing_cite_list))
     
     assigned_to = ",".join(processing_cite_results)
-    
-
-        
-    
-    
     """
     request.form["assigned_to"] processing finish
     """
@@ -649,7 +645,7 @@ def Show_Entries():
     #Input_Rule = assigned_to+request.form['fix_by_product']+request.form['fix_by_version']+request.form['product']
     """
     Input_Rule = assigned_to
-    Need_Query_List=[]
+    Need_Query_List=[]  #Need_Query_List is a list of new names
     
     logging.warning("{} queries for assigned_to:{}\t fix_by_product:{}\t fix_by_version:{}\t product:{}.".format(session['username'], assigned_to, request.form['fix_by_product'], request.form['fix_by_version'], request.form['product']))
     
@@ -801,7 +797,7 @@ def Show_Entries():
         o_filename = BAR_OFILENAME;
         check_sum = hashlib.md5(key).hexdigest()
         filename = BAR_OPTION_DIRECTORY+check_sum+".p";
-        command = "python BAR.py";
+        command = "cd %s; python BAR.py" %SCRIPTS_DIR
         
         """
         This line is commented because of the 07/22 meeting.
@@ -1145,7 +1141,8 @@ def Admin_Custom_Triage_Chart():
 @app.route('/Admin_Custom_Update', methods=['GET', 'POST'])
 def Admin_Custom_Update():
     filename = BAR_OFILENAME;
-    command = "python BAR.py "
+    #command = "python %s"(os)
+    command = "cd %s; python BAR.py" %SCRIPTS_DIR
     os.system(command + " --option " + filename + " --wo_update_information" + " --update")
     return render_template('admin_custom.html', message = "Finish Update at {}".format(datetime.now().strftime(FMT_YMDHMS)))
     
@@ -1432,7 +1429,7 @@ def Chrome_Extension(number):
     result = cursor.fetchone()
     if not result:
         ID_String = str(number)
-        command = "python BAR.py"
+        command = "cd %s; python BAR.py" %SCRIPTS_DIR
         os.system(command + " --ID " + ID_String)
     
     
@@ -2048,5 +2045,9 @@ if __name__ == '__main__':
     initialize_logger(os.getcwd())
     logging.warning("Python Server is Initiated")
     #if not app.run(host='triagerobot.eng.vmware.com', debug=True):
-    if not app.run(host="0.0.0.0", debug=True):
-        logging.warning("Python Server is Terminated")
+    try:
+        if not app.run(host="0.0.0.0", debug=True):
+            logging.warning("Python Server is Terminated")
+    except:
+        import traceback
+        traceback.print_exc()
