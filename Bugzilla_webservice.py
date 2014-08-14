@@ -146,10 +146,13 @@ class BugzillaServer(object):
         try:
             self.server.User.login({"login" : username, "password" :
             password})
-        except xmlrpclib.Fault, err:
+        #except xmlrpclib.Fault, err:
+        except Exception, err:
             print "A fault occurred:"
-            print "Fault code: %d" % err.faultCode
-            print "Fault string: %s" % err.faultString
+            #print "Fault code: %d" % err.faultCode
+            #print "Fault string: %s" % err.faultString
+            import traceback
+            traceback.print_exc()
             return False
         debug("logged in")
         self.cookie_jar.save;
