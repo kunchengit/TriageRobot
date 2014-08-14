@@ -1,3 +1,9 @@
 *.pyc
 *.swp
+BAR_option/admin.p
+BAR_option/option.p
+bugzilla-cookies.txt
+query_and_logging.log
+tags
+fangchiw_test.py
 
