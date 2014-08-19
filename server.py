@@ -1146,6 +1146,9 @@ def Admin_Custom_Update():
     os.system(command + " --option " + filename + " --wo_update_information" + " --update")
     return render_template('admin_custom.html', message = "Finish Update at {}".format(datetime.now().strftime(FMT_YMDHMS)))
     
+@app.route('/Admin_Custom_Update_Confirm', methods=['GET', 'POST'])
+def Admin_Custom_Update_Confirm():
+    return render_template('admin_update_confirm.html')
 
 @app.route('/Custom_Webpage', methods=['GET', 'POST'])
 def Custom_Webpage():

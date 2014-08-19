@@ -1,0 +1,12 @@
+{% extends "layout.html" %}
+{% if session.logged_in and session.admin %}
+{% block body %}
+<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+    <h2>Confirm to update the datebase?</h2>
+    <ul class=entries>
+        <dt><a href={{url_for('Admin_Custom_Update')}}>YES</a></dt>
+        <dt><a href={{url_for('Admin_Custom_Webpage')}}>NO</a></dt>
+    </ul>
+</div>
+{% endblock %}
+{% endif %}
