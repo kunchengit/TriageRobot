@@ -61,22 +61,22 @@
                 {% if session.logged_in%}
                     <ul class="nav nav-sidebar">
                         {% if session.admin %}
-                            <li class="submenu"><!-- active open -->
-                                <a href={{url_for('Admin_Custom_Webpage')}}><i class="icon icon-th-list"></i> <span>Administrator</span> <span class="label">3</span></a>
+                            <li {% if request.path == url_for('Admin_Custom_Webpage') %} class="active" {% endif %} ><!-- active open --><a href={{url_for('Admin_Custom_Webpage')}}><i class="icon icon-th-list"></i> <span>Administrator</span> <span class="label">1</span></a>
+                                <li class="submenu"><!-- active open -->
                                 <ul> <!-- li class="active" -->
-                                    <li id="Admin_List" ><a href="{{url_for('Admin_Custom_List')}}">Admin List</a></li>
-                                    <li id="Admin_Email"><a href={{url_for('Admin_Custom_Email')}}>Email Notification</a></li>
-                                    <li id="Admin_Triage_Chart"><a href={{url_for('Admin_Custom_Triage_Chart')}}>Triage Chart</a></li>
-                                    <li id="Admin_Update"><a href={{url_for('Admin_Custom_Update_Confirm')}}>Update Manually</a></li>
+                                    <li id="Admin_List" ><a href="{{url_for('Admin_Custom_List')}}">{% if request.path == url_for('Admin_Custom_List') %}<b>{%endif%}Admin List{% if request.path == url_for('Admin_Custom_List') %}</b>{%endif%}</a></li>
+                                    <li id="Admin_Update"><a href={{url_for('Admin_Custom_Update_Confirm')}}>{% if request.path == url_for('Admin_Custom_Update_Confirm') %}<b>{%endif%}Manual Update{% if request.path == url_for('Admin_Custom_Update_Confirm') %}</b>{%endif%}</a></li>
                                 </ul>
                             </li>
                         {% endif %}
-                        <li><a href={{url_for('Query')}}>Query Page</a></li>
-                        <li><a href={{url_for('Custom_Webpage')}}>Customerize</a></li>
+                        <li {% if request.path == url_for('Query') %} class="active" {% endif %}><a href={{url_for('Query')}}>Query Page</a></li>
+                        <li {% if request.path == url_for('Admin_Custom_Email') %} class="active" {% endif %}><a href={{url_for('Admin_Custom_Email')}}>Email Notification</a></li>
+                        <li {% if request.path == url_for('Admin_Custom_Triage_Chart') %} class="active" {% endif %}><a href={{url_for('Admin_Custom_Triage_Chart')}}>Triage Chart</a></li>
+                        <li {% if request.path == url_for('Custom_Webpage') %} class="active" {% endif %}><a href={{url_for('Custom_Webpage')}}>Customerize</a></li>
                             <li class="submenu"><!-- active open -->
                             <ul>
-                                <li id="Custom_Alias" ><a href="{{url_for('Custom_Setting')}}">Settings</a></li>
-                                <li id="Custom_Alias" ><a href="{{url_for('Custom_Alias')}}">Alias</a></li>
+                                <li id="Custom_Setting"><a href="{{url_for('Custom_Setting')}}">{% if request.path == url_for('Custom_Setting') %}<b>{%endif%}Settings{% if request.path == url_for('Custom_Setting') %}</b>{%endif%}</a></li>
+                                <li id="Custom_Alias"><a href="{{url_for('Custom_Alias')}}">{% if request.path == url_for('Custom_Alias') %}<b>{%endif%}Alias{% if request.path == url_for('Custom_Alias') %}</b>{%endif%}</a></li>
                                 </ul>
                             </li>
                     </ul>
