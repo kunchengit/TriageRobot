@@ -1,7 +1,12 @@
+import os
+
 from BID_Record import *
 from collections import namedtuple, defaultdict, OrderedDict # Python 2.7
 
-RULE_PATH = "BAR_option/rule.p"
+SCRIPTS_DIR = os.path.abspath(os.path.dirname(__file__))
+BAR_OPTION_DIRECTORY = os.path.join(SCRIPTS_DIR, "BAR_option/")
+#RULE_PATH = "BAR_option/rule.p"
+RULE_PATH = os.path.join(BAR_OPTION_DIRECTORY, "rule.p")
 
 #The conn should be the connection between local computer and bugzilla database
 def Urgent_Test(subject, rule, conn, from_web_ui = False):
