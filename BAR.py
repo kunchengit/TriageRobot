@@ -39,6 +39,7 @@ VERBOSE_LEVEL_BUG       = 2 # fix by, etc
 VERBOSE_LEVEL_COMMENT   = 3
 
 #ShinYeh Global Variable which are kept for recording
+Keep_update = 0
 Keep_connect = 0
 Keep_record = 0
 FMT_YMDHMS  = "%Y-%m-%d %H:%M:%S"
@@ -147,7 +148,7 @@ class BugzillaDB(object):
                     lookup_tables.append((table_name, gRecordSchema[table_name], join(tempfile.gettempdir(), "bz_{}.p".format(table_name)), sql))
 
                 for table_name, schema, cache_file, sql in lookup_tables:
-                    if exists(cache_file):
+                    if exists(cache_file) and Keep_update == 0:
                         recordset = pickle.load(open(cache_file, "rb"))
                     else:
                         cursor = self.conn.cursor()
@@ -1426,6 +1427,7 @@ if __name__ == "__main__":
         exit()
     
     if args.wo_update_information:
+        Keep_update = 1
         with BugzillaDB() as bzdb:
             Update_Information()
             print "Finish Update Profiles"
