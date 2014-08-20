@@ -4,7 +4,7 @@
     "description": "Connect Bugzilla with TriageRobot database",
     "version": "0.1",
     "background": {
-        "scripts": ["jquery-1.11.1.min.js", "background.js", "Chart.js"],
+        "scripts": ["jquery-1.11.1.min.js", "background.js"],
         "persistent": true,
         "all_frames": true
     },

@@ -13,7 +13,8 @@ function getDomainFromUrl(url){
 }
 
 function checkForValidUrl(tabId, changeInfo, tab) {
-	if(getDomainFromUrl(tab.url).toLowerCase()=="bugzilla.eng.vmware.com"){
+    var domain = getDomainFromUrl(tab.url).toLowerCase()
+	if(domain=="bugzilla.eng.vmware.com" || domain == "bugzilla-beta.eng.vmware.com"){
 		chrome.pageAction.show(tabId);
 	}
 };

@@ -11,7 +11,7 @@ function onPageInfo(o)  {
     document.getElementById('id').innerText = o.id; 
     document.getElementById('keywords').value = o.keywords; 
     document.getElementById('comment').value = o.comment;
-    document.getElementById('own_chart').src = "http://triagerobot.eng.vmware.com:5000/Chrome_Extension/" + o.id;
+    document.getElementById('own_chart').src = "http://triagerobot.eng.vmware.com/Chrome_Extension/" + o.id;
     var fix_by_string = "";
     for (i=0, len = o.fix_by_record.length; i<len ;i++)
     {
@@ -47,7 +47,7 @@ function onPageInfo(o)  {
             }
         }
     });
-    req.open("POST", "http://triagerobot.eng.vmware.com:5000/Chrome_Extension_Bugs", true);
+    req.open("POST", "http://triagerobot.eng.vmware.com/Chrome_Extension_Bugs", true);
     req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     url = "id=" + o.id;
     req.send(url);
