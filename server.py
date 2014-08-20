@@ -42,7 +42,7 @@ LOCAL_DATABASE_PORT = 3306
 LOCAL_DATABASE_USER = "root"
 LOCAL_DATABASE_PW = "vmware"
 LOCAL_DATABASE_DATABASE = "TriageRobot"
-local_conn = MySQLdb.connect(host=LOCAL_DATABASE_HOST, port=LOCAL_DATABASE_PORT, user=LOCAL_DATABASE_USER, passwd=LOCAL_DATABASE_PW, db=LOCAL_DATABASE_DATABASE)
+#local_conn = MySQLdb.connect(host=LOCAL_DATABASE_HOST, port=LOCAL_DATABASE_PORT, user=LOCAL_DATABASE_USER, passwd=LOCAL_DATABASE_PW, db=LOCAL_DATABASE_DATABASE)
 
 
 PATCHTOOL_DATABASE_HOST = "patchtool.eng.vmware.com"
@@ -1884,6 +1884,7 @@ def id_to_full_data(ID_list):
     version_id -> fix_by_version_id
     phase_id -> fix_by_phase_id
     """
+    local_conn = MySQLdb.connect(host=LOCAL_DATABASE_HOST, port=LOCAL_DATABASE_PORT, user=LOCAL_DATABASE_USER, passwd=LOCAL_DATABASE_PW, db=LOCAL_DATABASE_DATABASE)
     local_cursor = local_conn.cursor()
     for idkey in Fix_by_results.keys():
         entry = Fix_by_results[idkey]
