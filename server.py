@@ -18,6 +18,7 @@ import hashlib
 import os
 import time
 import logging
+import traceback
 from datetime import datetime, timedelta, date
 from dateutil.relativedelta import relativedelta
 from collections import OrderedDict
@@ -113,7 +114,7 @@ def Login():
     else:
         homepath = ''
 
-    cookie_file = os.path.join(homepath, ".bugzilla-cookies.txt")
+    cookie_file = os.path.join(homepath, ".bugzilla-cookies.%s.txt"%str(request.form['BG_account']))
     #bugzilla_url = options.bugzilla_url
     server = BugzillaServer(BUGZILLA_URL, cookie_file)
     login_result = server.login(str(request.form["BG_account"]), str(request.form["BG_password"]))
@@ -127,6 +128,7 @@ def Login():
     
     session['username'] = request.form['BG_account']
     session['password'] = request.form['BG_password']
+    session['cookie_file'] = cookie_file
     
     conn = MySQLdb.connect(host=LOCAL_DATABASE_HOST, user=LOCAL_DATABASE_USER, passwd=LOCAL_DATABASE_PW, db=LOCAL_DATABASE_DATABASE)
     cursor = conn.cursor()
@@ -185,15 +187,23 @@ def Entries_Processing():
     This function also provides the function of add/remove keywords and add comments
     """
     Update_List={}
-    
-    cookie_file = cache.get('cookie')
-    #print cookie_file
-    
-    #if cookie_file is None:
-    #    session['logged_in'] = False
-    #    return redirect(url_for('query'))
-    server = BugzillaServer(BUGZILLA_URL, cookie_file)
-    
+   
+    try: 
+        cookie_file = session['cookie_file']
+        #print os.path.abspath(cookie_file)
+        
+        #if cookie_file is None:
+        #    session['logged_in'] = False
+        #    return redirect(url_for('query'))
+        server = BugzillaServer(BUGZILLA_URL, cookie_file)
+   
+        login_result = server.login(str(session["username"]), str(session["password"]))
+    except:
+        return render_template('query.html', error = "Session Contains Invalid Account/Password, Please LogOUT and IN again")
+        
+    if not login_result:
+        logging.warning("{} fails to login into the bugzilla.".format(str(request.form["BG_account"])))
+        return render_template('query.html', error = "Error Account/Password, Please Login again")
     
     
     
@@ -1176,7 +1186,7 @@ def Custom_Alias():
                 New_Alias_Map[rule_id]["alias_name"] = str(request.form[key])
             elif "contents_" in key:
                 rule_id = key.replace("contents_", "")
-                New_Alias_Map[rule_id]["alias_contents"] = str(request.form[key])
+                New_Alias_Map[rule_id]["alias_contents"] = str(request.form[key]).rstrip(',') #remove last comma
             elif "del_" in key:
                 rule_md5 = key.replace("del_", "")
                 Del_List.append(rule_md5)
@@ -1489,14 +1499,37 @@ def Chrome_Extension(number):
     #Return a small webpage which contains two figures
 @app.route('/Admin_Custom_Email', methods=['GET', 'POST'])
 def Admin_Custom_Email():
+    if request.method == 'GET':
+        return render_template('email_query.html')
+    
     """
-    This function handles the webpage of admin_custom_email.html
+    The rest handles the webpage of admin_custom_email.html
     This function sends several types of sql and show the tables
     In 0718, Shin-Yeh implemented three types of email.
     1. Send email to ask adding ETA when the bug is triage-accepted
     2. Send email to ask checking ETA since the bug is expired or in rush
     3. Send email to ask updateing since the bug is not updated for a long time
     """
+
+    assigned_to = common_get_assigned_to_list(request.form["assigned_to"]) 
+    if not assigned_to:
+        return render_template('email_query.html', error="Fail to Connect MySQL, Please try again later")
+
+    res = common_assigned_to_verify_update(assigned_to)
+    if res['result'] == 'error':
+        return render_template('email_query.html', error=res['message'])
+    rn_to_number = res['data']
+
+    res = common_get_fix_bys(request)
+    if res['result'] == 'error':
+        return render_template('email_query.html', error=res['message'])
+    fix_by_tuple = res['data']
+
+    res = common_get_candidate_bug_id_list(rn_to_number, fix_by_tuple)
+    if res['result'] == 'error':
+        return render_template('email_query.html', error=res['message'])
+    bug_id_list = res['data']
+
     conn = MySQLdb.connect(host=LOCAL_DATABASE_HOST, user=LOCAL_DATABASE_USER, passwd=LOCAL_DATABASE_PW, db=LOCAL_DATABASE_DATABASE)
     
     """
@@ -1506,7 +1539,10 @@ def Admin_Custom_Email():
     sql = """SELECT * from bugs 
         where keywords like "%triage-accepted%"
         and cf_eta is NULL
-        ORDER by highlighted_by DESC, weight DESC, bug_id"""
+        and bug_id in ({})
+        ORDER by highlighted_by DESC, weight DESC, bug_id""".format(
+        ','.join(bug_id_list)
+        )
         
     cursor = conn.cursor()
     cursor.execute(sql)
@@ -1514,12 +1550,14 @@ def Admin_Custom_Email():
     T_ETA_bug_results = []
     for row in cursor.fetchall():
         T_ETA_bug_results.append(dict(zip(columns, row)))
-            
-    sql = """select bug_id, fix_by_product_rn, fix_by_version_rn, fix_by_phase_rn from bug_fix_by_map
-        where bug_id in ({})
-        order by bug_id""".format(",".join(str(k["bug_id"]) for k in T_ETA_bug_results))
-    T_ETA_bug_fix_by_results = bug_fix_by_SQL(sql, cursor)
-    
+
+    T_ETA_bug_fix_by_results = {}
+    if T_ETA_bug_results:
+        sql = """select bug_id, fix_by_product_rn, fix_by_version_rn, fix_by_phase_rn from bug_fix_by_map
+            where bug_id in ({})
+            order by bug_id""".format(",".join(str(k["bug_id"]) for k in T_ETA_bug_results))
+        T_ETA_bug_fix_by_results = bug_fix_by_SQL(sql, cursor)
+        
     """
     The second sql is aimed to find the bugs which are in ETA problems.
     For example, ETA: expired, ETA: one week, ETA one days.....
@@ -1527,19 +1565,23 @@ def Admin_Custom_Email():
     
     sql = """SELECT * from bugs 
         where highlighted_by like "%ETA:%"
-        ORDER by highlighted_by DESC, weight DESC, bug_id"""
+        and bug_id in ({})
+        ORDER by highlighted_by DESC, weight DESC, bug_id""".format(
+        ','.join(bug_id_list)
+        )
     cursor = conn.cursor()
     cursor.execute(sql)
     columns = [column[0] for column in cursor.description]
     ETA_bug_results = []
     for row in cursor.fetchall():
         ETA_bug_results.append(dict(zip(columns, row)))
-            
-    sql = """select bug_id, fix_by_product_rn, fix_by_version_rn, fix_by_phase_rn from bug_fix_by_map
-        where bug_id in ({})
-        order by bug_id""".format(",".join(str(k["bug_id"]) for k in ETA_bug_results))
+    ETA_bug_fix_by_results = {} 
+    if ETA_bug_results:        
+        sql = """select bug_id, fix_by_product_rn, fix_by_version_rn, fix_by_phase_rn from bug_fix_by_map
+            where bug_id in ({})
+            order by bug_id""".format(",".join(str(k["bug_id"]) for k in ETA_bug_results))
     
-    ETA_bug_fix_by_results = bug_fix_by_SQL(sql, cursor)
+        ETA_bug_fix_by_results = bug_fix_by_SQL(sql, cursor)
     
     
     """
@@ -1548,8 +1590,12 @@ def Admin_Custom_Email():
     """
     sql = """select * from bugs
     where delta_ts < '{}'
+    and bug_id in ({})
     ORDER by highlighted_by DESC, weight DESC, bug_id
-    """.format(date.today() - relativedelta(months = ETA_MONTH_CONFIG))
+    """.format(
+    date.today() - relativedelta(months = ETA_MONTH_CONFIG),
+    ','.join(bug_id_list)
+    )
     
     """
     Important, the relativedelta should be modified by config if the user want to modified the eta period
@@ -1570,7 +1616,7 @@ def Admin_Custom_Email():
     W_U_bug_fix_by_results = bug_fix_by_SQL(sql, cursor)
     
     
-    T_ETA_Message = EMAIL_WARNING_MESSAGE.format("'Should After ETA After Triage-accepted'")
+    T_ETA_Message = EMAIL_WARNING_MESSAGE.format("'Should Set ETA After Triage-accepted'")
     ETA_Message = EMAIL_WARNING_MESSAGE.format("'ETA Expired'")
     W_U_Message = EMAIL_WARNING_MESSAGE.format("'Longtime Without Update'")
     
@@ -1636,7 +1682,7 @@ def Admin_Email_Processing():
             sendemail(from_addr, to_addr, subject, message)
     
     
-    return render_template('admin_custom.html', message="Finish Processing Email at {}".format(datetime.now().strftime(FMT_YMDHMS)))
+    return render_template('email_query.html', message="Finish Processing Email at {}".format(datetime.now().strftime(FMT_YMDHMS)))
 
 
 def milestone_check(product, version):
@@ -2017,6 +2063,398 @@ def Admin_Custom_List():
         admin_list_add = str(request.form["admin_list_add"]).rstrip(',').split(",")
         admin_list_remove = str(request.form["admin_list_remove"]).rstrip(',').split(",")
         return render_template('admin_custom_list.html', admin_list_add=admin_list_add, admin_list_remove=admin_list_remove, admin_list=final_result, admin_ori=admin_ori, message = "Finish List Editing at {}".format(datetime.now().strftime(FMT_YMDHMS)))
+
+def common_get_candidate_bug_id_list(profile_number, fix_by_tuple):
+    res = {'result':'error'}
+    cursor = common_get_local_cursor()
+    if not cursor:
+        res['message'] = 'Connot connect to DB'
+        return res
+
+    if not profile_number:
+        res['message'] = 'Assign to name error'
+        return res
+
+    try:
+        fix_by_product_number = fix_by_tuple[0]
+        fix_by_version_number = fix_by_tuple[1]
+        fix_by_phase_number   = fix_by_tuple[2]
+    except:
+        res['message'] = 'Fix by setting error'
+        return res
+        
+    sql = """SELECT * from bugs 
+    where assigned_to in ({}) 
+    ORDER by highlighted_by DESC, weight DESC, bug_id""".format(
+    profile_number,
+    )
+    cursor.execute(sql)
+    columns = [column[0] for column in cursor.description]
+    impure_results = []
+    for row in cursor.fetchall():
+        impure_results.append(dict(zip(columns, row)))
+    
+    """
+    This process should be done twice since if we only do the first round, 
+    we can only retrieve the bug_fix_by_map results which are related to the product, version and phase information.
+    However, if this bug contains multiple fix_by_information, we want to show all the bug_fix_by_information of this bug.
+    """    
+    if impure_results:
+        sql = """select bug_id, fix_by_product_rn, fix_by_version_rn, fix_by_phase_rn from bug_fix_by_map
+        where bug_id in ({})
+        and fix_by_product_id in ({})
+        and fix_by_version_id in ({})
+        and fix_by_phase_id in ({})
+        order by bug_id""".format(",".join(str(k["bug_id"]) for k in impure_results),
+        fix_by_product_number,
+        fix_by_version_number,
+        fix_by_phase_number)
+        
+        bug_fix_by_results = bug_fix_by_SQL(sql, cursor)
+    else:
+        bug_fix_by_results = []
+   
+    """
+    We use this iteration to get all the id, and use another bug_fix_by_SQL to search all the ID_related information.
+    In the future, if you only want to retrieve the fix_by_s information related to specific version,
+    this parts of code can be removed directly without causing errors.
+    Remove Start from here!!!
+    """
+    ID_list=[]
+    for key in impure_results:
+        if key["bug_id"] in bug_fix_by_results.keys():
+            ID_list.append(str(key["bug_id"]))
+
+    res['result'] = 'success'
+    res['data'] = ID_list
+    return res
+    
+
+def common_get_fix_bys(request):
+    res = {'result':'error'}
+    cursor = common_get_local_cursor()
+    if not cursor:
+        res['message'] = 'Connot connect to DB'
+        return res
+    """
+    This section is used for comparing input product name with the database.
+    If the user types the wrong name, it would trigger the checking process
+    """
+    if str(request.form['fix_by_product']) != "":
+        len_input=len(str(request.form['fix_by_product']).split(','))
+        sql = """select id from products where name in ('{}')""".format("','".join(request.form['fix_by_product'].split(',')))
+        cursor.execute(sql)
+        fix_by_product_result = cursor.fetchall()
+        fix_by_product_number = ",".join(map(str, (key[0] for key in fix_by_product_result)))
+        len_db=len(fix_by_product_result)
+        len_product = len(fix_by_product_result)
+        
+        if len_db < len_input:
+            logging.warning("{} queries are not approved since the product name is unfindable.".format(session['username']))
+            res['message'] = "The product name is unfindable. \n Please corrent your spelling"
+            return res
+    else:
+        """
+        In order to match the query column of versions, the name should be product_id first.
+        This name should changed to fix_by_product_id after querying versions
+        """
+        fix_by_product_number = "product_id"
+    """
+    The version name has not been verified, since the version is hard to checked without auto complete boxes.
+    It should be done with multi-level select menu with javascript.
+    Because of the drop menu of bugzilla is done by brute-force style, I did not implement this version check in this script.
+    """
+    if str(request.form['fix_by_version']) != "":
+        len_input=len(str(request.form['fix_by_version']).split(','))
+        sql = """select id from versions 
+        where name in ('{}')
+        and product_id in ({})
+        """.format("','".join(request.form['fix_by_version'].split(',')),
+        fix_by_product_number)
+        cursor.execute(sql)
+        fix_by_version_result = cursor.fetchall()
+        fix_by_version_number = ",".join(map(str, (key[0] for key in fix_by_version_result)))
+        len_db=len(fix_by_version_result)
+        len_version = len(fix_by_version_result)
+        
+        if str(request.form['fix_by_version']) != "" and len_db < len_input:
+            logging.warning("{} queries are not approved since the version name is unfindable.".format(session['username']))
+            res['message'] = "The version name is unfindable. \n Please corrent your spelling"
+            return res
+    else:
+        fix_by_version_number = "version_id"
+    
+    """
+    The processing of phase name is similar to the processing of version name
+    """
+    if str(request.form['fix_by_phase']) != "":
+        len_input=len(str(request.form['fix_by_phase']).split(','))
+        sql = """select id from phases 
+        where name in ('{}')
+        and version_id in ({})
+        """.format("','".join(request.form['fix_by_phase'].split(',')),
+        fix_by_version_number)
+        
+        cursor.execute(sql)
+        fix_by_phase_result = cursor.fetchall()
+        fix_by_phase_number = ",".join(map(str, (key[0] for key in fix_by_phase_result)))
+        len_db=len(fix_by_phase_result)
+        len_phase = len(fix_by_phase_result)
+        
+        if str(request.form['fix_by_phase']) != "" and len_db < len_input:
+            logging.warning("{} queries are not approved since the phase name is unfindable.".format(session['username']))
+            res['message'] = "The phase name is unfindable. \n Please corrent your spelling"
+            return res
+    else:
+        fix_by_phase_number = "phase_id"
+    
+    """
+    Change the product, version and phase number to "fix_by_product_xx"
+    """
+    if str(request.form['fix_by_product']) == "":
+        fix_by_product_number = "fix_by_product_id"
+    if str(request.form['fix_by_version']) == "":
+        fix_by_version_number = "fix_by_version_id"
+    if str(request.form['fix_by_phase']) == "":
+        fix_by_phase_number = "fix_by_phase_id"
+    
+    """
+    If the product number is larger than two, the length of version can only be zero.
+    """
+    if request.form['fix_by_version'] != "" or request.form['fix_by_phase'] != "":
+        if request.form['fix_by_product'] == "" or len_product > 1:
+            logging.warning("{} queries are not approved since there is more or less than one parameter in product column when version parameter is set".format(session['username']))
+            res['message'] = "The version can only be set when there is only one parameter in product column"
+            return res
+    """
+    """
+    res['result'] = 'success'
+    res['data'] = [fix_by_product_number, fix_by_version_number, fix_by_phase_number]
+    return res
+
+        
+ 
+
+def common_assigned_to_verify_update(assigned_to):
+    res = {'result':'error'}
+    cursor = common_get_local_cursor()
+    if not cursor:
+        res['message'] = 'Connot connect to DB'
+        return res
+
+    Input_Rule = assigned_to
+    Need_Query_List=[]  #Need_Query_List is a list of new names
+    
+    logging.warning("{} queries for assigned_to:{}\t fix_by_product:{}\t fix_by_version:{}\t product:{}.".format(session['username'], assigned_to, request.form['fix_by_product'], request.form['fix_by_version'], request.form['product']))
+    
+    
+    """
+    The following iteration compares each profile name in the query.
+    It will pick the queries which are not queried before in order to avoid duplicate queries.
+    Needing query profiles will be kepy in Need_Query_List.
+    """
+    
+    for key in str(assigned_to).split(','):
+        check_sum = hashlib.md5(key).hexdigest()
+        sql = """select md5 from rules where md5 = '{}'""".format(check_sum)
+        cursor.execute(sql)
+    
+        result = cursor.fetchone()
+        if not result:
+            Need_Query_List.append(key)
+    
+    """
+    This section is used for comparing input name with the database.
+    If the user types the wrong name, it would trigger the checking process
+    """
+    len_input=len(str(assigned_to).split(','))
+    
+    if not len_input:
+        logging.warning("{} queries are not approved since the assigned column should not be empty.".format(session['username']))
+        return {'result':'error', "message":"The assigned column should not be empty."}
+    
+    sql = """select userid from profiles where login_name in ('{}')""".format("','".join(assigned_to.split(',')))
+    
+    cursor.execute(sql)
+    profile_result = cursor.fetchall()
+    profile_number = ",".join(map(str, (key[0] for key in profile_result)))
+    len_db=len(profile_result)
+    
+    if len_db != len_input:
+        logging.warning("{} queries are not approved since the profile name is unfindable.".format(session['username']))
+        return {'result':'error', 'message':"The profile name {} is unfindable. \n Please corrent your spelling".format(assigned_to)}
+       
+    """
+    If the rule is a new one, the server will triger BAR.py to do another query from Bugzilla.
+    This is a quick update. Therefore, I only implement one rule in this update.
+    The information of versions, products and profiles are not updated during this time.
+    This design probably will cause error since the profiles in our databases are not the latest.
+    If the query contains the latest profiles, it would cause error.
+    The solution is to trigger update information every 15 minutes.
+    """
+    for key in Need_Query_List: #This is a new rule
+        o_filename = BAR_OFILENAME;
+        check_sum = hashlib.md5(key).hexdigest()
+        filename = BAR_OPTION_DIRECTORY+check_sum+".p";
+        command = "cd %s; python BAR.py" %SCRIPTS_DIR
+        
+        """
+        This line is commented because of the 07/22 meeting.
+        This is lines is the second line.
+        In the bottom of the code, there is another line which modified Input_Rule.
+        The reason and new method are defined in the comment of BAR.py
+        # Format_Rule=assigned_to+":"+
+        request.form['fix_by_product']+":"+
+        request.form['fix_by_version']+":"+
+        request.form['fix_by_phase']+":"+
+        request.form['product']+"::\n"
+        """
+        Format_Rule=key+":"+":"+":"+"::\n"
+        fp = open(filename, 'w')
+        fp.write(Format_Rule)
+        fp.close()
+        fp = open(o_filename, 'a')
+        fp.write(Format_Rule)
+        fp.close()
+        os.system(command + " --option " + filename + " --wo_update_information " + " --update " + " --full ")
+        os.system("rm " + filename)
+    res['result'] = 'success'
+    res['data'] = profile_number
+    return res
+ 
+
+def common_get_assigned_to_list(orig_assigned_to):
+    cursor = common_get_local_cursor()
+    if not cursor:
+        return
+
+    assigned_to = str(orig_assigned_to).rstrip(',')
+    """
+    Transform assigned_to with alias
+    """
+    
+    processing_assign = assigned_to.split(',')
+    
+    processing_profile_number = session["userid"]
+    processing_profile_results = []
+    
+    """
+    Query the database
+    If the key is alias, it would be replaced by the contents of alias.
+    If the key is not alias, it would be key itself
+    """
+    for key in processing_assign:
+        sql="""
+        select alias_contents from custom_alias
+        where userid = {}
+        and alias_name = "{}"
+        """.format(
+                    processing_profile_number,
+                    key)
+        cursor.execute(sql)
+        result = cursor.fetchone()
+        if result:
+            processing_profile_results.append(result[0])
+        else:
+            processing_profile_results.append(key)
+    """
+    Converge the Processing_profile_results into assigned_to again
+    
+    We have to remove the duplicate profile name
+    The below this line is using to remove duplicate
+    For example, shinyeht, shinyeht, cpd-platform.
+    We should only query shinyeht, cpd-platform
+    
+    """
+    processing_profile_results = ",".join(processing_profile_results)
+    processing_profile_results = processing_profile_results.split(',')
+    processing_profile_list = []
+    for key in processing_profile_results:
+        processing_profile_list.append(key.strip())
+        
+    processing_profile_results = list(set(processing_profile_list))
+    
+    assigned_to = ",".join(processing_profile_results)
+    
+    """
+    Accordingly, the assigned_to is transfered from alias to normal string
+    We have to process cite situation now.
+    For example, if there is an alias A, A -> "@:X,Y" , when shinyeht queries A,Z.
+    Therefore
+        A, Z --> @:X,Y,Z --> a,b,c,Y,Z
+    This part would probably cause bugs because of the recursive problem.
+    """
+    
+    processing_cite_list = assigned_to.split(',')
+    processing_cite_results = []
+    for key in processing_cite_list:
+        if "@:" in key:
+            if key[0] != "@" and key[1] != ":":
+                return render_template('query.html', error = "cite @: using error")
+            cite_username = key.replace("@:", "")
+            
+            sql = """
+            select userid from profiles 
+            where login_name = '{}'
+            """.format(cite_username)
+            cursor.execute(sql)
+            result = cursor.fetchone()
+            if result:
+                cite_userid = result[0]
+            else:
+                return render_template('query.html', error = "error in profile query")
+            
+            sql="""
+            select care_member from custom_setting
+            where userid = {}
+            """.format(cite_userid)
+            cursor.execute(sql)
+            result = cursor.fetchone()
+            if result:
+                cite_contents = result[0]
+                processing_cite_results.append(cite_contents)
+            else:
+                pass
+        else:
+            processing_cite_results.append(key)
+    
+    print processing_cite_results
+    
+    processing_cite_results = ",".join(processing_cite_results)
+    processing_cite_results = processing_cite_results.split(',')
+    processing_cite_list = []
+    for key in processing_cite_results:
+        processing_cite_list.append(key.strip())
+    processing_cite_results = list(set(processing_cite_list))
+    
+    assigned_to = ",".join(processing_cite_results)
+    return assigned_to
+    """
+    processing finish
+    """
+
+def common_get_local_cursor():
+    conn = MySQLdb.connect(host=LOCAL_DATABASE_HOST, user=LOCAL_DATABASE_USER, passwd=LOCAL_DATABASE_PW, db=LOCAL_DATABASE_DATABASE)
+    if not conn:
+        flash("Fail to Connect my Sql, please try again later")
+        return
+    cursor = conn.cursor()
+    return cursor
+
+@app.route('/test_error')
+def test_error():
+    error['1'] = 1
+    return "index"
+
+@app.errorhandler(500)
+def internal_error(error):
+    from_addr = session["username"] + "@vmware.com"
+    to_addr = "fangchiw@vmware.com"
+    subject = """[TriageRobot Problem Report] {}""".format(datetime.now().strftime(FMT_YMDHMS))
+    message = traceback.format_exc()
+    message += '\n\n'+str(request)+'\n\n'
+    sendemail(from_addr, to_addr, subject, message)
+    return render_template('error.html', error="OOPS! There is an internal error occured, a report has been filed.")
 
 def initialize_logger(output_dir):
     """
