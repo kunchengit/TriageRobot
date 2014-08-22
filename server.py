@@ -351,7 +351,9 @@ def Entries_Processing():
         
         for key in target_list:
             product_id = find_product_id(key["product"],cursor)
+
             if product_id != None:
+                
                 version_id = find_version_id(key["version"],cursor,product_id)
                 if version_id != None:
                     phase_id = find_phase_id(key["phase"],cursor,version_id)
@@ -372,6 +374,15 @@ def Entries_Processing():
             key["version"] = version_id
             key["phase_rn"] = key["phase"]
             key["phase"] = phase_id
+
+            key["fix_by_data"] = dict()
+            if key["product_rn"]:
+                key["fix_by_data"]['fix_by_product'] = key["product_rn"]
+            if key["version_rn"]:
+                key["fix_by_data"]['fix_by_version'] = key["version_rn"]
+            if key["phase_rn"]:
+                key["fix_by_data"]['fix_by_phase'] = key["phase_rn"]
+            
         #This line will remove all the 0_0_0 case in target_list
         target_list[:] = [x for x in target_list if not (x['product'],x['version'],x['phase'])==(0,0,0)]
         return target_list
@@ -389,10 +400,7 @@ def Entries_Processing():
     for key in Fix_By_Add_List:
         #fix_by_information=[].append("{}_{}_{}".format(key["product"], key["version"], key["phase"]))
         fix_by_information = list()
-        fix_by_information.append({'fix_by_product':key["product_rn"], 
-                                   'fix_by_version':key["version_rn"], 
-                                   'fix_by_phase'  :key["phase_rn"]
-                                  })
+        fix_by_information.append(key["fix_by_data"])
         server.add_fix_bys(key["bug_id"], fix_by_information)
         Update_List[key["bug_id"]]=True
     
@@ -407,11 +415,7 @@ def Entries_Processing():
     for key in Fix_By_Remove_List:
         #fix_by_information=[].append("{}_{}_{}".format(key["product"], key["version"], key["phase"]))
         fix_by_information = list()
-        fix_by_information.append({'fix_by_product':key["product_rn"], 
-                                   'fix_by_version':key["version_rn"], 
-                                   'fix_by_phase'  :key["phase_rn"]
-                                  })
-        print fix_by_information
+        fix_by_information.append(key["fix_by_data"])
         server.remove_fix_bys(key["bug_id"], fix_by_information)
         Update_List[key["bug_id"]]=True
     
@@ -477,9 +481,10 @@ def Entries_Processing():
     Follow the instructions in the metting on 07/22/2014, after each update, the whole record in the local database should be updated again
     """
 
-    ID_String = " ".join(map(str,Update_List.keys()))
-    command = "cd %s; python BAR.py" %SCRIPTS_DIR
-    os.system(command + " --ID " + ID_String)
+    if Update_List:
+        ID_String = " ".join(map(str,Update_List.keys()))
+        command = "cd %s; python BAR.py" %SCRIPTS_DIR
+        os.system(command + " --ID " + ID_String)
     
     
     return render_template('entries_processing.html', bugs=results, message = "Finish Processing at {}".format(datetime.now().strftime(FMT_YMDHMS)))
@@ -1329,7 +1334,6 @@ def Custom_Setting():
         else:
             return render_template('custom_setting.html')
     elif request.method == 'POST':
-        print 'fangchiw'
         """
         In post method, the program updates the data in database, and return the latest values to the original webpage
         In comparison with get method, in post method, we need to check the correctness of input
