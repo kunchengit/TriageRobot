@@ -1329,7 +1329,7 @@ def Custom_Setting():
         else:
             return render_template('custom_setting.html')
     elif request.method == 'POST':
-        
+        print 'fangchiw'
         """
         In post method, the program updates the data in database, and return the latest values to the original webpage
         In comparison with get method, in post method, we need to check the correctness of input
@@ -1349,18 +1349,21 @@ def Custom_Setting():
         query_version = str(request.form["query_version"])
         query_phase = str(request.form["query_phase"])
         error=""
-        if request.form["email_notification"]:
-            try:
-                email_notification = int(request.form["email_notification"])
-                if not isinstance(email_notification, int) or email_notification < 0 :
-                    error = "Email notification should be integer >= 0"
-            except:
-                error = "Email notification should be integer >= 0"
-            """
-            email_notification should >=0 and should be integer
-            """
-        else:
-            email_notification = 0
+        #if request.form["email_notification"]:
+        #    print "fangchiw2"
+        #    try:
+        #        email_notification = int(request.form["email_notification"])
+        #        if not isinstance(email_notification, int) or email_notification < 0 :
+        #            error = "Email notification should be integer >= 0"
+        #    except:
+        #        error = "Email notification should be integer >= 0"
+        #    """
+        #    email_notification should >=0 and should be integer
+        #    """
+        #else:
+        #    print "fangchiw2"
+        #    email_notification = 0
+        email_notification = 0
         """
         @: (Cite symbol should not be used in care_member to avoid recursive checking)
         """
