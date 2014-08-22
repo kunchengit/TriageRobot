@@ -366,9 +366,11 @@ def Entries_Processing():
                 logging.warning("{} processings are not approved since the {} name '{}' is wrong.".format(session['username'], error_message, key[error_message]))
                 return "Processing are not approved since the {} name '{}' is wrong".format(error_message, key[error_message])
             
-
+            key["product_rn"] = key["product"]
             key["product"] = product_id
+            key["version_rn"] = key["version"]
             key["version"] = version_id
+            key["phase_rn"] = key["phase"]
             key["phase"] = phase_id
         #This line will remove all the 0_0_0 case in target_list
         target_list[:] = [x for x in target_list if not (x['product'],x['version'],x['phase'])==(0,0,0)]
@@ -385,8 +387,14 @@ def Entries_Processing():
             Update_List[key["bug_id"]]=True
     
     for key in Fix_By_Add_List:
-        fix_by_information=[].append("{}_{}_{}".format(key["product"], key["version"], key["phase"]))
-        #server.add_fix_bys(key["bug_id"], fix_by_information)
+        #fix_by_information=[].append("{}_{}_{}".format(key["product"], key["version"], key["phase"]))
+        fix_by_information = list()
+        fix_by_information.append({'fix_by_product':key["product_rn"], 
+                                   'fix_by_version':key["version_rn"], 
+                                   'fix_by_phase'  :key["phase_rn"]
+                                  })
+        server.add_fix_bys(key["bug_id"], fix_by_information)
+        Update_List[key["bug_id"]]=True
     
     #Process Remove_list
     Record = product_version_phase_realname_to_ID(Fix_By_Remove_List)
@@ -397,8 +405,15 @@ def Entries_Processing():
         if key["bug_id"] not in Update_List.keys():
             Update_List[key["bug_id"]]=True
     for key in Fix_By_Remove_List:
-        fix_by_information=[].append("{}_{}_{}".format(key["product"], key["version"], key["phase"]))
-        #server.remove_fix_bys(key["bug_id"], fix_by_information)
+        #fix_by_information=[].append("{}_{}_{}".format(key["product"], key["version"], key["phase"]))
+        fix_by_information = list()
+        fix_by_information.append({'fix_by_product':key["product_rn"], 
+                                   'fix_by_version':key["version_rn"], 
+                                   'fix_by_phase'  :key["phase_rn"]
+                                  })
+        print fix_by_information
+        server.remove_fix_bys(key["bug_id"], fix_by_information)
+        Update_List[key["bug_id"]]=True
     
     """
     Add/Remove keywords and commends

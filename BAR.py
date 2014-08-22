@@ -884,7 +884,6 @@ def Check_ID(args):
         Fix_by_Results = []
         for row in bzdb_cursor.fetchall():
             Fix_by_Results.append(dict(zip(columns, row)))
-
         """
         Change dictionary name
         id -> fix_by_id
@@ -923,6 +922,11 @@ def Check_ID(args):
                 if entry[key] == None:
                     del entry[key]
         
+        sql = """DELETE FROM bug_fix_by_map
+                 WHERE bug_id in (%s)"""%idkey
+        #print sql
+        local_cursor.execute(sql)
+    
         ########Below parts can be deleted########
         for entry in Fix_by_Results:
             sql = """INSERT INTO bug_fix_by_map
@@ -936,7 +940,7 @@ def Check_ID(args):
             ','.join(map(str,(format_sql(k) for k in entry.values()))),
             ','.join('{}={}'.format(k,format_sql(entry[k])) for k in entry)
             )
-            #local_cursor.execute(sql)
+            local_cursor.execute(sql)
         ########Above parts can be deleted########
         
         ID_Result = Original_SQL_data_to_BID_Record(bugs = Bugs_Results, fix_by = Fix_by_Results, longdescs = Comments_Results, conn = bzdb_conn)
