@@ -254,7 +254,7 @@ $(document).ready(function() {
                 <th>Priority</th>
                 <th>Severity</th>
                 <th>Case Count</th>
-                <th>fix by product-version-phase<br>(Due to a Bugzilla issue, add/remove fix by cannot be done here, for now)</br></th>
+                <th>fix by product-version-phase</th>
                 <th>Assigned_to</th>
                 <th>ETA</th>
                 <th>Last Modified</th>
@@ -320,7 +320,7 @@ $(document).ready(function() {
                           });
                         });
                     </script>
-                    
+                    {%if fix_entry['product'] or fix_number==1%} 
                     <input type=text id="fix_by_{{entry['bug_id']}}_{{fix_number }}_product" name="fix_by_{{entry['bug_id']}}_{{fix_number }}_product" value = "{{fix_entry['product']}}" size = "8" class = "search-product">
                     <input type=text id="fix_by_{{entry['bug_id']}}_{{fix_number }}_version" name="fix_by_{{entry['bug_id']}}_{{fix_number }}_version" value = "{{fix_entry['version']}}" size = "8" class = "search-version">
                     <input type=text id="fix_by_{{entry['bug_id']}}_{{fix_number }}_phase" name="fix_by_{{entry['bug_id']}}_{{fix_number }}_phase" value = "{{fix_entry['phase']}}" size = "6" class = "search-phase">
@@ -328,6 +328,7 @@ $(document).ready(function() {
                     <!-- This hidden line is implemented for searching in datatable -->
                     <div style="visibility: hidden"> {{fix_entry['product']}}_{{fix_entry['version']}}_{{fix_entry['phase']}}_{{fix_number }}</div>
                     <input type=hidden id="fix_by_{{entry['bug_id']}}_{{fix_number}}_id" name="fix_by_{{entry['bug_id']}}_{{fix_number}}_id" value="{{entry['bug_id']}}">
+                    {%endif%}
                     
                     
                     
