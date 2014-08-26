@@ -124,7 +124,6 @@ function openPopup() {
 </script>
 
 <form action="{{ url_for('Admin_Email_Processing') }}" method=post>
-    
 <ul class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
     <h3><span class="label label-primary">
         1. The table of the bugs which should add ETA after triage-accepted
@@ -293,7 +292,13 @@ function openPopup() {
     </table>
     <textarea class="form-control" name="W_U_Message" row="20" placeholder="{{W_U_Message}}"></textarea>
     <br>
-    <h3><button class="btn btn-lg btn-primary btn-block" type="submit">Send Email</button></h3>
+<style>
+.floating-button {position:fixed; z-index:9999; bottom:15px;width:78%;}
+</style>
+    <div class="floating-button">
+    <h3><button class="btn btn-lg btn-primary btn-block floating-button" type="submit" id="submit_button">Send Email</button></h3>
+    </div>
+    <br>
     </form>
 </ul>
 {% endblock %}
