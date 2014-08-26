@@ -95,7 +95,10 @@ with app.test_request_context('/hello', method='POST'):
 
 @app.route('/')
 def index():
-    return render_template('query.html')
+    try:
+        return Query()
+    except:
+        return render_template('query.html')
 
 @app.route('/Login', methods=['GET', 'POST'])
 def Login():
@@ -2470,7 +2473,10 @@ def test_error():
 
 @app.errorhandler(500)
 def internal_error(error):
-    from_addr = session["username"] + "@vmware.com"
+    try:
+        from_addr = session["username"] + "@vmware.com"
+    except:
+        from_addr = "fangchiw@vmware.com"
     to_addr = "fangchiw@vmware.com"
     subject = """[TriageRobot Problem Report] {}""".format(datetime.now().strftime(FMT_YMDHMS))
     message = traceback.format_exc()
