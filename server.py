@@ -212,14 +212,23 @@ def Entries_Processing():
     
     result={}
     
+    checked_list = []
+    for key in request.form.keys():
+        if "check_id_" in key: 
+            check_id = int(key.replace("check_id_",""))
+            checked_list.append(check_id)
+    if not checked_list:
+        return render_template('query.html', error="no item selected")
+
     """
     Retrieve all the bugid in the list
     """
     Bug_ID = []
     for key in request.form.keys():
         if "fix_by_" in key and "id" in key:
-            Bug_ID.append(int(request.form[key]))
-    
+            if int(request.form[key]) in checked_list:
+                Bug_ID.append(int(request.form[key]))
+
     """
     Retrueve the Old Bug_Fix_By_record from local database
     Then, we would do intersetion and union check to filter which record should be removed.
@@ -252,6 +261,9 @@ def Entries_Processing():
             string_split = [int(k) for k in key.split('_') if k.isdigit()]
 
             fix_id=string_split[0]
+            #ignore not checked bug_id
+            if not (fix_id in Bug_ID):
+                continue
             fix_number=string_split[1]
             if "product" in key:#Product
                 fix_type="product"
@@ -433,19 +445,8 @@ def Entries_Processing():
             since the there are lots of other keys will be transmited with request.form
             Therefore, I set a "if" to retrieve bug_id value
             """
-            check_id = int(key.replace("check_id_",""))
             #This line is using to retrieve the int part of the name (i.e., ID)
-            #Process Add Keywords
-            if request.form["Add_keywords"] != "":
-                Update_List[check_id]=True
-                try:
-                    result[check_id]["Add_keywords"] = str(request.form["Add_keywords"])
-                except:
-                    result[check_id]={}
-                    result[check_id]["bug_id"] = check_id
-                    result[check_id]["Add_keywords"] = str(request.form["Add_keywords"])
-                logging.warning("{} add keywords:({}) to {}.".format(session['username'], str(request.form["Add_keywords"]), str(request.form[key])))
-                server.add_keywords(check_id, *str(request.form["Add_keywords"]).split(","))
+            check_id = int(key.replace("check_id_",""))
             #Process Remove Keywords
             if request.form["Remove_keywords"] != "":
                 Update_List[check_id]=True
@@ -457,11 +458,25 @@ def Entries_Processing():
                     result[check_id]["Remove_keywords"] = str(request.form["Remove_keywords"])
                 logging.warning("{} remove keywords:({}) to {}.".format(session['username'], str(request.form["Remove_keywords"]), check_id))
                 server.remove_keywords(check_id, *str(request.form["Remove_keywords"]).split(","))
+            #Process Add Keywords
+            if request.form["Add_keywords"] != "":
+                Update_List[check_id]=True
+                try:
+                    result[check_id]["Add_keywords"] = str(request.form["Add_keywords"])
+                except:
+                    result[check_id]={}
+                    result[check_id]["bug_id"] = check_id
+                    result[check_id]["Add_keywords"] = str(request.form["Add_keywords"])
+                logging.warning("{} add keywords:({}) to {}.".format(session['username'], str(request.form["Add_keywords"]), str(request.form[key])))
+                server.add_keywords(check_id, *str(request.form["Add_keywords"]).split(","))
 
+    for key in request.form.keys():
         if "comment_id_" in key:
             if request.form[key] == "":#if the comment is null, just pass it
                 continue
             comment_id = int(key.replace("comment_id_",""))
+            if not (comment_id in checked_list):
+                continue
             Update_List[comment_id]=True
             #This line is using to retrieve the int part of the name (i.e., ID)
             try:
