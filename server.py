@@ -1555,6 +1555,8 @@ def Admin_Custom_Email():
         return render_template('email_query.html', error=res['message'])
     bug_id_list = res['data']
 
+    logging.warning("Email_Notification: {} queries for assigned_to:{}\t fix_by_product:{}\t fix_by_version:{}\t product:{}.".format(session['username'], assigned_to, request.form['fix_by_product'], request.form['fix_by_version'], request.form['product']))
+
     conn = MySQLdb.connect(host=LOCAL_DATABASE_HOST, user=LOCAL_DATABASE_USER, passwd=LOCAL_DATABASE_PW, db=LOCAL_DATABASE_DATABASE)
     
     """
@@ -1634,11 +1636,13 @@ def Admin_Custom_Email():
     W_U_bug_results = []
     for row in cursor.fetchall():
         W_U_bug_results.append(dict(zip(columns, row)))
-    
-    sql = """select bug_id, fix_by_product_rn, fix_by_version_rn, fix_by_phase_rn from bug_fix_by_map
-        where bug_id in ({})
-        order by bug_id""".format(",".join(str(k["bug_id"]) for k in W_U_bug_results))
-    W_U_bug_fix_by_results = bug_fix_by_SQL(sql, cursor)
+
+    W_U_bug_fix_by_results = {} 
+    if W_U_bug_results:
+        sql = """select bug_id, fix_by_product_rn, fix_by_version_rn, fix_by_phase_rn from bug_fix_by_map
+            where bug_id in ({})
+            order by bug_id""".format(",".join(str(k["bug_id"]) for k in W_U_bug_results))
+        W_U_bug_fix_by_results = bug_fix_by_SQL(sql, cursor)
     
     
     T_ETA_Message = EMAIL_WARNING_MESSAGE.format("'Should Set ETA After Triage-accepted'")
@@ -2270,7 +2274,6 @@ def common_assigned_to_verify_update(assigned_to):
     Input_Rule = assigned_to
     Need_Query_List=[]  #Need_Query_List is a list of new names
     
-    logging.warning("{} queries for assigned_to:{}\t fix_by_product:{}\t fix_by_version:{}\t product:{}.".format(session['username'], assigned_to, request.form['fix_by_product'], request.form['fix_by_version'], request.form['product']))
     
     
     """
@@ -2503,12 +2506,15 @@ def initialize_logger(output_dir):
     # create debug file handler and set level to debug
     handler = logging.FileHandler(os.path.join(output_dir, "query_and_logging.log"),"a")
     handler.setLevel(logging.WARNING)
-    formatter = logging.Formatter("%(levelname)s - %(asctime)s - %(message)s")
+    formatter = logging.Formatter("%(levelname)s - %(asctime)s - %(process)d - %(message)s")
     handler.setFormatter(formatter)
     logger.addHandler(handler)
     """
     https://docs.python.org/2/howto/logging-cookbook.html
     """
+
+initialize_logger(os.path.join(SCRIPTS_DIR,'log'))
+
 if __name__ == '__main__':
     #logging.basicConfig(filename='query_and_logging.log',level=logging.DEBUG,format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p')
     #logging.basicConfig(level=logging.DEBUG,format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p')
