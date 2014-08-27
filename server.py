@@ -569,10 +569,56 @@ def Show_Entries():
     cursor = conn.cursor()
     
     assigned_to = str(request.form['assigned_to']).rstrip(',')
+   
     """
-    Transform assigned_to with alias
+    process cite items first
     """
+    processing_cite_list = assigned_to.split(',')
+    processing_cite_results = []
+    for key in processing_cite_list:
+        if "@:" in key:
+            if key[0] != "@" and key[1] != ":":
+                return render_template('query.html', error = "cite @: using error")
+            cite_username = key.replace("@:", "")
+            
+            sql = """
+            select userid from profiles 
+            where login_name = '{}'
+            """.format(cite_username)
+            cursor.execute(sql)
+            result = cursor.fetchone()
+            if result:
+                cite_userid = result[0]
+            else:
+                return render_template('query.html', error = "error in profile query")
+            
+            sql="""
+            select care_member from custom_setting
+            where userid = {}
+            """.format(cite_userid)
+            cursor.execute(sql)
+            result = cursor.fetchone()
+            if result:
+                cite_contents = result[0]
+                processing_cite_results.append(cite_contents)
+            else:
+                pass
+        else:
+            processing_cite_results.append(key)
+    #print processing_cite_results
+    #remove duplicate, remove space around each names
+    processing_cite_results = ",".join(processing_cite_results)
+    processing_cite_results = processing_cite_results.split(',')
+    processing_cite_list = []
+    for key in processing_cite_results:
+        processing_cite_list.append(key.strip())
+    processing_cite_results = list(set(processing_cite_list))
     
+    assigned_to = ",".join(processing_cite_results)
+
+    """
+    Transform assigned_to with alias then
+    """
     processing_assign = assigned_to.split(',')
     
     processing_profile_number = session["userid"]
@@ -615,61 +661,8 @@ def Show_Entries():
     processing_profile_results = list(set(processing_profile_list))
     
     assigned_to = ",".join(processing_profile_results)
-    
     """
-    Accordingly, the assigned_to is transfered from alias to normal string
-    We have to process cite situation now.
-    For example, if there is an alias A, A -> "@:X,Y" , when shinyeht queries A,Z.
-    Therefore
-        A, Z --> @:X,Y,Z --> a,b,c,Y,Z
-    This part would probably cause bugs because of the recursive problem.
-    """
-    
-    processing_cite_list = assigned_to.split(',')
-    processing_cite_results = []
-    for key in processing_cite_list:
-        if "@:" in key:
-            if key[0] != "@" and key[1] != ":":
-                return render_template('query.html', error = "cite @: using error")
-            cite_username = key.replace("@:", "")
-            
-            sql = """
-            select userid from profiles 
-            where login_name = '{}'
-            """.format(cite_username)
-            cursor.execute(sql)
-            result = cursor.fetchone()
-            if result:
-                cite_userid = result[0]
-            else:
-                return render_template('query.html', error = "error in profile query")
-            
-            sql="""
-            select care_member from custom_setting
-            where userid = {}
-            """.format(cite_userid)
-            cursor.execute(sql)
-            result = cursor.fetchone()
-            if result:
-                cite_contents = result[0]
-                processing_cite_results.append(cite_contents)
-            else:
-                pass
-        else:
-            processing_cite_results.append(key)
-    
-    print processing_cite_results
-    
-    processing_cite_results = ",".join(processing_cite_results)
-    processing_cite_results = processing_cite_results.split(',')
-    processing_cite_list = []
-    for key in processing_cite_results:
-        processing_cite_list.append(key.strip())
-    processing_cite_results = list(set(processing_cite_list))
-    
-    assigned_to = ",".join(processing_cite_results)
-    """
-    request.form["assigned_to"] processing finish
+    finish request.form["assigned_to"] processing
     """
     
     """
@@ -2372,10 +2365,57 @@ def common_get_assigned_to_list(orig_assigned_to):
         return
 
     assigned_to = str(orig_assigned_to).rstrip(',')
+   
     """
-    Transform assigned_to with alias
+    step 1: parse cite items
     """
+    processing_cite_list = assigned_to.split(',')
+    processing_cite_results = []
+    for key in processing_cite_list:
+        if "@:" in key:
+            if key[0] != "@" and key[1] != ":":
+                return render_template('query.html', error = "cite @: using error")
+            cite_username = key.replace("@:", "")
+            
+            sql = """
+            select userid from profiles 
+            where login_name = '{}'
+            """.format(cite_username)
+            cursor.execute(sql)
+            result = cursor.fetchone()
+            if result:
+                cite_userid = result[0]
+            else:
+                return render_template('query.html', error = "error in profile query")
+            
+            sql="""
+            select care_member from custom_setting
+            where userid = {}
+            """.format(cite_userid)
+            cursor.execute(sql)
+            result = cursor.fetchone()
+            if result:
+                cite_contents = result[0]
+                processing_cite_results.append(cite_contents)
+            else:
+                pass
+        else:
+            processing_cite_results.append(key)
     
+    #print processing_cite_results
+    
+    processing_cite_results = ",".join(processing_cite_results)
+    processing_cite_results = processing_cite_results.split(',')
+    processing_cite_list = []
+    for key in processing_cite_results:
+        processing_cite_list.append(key.strip())
+    processing_cite_results = list(set(processing_cite_list))
+    
+    assigned_to = ",".join(processing_cite_results)
+
+    """
+    step 2: Transform assigned_to with alias
+    """
     processing_assign = assigned_to.split(',')
     
     processing_profile_number = session["userid"]
@@ -2418,59 +2458,7 @@ def common_get_assigned_to_list(orig_assigned_to):
     processing_profile_results = list(set(processing_profile_list))
     
     assigned_to = ",".join(processing_profile_results)
-    
-    """
-    Accordingly, the assigned_to is transfered from alias to normal string
-    We have to process cite situation now.
-    For example, if there is an alias A, A -> "@:X,Y" , when shinyeht queries A,Z.
-    Therefore
-        A, Z --> @:X,Y,Z --> a,b,c,Y,Z
-    This part would probably cause bugs because of the recursive problem.
-    """
-    
-    processing_cite_list = assigned_to.split(',')
-    processing_cite_results = []
-    for key in processing_cite_list:
-        if "@:" in key:
-            if key[0] != "@" and key[1] != ":":
-                return render_template('query.html', error = "cite @: using error")
-            cite_username = key.replace("@:", "")
-            
-            sql = """
-            select userid from profiles 
-            where login_name = '{}'
-            """.format(cite_username)
-            cursor.execute(sql)
-            result = cursor.fetchone()
-            if result:
-                cite_userid = result[0]
-            else:
-                return render_template('query.html', error = "error in profile query")
-            
-            sql="""
-            select care_member from custom_setting
-            where userid = {}
-            """.format(cite_userid)
-            cursor.execute(sql)
-            result = cursor.fetchone()
-            if result:
-                cite_contents = result[0]
-                processing_cite_results.append(cite_contents)
-            else:
-                pass
-        else:
-            processing_cite_results.append(key)
-    
-    print processing_cite_results
-    
-    processing_cite_results = ",".join(processing_cite_results)
-    processing_cite_results = processing_cite_results.split(',')
-    processing_cite_list = []
-    for key in processing_cite_results:
-        processing_cite_list.append(key.strip())
-    processing_cite_results = list(set(processing_cite_list))
-    
-    assigned_to = ",".join(processing_cite_results)
+
     return assigned_to
     """
     processing finish
