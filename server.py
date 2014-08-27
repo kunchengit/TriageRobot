@@ -1013,6 +1013,12 @@ def Show_Entries():
     milestone_results = milestone_results, 
     query = request.form)
 
+#def query_error(message):
+#    query_assignee = request["assigned_to"]
+#    query_product = results[0]["query_product"]
+#    query_version = results[0]["query_version"]
+#    query_phase = results[0]["query_phase"]
+
 @app.route('/Admin_Custom_Webpage', methods=['GET', 'POST'])
 def Admin_Custom_Webpage():
     """
@@ -1055,6 +1061,8 @@ def Admin_Custom_Triage_Chart():
     if not len_input:
         logging.warning("{} queries are not approved since the assigned column should not be empty.".format(session['username']))
         return render_template('admin_custom_triage_chart.html', error="The assigned column should not be empty.")
+
+    assigned_to = common_get_assigned_to_list(assigned_to)
     
     sql = """select userid from profiles where login_name in ('{}')""".format("','".join(assigned_to.split(',')))
         
