@@ -53,9 +53,9 @@ var oTable;
 $(document).ready(function() {
     var oTable = $('#bugs_table').DataTable({
         paging:         true, 
-        "lengthMenu": [ [-1, 10, 25, 50], ["All",10, 25, 50] ],
+        "lengthMenu": [ [-1, 10, 25, 50], ["All", 10, 25, 50] ],
         dom: 'C<"clear">lfrtip',
-        scrollY:        "300px",
+        scrollY:        "600px",
         scrollX: true,
         "aoColumns": [ 
             {"bVisible":true},  //Checkbox
@@ -244,8 +244,24 @@ $(document).ready(function() {
     <table id="bugs_table" class="display" cellspacing="0" width="100%">
         <thead>
             <tr>
-                <th>
-                    <input name="Custodians" type="checkbox" value="All" class="checkall">
+                <th>Select ALL<br>
+                    <script>
+                    $(document).ready(function() {
+                        $('#selectall').click(function(event) {  //on click
+                            if(this.checked) { // check select status
+                                $('.checkbox1').each(function() { //loop through each checkbox
+                                    this.checked = true;  //select all checkboxes with class "checkbox1"              
+                                });
+                            }else{
+                                $('.checkbox1').each(function() { //loop through each checkbox
+                                    this.checked = false; //deselect all checkboxes with class "checkbox1"                      
+                                });        
+                            }
+                        });
+                       
+                    });
+                    </script>
+                    <input name="Custodians" type="checkbox" value="All" class="checkall" id="selectall">
                 </th>
                 <th>Bug ID</th>
                 <th>Summary</th>
@@ -265,7 +281,7 @@ $(document).ready(function() {
         <tbody>
         {% for entry in bugs %}
             <tr>
-                <td><input type=checkbox id = {{ entry["bug_id"] }} value = {{ entry["bug_id"] }} name = check_id_{{ entry["bug_id"] }}></td>
+                <td><input class=checkbox1 type=checkbox id = {{ entry["bug_id"] }} value = {{ entry["bug_id"] }} name = check_id_{{ entry["bug_id"] }}></td>
                 <td><a href=https://bugzilla.eng.vmware.com/show_bug.cgi?id={{ entry["bug_id"] }} target="_blank">{{ entry["bug_id"] }}</a></td>
                 <td>{{ entry["short_desc"] }}</td>
                 <td>{{ entry["keywords"] }}</td>
