@@ -48,31 +48,44 @@ $.fn.dataTable.ext.order['dom-text'] = function  ( settings, col )
     });
 </script>
 
+</style>
+
 <script>    
 var oTable;
 $(document).ready(function() {
+    $('#div_sidebar').fadeOut('slide',function(){});
+
+    e1 = document.getElementById("submit_button");
+    e1.style.width = "90%";
+    e1.style.marginLeft = 10;
+
+    $('.main').each(function(){
+        this.style.width = "100%";
+        this.style.marginLeft = 0;
+    })
+
     var oTable = $('#bugs_table').DataTable({
         paging:         true, 
-        "lengthMenu": [ [-1, 10, 25, 50], ["All", 10, 25, 50] ],
+        "lengthMenu": [ [-1, 5, 10, 25, 50], ["All", 5, 10, 25, 50] ],
         dom: 'C<"clear">lfrtip',
-        scrollY:        "600px",
+        //scrollY:        "600px",
         scrollX: true,
         "aoColumns": [ 
-            {"bVisible":true},  //Checkbox
+            {"bVisible":true, "orderable": false},  //Checkbox
             {"bVisible":true},  //BugID
-            {"bVisible":true, "sWidth": "30%"},  //Summary-short_desc
+            {"bVisible":true},  //Summary-short_desc
             {"bVisible":true},  //Keywords
             {"bVisible":true},  //Weights
             {"bVisible":false}, //Priority
             {"bVisible":false}, //Severity
             {"bVisible":false}, //Case count
-            {"bVisible":true, "sWidth": "32%", "orderDataType": "dom-text"},  //Fix_by_x
+            {"bVisible":true, "sWidth":"20%", "orderDataType": "dom-text"},  //Fix_by_x
             {"bVisible":true},  //Assigned to
             {"bVisible":true},  //ETA
-            {"bVisible":true},  //Last Modified
+            {"bVisible":false},  //Last Modified
             {"bVisible":true},  //Highlighted Reasons
             {"bVisible":true}   //Comments
-        ]
+        ],
     } );
     
     /*$('form').submit( function () {
@@ -146,7 +159,7 @@ $(document).ready(function() {
 </head>
 <body>
 {% block body%}
-<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main" id='div_main'>
     <div style = "width:40%">
         {% if query["fix_by_product"] %}
             {% set fix_by_x = query["fix_by_product"] %}
@@ -270,7 +283,7 @@ $(document).ready(function() {
                 <th>Priority</th>
                 <th>Severity</th>
                 <th>Case Count</th>
-                <th>fix by product-version-phase</th>
+                <th width=80%>fix by product-version-phase</th>
                 <th>Assigned_to</th>
                 <th>ETA</th>
                 <th>Last Modified</th>
@@ -337,9 +350,9 @@ $(document).ready(function() {
                         });
                     </script>
                     {%if fix_entry['product'] or fix_number==1%} 
-                    <input type=text id="fix_by_{{entry['bug_id']}}_{{fix_number }}_product" name="fix_by_{{entry['bug_id']}}_{{fix_number }}_product" value = "{{fix_entry['product']}}" size = "8" class = "search-product">
-                    <input type=text id="fix_by_{{entry['bug_id']}}_{{fix_number }}_version" name="fix_by_{{entry['bug_id']}}_{{fix_number }}_version" value = "{{fix_entry['version']}}" size = "8" class = "search-version">
-                    <input type=text id="fix_by_{{entry['bug_id']}}_{{fix_number }}_phase" name="fix_by_{{entry['bug_id']}}_{{fix_number }}_phase" value = "{{fix_entry['phase']}}" size = "6" class = "search-phase">
+                    <input size="5" type=text id="fix_by_{{entry['bug_id']}}_{{fix_number }}_product" name="fix_by_{{entry['bug_id']}}_{{fix_number }}_product" value = "{{fix_entry['product']}}" size = "8" class = "search-product">
+                    <input size="5" type=text id="fix_by_{{entry['bug_id']}}_{{fix_number }}_version" name="fix_by_{{entry['bug_id']}}_{{fix_number }}_version" value = "{{fix_entry['version']}}" size = "8" class = "search-version">
+                    <input size="5" type=text id="fix_by_{{entry['bug_id']}}_{{fix_number }}_phase" name="fix_by_{{entry['bug_id']}}_{{fix_number }}_phase" value = "{{fix_entry['phase']}}" size = "6" class = "search-phase">
                     Del:<input type=checkbox id="fix_by_{{entry['bug_id']}}_{{fix_number }}_check" name="fix_by_{{entry['bug_id']}}_{{fix_number }}_check">
                     <!-- This hidden line is implemented for searching in datatable -->
                     <div style="visibility: hidden"> {{fix_entry['product']}}_{{fix_entry['version']}}_{{fix_entry['phase']}}_{{fix_number }}</div>
@@ -358,16 +371,80 @@ $(document).ready(function() {
                 <td>{{ entry["cf_eta"] }}</td>
                 <td>{{ entry["delta_ts"] }}</td>
                 <td>{{ entry["highlighted_by"] }}</td>
-                <td><textarea name = comment_id_{{ entry["bug_id"] }} cols="20" rows="3" ></textarea></td>
+                <td><textarea name = comment_id_{{ entry["bug_id"] }} cols="13" rows="3" ></textarea></td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
     <input type=hidden name= assigned_to value= {{assigned}}>
     <!-- <button id = "button" type = "submit">Submit</button> -->
-    <h3><button class="btn btn-lg btn-primary btn-block" type="submit">Submit Change</button></h3>
+
+    <style>
+    .floating-button {position:fixed; z-index:9999; bottom:15px;width:78%;}
+    </style>
+    <h3><button class="btn btn-lg btn-primary btn-block floating-button" type="submit" id="submit_button">Submit Change</button></h3>
+    <br>
+    <style>
+    .mini-submenu{
+      width: 1%;
+      position:fixed; 
+      z-index:9999; 
+      top:50%;
+      left:0px;
+    }
+    .mini-submenu-hide{
+      width: 1%;
+      position:fixed; 
+      z-index:9999; 
+      top:50%;
+      left:16%;
+      display:none;
+    }
+    </style>
+    <br>
     </form>
+    <h3><button class="btn btn-lg btn-primary btn-block mini-submenu" type='button'>-<br>-<br>-</button></h3>
+    <h3><button class="btn btn-lg btn-primary btn-block mini-submenu-hide" type='button'><<br><<br><</button></h3>
 </div>
+
+
+
+<script>
+$(function(){
+
+    $('.mini-submenu').on('click',function(){       
+        $('#div_sidebar').fadeIn('slide',function(){});
+        $('.mini-submenu-hide').fadeIn('slide',function(){});
+        $('.mini-submenu').hide();
+
+        e1 = document.getElementById("submit_button");
+        e1.style.width = "75%";
+
+        $('.main').each(function(){
+            this.style.width = "80%";
+            this.style.marginLeft = "17%";
+        })
+
+    })
+
+    $('.mini-submenu-hide').on('click',function(){       
+        $('.mini-submenu-hide').hide();
+        $('.mini-submenu').fadeIn('slide',function(){});
+
+        $('#div_sidebar').fadeOut('slide',function(){});
+
+        e1 = document.getElementById("submit_button");
+        e1.style.width = "90%";
+        //e1.style.marginLeft = '0px';
+
+        $('.main').each(function(){
+            this.style.width = "100%";
+            this.style.marginLeft = '0px';
+        })
+    })
+
+})
+</script>
 {% endblock %}
 </body>
 {% endif %}
