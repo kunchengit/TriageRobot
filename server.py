@@ -1729,11 +1729,12 @@ def milestone_check(product, version):
     cursor=conn.cursor()
     
     sql = """
-        select phases.name, eta, weight 
+        select phases.name, eta, weight
         from milestone, phases 
         where milestone.phase_id in 
         (select id from phases where version_id = {}) 
         and milestone.phase_id = phases.id
+        and milestone.name not like "%vum%"
         ORDER by eta desc
     """.format(version)
     #print sql
