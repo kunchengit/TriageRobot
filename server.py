@@ -1325,7 +1325,7 @@ def Custom_Alias():
     
     cursor.close()
     conn.close()
-    print results
+    #print results
     return render_template('custom_alias.html', alias = results)
 
 @app.route('/Custom_Setting', methods=['GET', 'POST'])
