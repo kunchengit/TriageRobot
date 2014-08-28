@@ -4,6 +4,7 @@
 <link rel='stylesheet' type='text/css' href='static/css/dataTables.bootstrap.css'>
 <link rel="stylesheet" type="text/css" href="static/css/jquery.dataTables.css">
 <link rel="stylesheet" type="text/css" href="static/css/dataTables.colVis.css">
+<link rel="stylesheet" type="text/css" href="static/css/dataTables.tableTools.css">
 
 <script type='text/javascript' src='static/js/jquery-1.11.1.js'></script>
 <script type='text/javascript' src='static/js/dataTables.bootstrap.js'></script>
@@ -11,6 +12,7 @@
 <script type='text/javascript' src='static/js/jquery.dataTables.js'></script>
 <script type='text/javascript' src='static/js/dataTables.colVis.js'></script>
 <script type='text/javascript' src='static/js/dataTables.fixedColumns.js'></script>
+<script type="text/javascript" src="static/js/dataTables.tableTools.js"></script>
 <script src="static/highstock.js"></script>
 
 <!--
@@ -23,7 +25,7 @@ When setting the name of posted variables, the name of "check_id", "comment_id" 
 <script>
 $(document).ready(function() {
     var T_ETA_table = $('#T_ETA_bugs_table').DataTable( {
-        dom: 'C<"clear">lfrtip',
+        dom: 'TC<"clear">lfrtip',
         scrollY:        "300px",
         scrollX:        false,
         paging:         false,
@@ -41,7 +43,16 @@ $(document).ready(function() {
             {"bVisible":true, "sWidth": "20%", "orderDataType": "dom-text"},  //fix by product
             {"bVisible":true},  //Assigned to
             {"bVisible":true}  //Highlighted Reasons
-        ]
+        ],
+        "tableTools": {
+            "aButtons": [
+                {
+                    "sExtends": "print",
+                    "sButtonText": "View All"
+                },
+            ]
+        }
+
     } );
     //new $.fn.dataTable.FixedColumns( T_ETA_table, {
     //    leftColumns: 3
@@ -52,7 +63,7 @@ $(document).ready(function() {
 <script>
 $(document).ready(function() {
     var ETA_table = $('#ETA_bugs_table').DataTable( {
-        dom: 'C<"clear">lfrtip',
+        dom: 'TC<"clear">lfrtip',
         scrollY:        "300px",
         scrollX:        true,
         paging:         false,
@@ -70,7 +81,16 @@ $(document).ready(function() {
             {"bVisible":true, "sWidth": "20%", "orderDataType": "dom-text"},  //fix by product
             {"bVisible":true},  //Assigned to
             {"bVisible":true}   //Highlighted Reasons
-        ]
+        ],
+        "tableTools": {
+            "aButtons": [
+                {
+                    "sExtends": "print",
+                    "sButtonText": "View All"
+                },
+            ]
+        }
+
     } );
     //new $.fn.dataTable.FixedColumns( ETA_table, {
     //    leftColumns: 3
@@ -81,7 +101,7 @@ $(document).ready(function() {
 <script>
 $(document).ready(function() {
     var W_U_table = $('#W_U_bugs_table').DataTable( {
-        dom: 'C<"clear">lfrtip',
+        dom: 'TC<"clear">lfrtip',
         scrollY:        "300px",
         scrollX:        true,
         paging:         false,
@@ -100,7 +120,15 @@ $(document).ready(function() {
             {"bVisible":true, "sWidth": "20%", "orderDataType": "dom-text"},  //fix by product
             {"bVisible":true},  //Assigned to
             {"bVisible":true}   //Highlighted Reasons
-        ]
+        ],
+        "tableTools": {
+            "aButtons": [
+                {
+                    "sExtends": "print",
+                    "sButtonText": "View All"
+                },
+            ]
+        }
     } );
     //new $.fn.dataTable.FixedColumns( W_U_table, {
     //   leftColumns: 3
