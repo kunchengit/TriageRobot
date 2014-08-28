@@ -96,6 +96,7 @@ create table custom_alias(userid mediumint,
                         alias_name varchar(255),
                         alias_contents varchar(1023),
                         md5 varchar(255),
+                        for_admin varchar(255),
                         PRIMARY KEY(md5)
 );
                         
