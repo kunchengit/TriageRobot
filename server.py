@@ -1002,7 +1002,8 @@ def Show_Entries():
         milestone_flag = True
     else:
         milestone_flag = False
-        
+
+    session['last_query_info'] = request.form
     
     return render_template('show_entries.html', 
     bugs = Pure_results, 
@@ -1012,6 +1013,19 @@ def Show_Entries():
     milestone_flag = milestone_flag, 
     milestone_results = milestone_results, 
     query = request.form)
+
+@app.route('/Back_To_Show_Entries')
+def Back_To_Show_Entries():
+    try:
+        global request
+        request.form = session['last_query_info']
+        return Show_Entries()
+    except:
+        return """
+               <script>
+                    window.history.go(-2)
+               </script>
+               """
 
 #def query_error(message):
 #    query_assignee = request["assigned_to"]
@@ -1666,7 +1680,7 @@ def Admin_Custom_Email():
     ETA_Message = EMAIL_WARNING_MESSAGE.format("'ETA Expired'")
     W_U_Message = EMAIL_WARNING_MESSAGE.format("'Longtime Without Update'")
     
-    
+    session['last_query_info'] = request.form 
     
     return render_template('admin_custom_email.html', 
     T_ETA_bug_results = T_ETA_bug_results, 
@@ -1678,7 +1692,20 @@ def Admin_Custom_Email():
     W_U_bug_results = W_U_bug_results,
     W_U_bug_fix_by_results = W_U_bug_fix_by_results,
     W_U_Message = W_U_Message)
-    
+
+@app.route('/Back_To_Email_Page')
+def Back_To_Email_Page():
+    try:
+        global request
+        request.form = session['last_query_info']
+        request.method = 'POST'
+        return Admin_Custom_Email()
+    except:
+        return """
+               <script>
+                    window.history.go(-2)
+               </script>
+               """
     
 @app.route('/Admin_Email_Processing', methods=['GET', 'POST'])
 def Admin_Email_Processing():
@@ -1726,7 +1753,7 @@ def Admin_Email_Processing():
             #login = session['username']
             #password = str(session["password"])
             sendemail(from_addr, to_addr, subject, message)
-    
+   
     
     return render_template('email_query.html', message="Finish Processing Email at {}".format(datetime.now().strftime(FMT_YMDHMS)))
 
