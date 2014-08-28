@@ -1583,6 +1583,7 @@ def Admin_Custom_Email():
         where keywords like "%triage-accepted%"
         and cf_eta is NULL
         and bug_id in ({})
+        and keywords not like "%CheckinAppro%"
         ORDER by highlighted_by DESC, weight DESC, bug_id""".format(
         ','.join(bug_id_list)
         )
