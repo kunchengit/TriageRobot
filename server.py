@@ -416,6 +416,7 @@ def Entries_Processing():
         #fix_by_information=[].append("{}_{}_{}".format(key["product"], key["version"], key["phase"]))
         fix_by_information = list()
         fix_by_information.append(key["fix_by_data"])
+        logging.warning("{} add fix_bys:({}) to {}.".format(session['username'], str(fix_by_information), str(key["bug_id"])))
         server.add_fix_bys(key["bug_id"], fix_by_information)
         Update_List[key["bug_id"]]=True
     
@@ -431,6 +432,7 @@ def Entries_Processing():
         #fix_by_information=[].append("{}_{}_{}".format(key["product"], key["version"], key["phase"]))
         fix_by_information = list()
         fix_by_information.append(key["fix_by_data"])
+        logging.warning("{} remove fix_bys:({}) to {}.".format(session['username'], str(fix_by_information), str(key["bug_id"])))
         server.remove_fix_bys(key["bug_id"], fix_by_information)
         Update_List[key["bug_id"]]=True
     
