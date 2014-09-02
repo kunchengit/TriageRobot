@@ -25,10 +25,12 @@ def Urgent_Test(subject, rule, conn, from_web_ui = False):
     However, if this query is initiated by web_ui, this check should be skipped
     Acutally, after the modification in 07/22, this function could be removed since we not specifiy fix_by_s information in rule.
     However, in order to keep interface open, I did not remove this function
+
+    2014/09/02 fangchiw: skip this test now. seems no sense
     """
-    if not from_web_ui:
-        if rule and Match_Model.Match_fix() == False:
-            return "Uncared"
+    #if not from_web_ui:
+    #    if rule and Match_Model.Match_fix() == False:
+    #        return "Uncared"
             
     Match_Func = OrderedDict([
                 ("keywords" , Match_Model.Match_keywords),

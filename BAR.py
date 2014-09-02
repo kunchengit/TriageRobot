@@ -945,7 +945,6 @@ def Check_ID(args):
         
         ID_Result = Original_SQL_data_to_BID_Record(bugs = Bugs_Results, fix_by = Fix_by_Results, longdescs = Comments_Results, conn = bzdb_conn)
         Rule = Option()
-        
         Urgent_Test(ID_Result, Rule, bzdb_conn)
         Total_ID_Results[idkey] = ID_Result
         
