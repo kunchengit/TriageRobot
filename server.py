@@ -1755,6 +1755,9 @@ def Admin_Email_Processing():
             #login = session['username']
             #password = str(session["password"])
             sendemail(from_addr, to_addr, subject, message)
+        else:
+            continue
+        logging.warning("{} sent email to {}, for {}, bug_id: {}".format(session['username'], to_addr, str(key), str(Bug_id)))
    
     
     return render_template('email_query.html', message="Finish Processing Email at {}".format(datetime.now().strftime(FMT_YMDHMS)))
@@ -1825,13 +1828,14 @@ def sendemail(from_addr, to_addr,
     import smtplib
     header  = 'From: {}\n'.format(str(from_addr))
     header += 'To: {}\n'.format(str(to_addr))
+    header += 'CC: {}\n'.format(str(from_addr))
     header += 'Subject: {}\n\n'.format(str(subject))
-    message = header + message + str(datetime.now())
+    message = header + message + '\n' + str(datetime.now())
 
     
     server = smtplib.SMTP(SMTP_SERVER)
     #server.login(login, password)
-    server.sendmail(from_addr, to_addr, message)
+    server.sendmail(from_addr, [to_addr, from_addr], message)
     server.quit()
     
 
