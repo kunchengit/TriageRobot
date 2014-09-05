@@ -403,24 +403,7 @@ def Entries_Processing():
         return target_list
     
     #if the return data is list, it is correct. if the return data is string, it is error message
-    #Process Add_list
-    Record = product_version_phase_realname_to_ID(Fix_By_Add_List)
-    if isinstance(Record, str):
-        return render_template("query.html", error=Record)
-    Fix_By_Add_List = Record
-    for key in Fix_By_Add_List:
-        if key["bug_id"] not in Update_List.keys():
-            Update_List[key["bug_id"]]=True
-    
-    for key in Fix_By_Add_List:
-        #fix_by_information=[].append("{}_{}_{}".format(key["product"], key["version"], key["phase"]))
-        fix_by_information = list()
-        fix_by_information.append(key["fix_by_data"])
-        logging.warning("{} add fix_bys:({}) to {}.".format(session['username'], str(fix_by_information), str(key["bug_id"])))
-        server.add_fix_bys(key["bug_id"], fix_by_information)
-        Update_List[key["bug_id"]]=True
-    
-    #Process Remove_list
+    #Process Remove_list fisrt, because if a bug is a child, it cannot be added with multiple fix-bys
     Record = product_version_phase_realname_to_ID(Fix_By_Remove_List)
     if isinstance(Record, str):
         return render_template("query.html", error=Record)
@@ -436,6 +419,22 @@ def Entries_Processing():
         server.remove_fix_bys(key["bug_id"], fix_by_information)
         Update_List[key["bug_id"]]=True
     
+    #Process Add_list
+    Record = product_version_phase_realname_to_ID(Fix_By_Add_List)
+    if isinstance(Record, str):
+        return render_template("query.html", error=Record)
+    Fix_By_Add_List = Record
+    for key in Fix_By_Add_List:
+        if key["bug_id"] not in Update_List.keys():
+            Update_List[key["bug_id"]]=True
+    for key in Fix_By_Add_List:
+        #fix_by_information=[].append("{}_{}_{}".format(key["product"], key["version"], key["phase"]))
+        fix_by_information = list()
+        fix_by_information.append(key["fix_by_data"])
+        logging.warning("{} add fix_bys:({}) to {}.".format(session['username'], str(fix_by_information), str(key["bug_id"])))
+        server.add_fix_bys(key["bug_id"], fix_by_information)
+        Update_List[key["bug_id"]]=True
+ 
     """
     Add/Remove keywords and commends
     THe result dictionary is also built in this itinerary
