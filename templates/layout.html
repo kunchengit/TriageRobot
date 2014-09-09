@@ -72,7 +72,7 @@
                         <li {% if request.path in [url_for('Query'), '/', url_for('Show_Entries'), url_for('Entries_Processing')]%} class="active" {% endif %}><a href={{url_for('Query')}}>Triage Decision</a></li>
                         <li {% if request.path == url_for('Admin_Custom_Email') or request.path == url_for('Admin_Email_Processing') %} class="active" {% endif %}><a href={{url_for('Admin_Custom_Email')}}>Email Notification</a></li>
                         <li {% if request.path == url_for('Admin_Custom_Triage_Chart') %} class="active" {% endif %}><a href={{url_for('Admin_Custom_Triage_Chart')}}>Triage Chart</a></li>
-                        <li {% if request.path == url_for('Custom_Webpage') %} class="active" {% endif %}><a href={{url_for('Custom_Webpage')}}>Customerize</a></li>
+                        <li {% if request.path == url_for('Custom_Webpage') %} class="active" {% endif %}><a href={{url_for('Custom_Webpage')}}>Customize</a></li>
                             <li class="submenu"><!-- active open -->
                             <ul>
                                 <li id="Custom_Setting"><a href="{{url_for('Custom_Setting')}}">{% if request.path == url_for('Custom_Setting') %}<b>{%endif%}Settings{% if request.path == url_for('Custom_Setting') %}</b>{%endif%}</a></li>
