@@ -196,25 +196,25 @@ class BugzillaServer(object):
     
     def add_fix_bys(self, bug_id, fix_by_information):
         print "Add fix by \n{}\nto Bug {}".format(fix_by_information, bug_id)
+        res = list()
         try:
-            print self.server.Bug.add_fix_bys(bug_id, fix_by_information)
+            res =  self.server.Bug.add_fix_bys(bug_id, fix_by_information)
         except xmlrpclib.Fault, err:
             print "A fault occurred when add fix_by_information"
-            #self.server.Bug.add_fix_bys(bug_id, fix_by_information)
             print err
-            return False
-        return True
+            #self.server.Bug.add_fix_bys(bug_id, fix_by_information)
+        return res
     
     def remove_fix_bys(self, bug_id, fix_by_information):
         print "Remove fix by \n{}\nto Bug {}".format(fix_by_information, bug_id)
+        res = list()
         try:
-            print self.server.Bug.remove_fix_bys(bug_id, fix_by_information)
+            res = self.server.Bug.remove_fix_bys(bug_id, fix_by_information)
         except xmlrpclib.Fault, err:
             print "A fault occurred when remove fix_by_information"
             print err
-            return False
         #self.server.Bug.remove_fix_bys(bug_id, fix_by_information)
-        return True
+        return res
     
     
     

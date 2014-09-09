@@ -405,6 +405,20 @@ def Entries_Processing():
         target_list[:] = [x for x in target_list if not (x['product'],x['version'],x['phase'])==(0,0,0)]
         return target_list
     
+    def update_result_fix_by(result, id, fix_by_str_list, add=True):
+        if add:
+            add_rm_key = 'remove_fix_by'
+        else:
+            add_rm_key = 'add_fix_by'
+        if not id in result:
+            result[id] = dict()
+        if not add_rm_key in result[id]:
+            result[id][add_rm_key] = list()
+
+        result[id]['bug_id'] = id
+        if fix_by_str_list:
+            result[id][add_rm_key].extend(fix_by_str_list)
+
     #if the return data is list, it is correct. if the return data is string, it is error message
     #Process Remove_list fisrt, because if a bug is a child, it cannot be added with multiple fix-bys
     Record = product_version_phase_realname_to_ID(Fix_By_Remove_List)
@@ -419,8 +433,9 @@ def Entries_Processing():
         fix_by_information = list()
         fix_by_information.append(key["fix_by_data"])
         logging.warning("{} remove fix_bys:({}) to {}.".format(session['username'], str(fix_by_information), str(key["bug_id"])))
-        server.remove_fix_bys(key["bug_id"], fix_by_information)
+        fix_by_str_list = server.remove_fix_bys(key["bug_id"], fix_by_information)
         Update_List[key["bug_id"]]=True
+        update_result_fix_by(result, key["bug_id"], fix_by_str_list, add=False)
     
     #Process Add_list
     Record = product_version_phase_realname_to_ID(Fix_By_Add_List)
@@ -435,9 +450,12 @@ def Entries_Processing():
         fix_by_information = list()
         fix_by_information.append(key["fix_by_data"])
         logging.warning("{} add fix_bys:({}) to {}.".format(session['username'], str(fix_by_information), str(key["bug_id"])))
-        server.add_fix_bys(key["bug_id"], fix_by_information)
+        fix_by_str_list = server.add_fix_bys(key["bug_id"], fix_by_information)
         Update_List[key["bug_id"]]=True
- 
+        update_result_fix_by(result, key["bug_id"], fix_by_str_list, add=True)
+
+
+
     """
     Add/Remove keywords and commends
     THe result dictionary is also built in this itinerary

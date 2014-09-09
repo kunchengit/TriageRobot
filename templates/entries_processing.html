@@ -34,9 +34,11 @@ $(document).ready(function() {
             <tr>
                 <th>Number</th>
                 <th>Bug ID</th>
-                <th>Add</th>
-                <th>Remove</th>
+                <th>Add Keywords</th>
+                <th>Remove Keywords</th>
                 <th>Comments</th>
+                <th>Add Fix By</th>
+                <th>Remove Fix By</th>
             </tr>
         </thead>
         <tbody>
@@ -47,6 +49,8 @@ $(document).ready(function() {
                 <td>{{ entry["Add_keywords"] }}</td>
                 <td>{{ entry["Remove_keywords"] }}</td>
                 <td>{{ entry["comments"] }}</td>
+                <td>{% for item in entry["remove_fix_by"]%}{{item}}<br>{%endfor%}</td>
+                <td>{% for item in entry["add_fix_by"]%}{{item }}<br>{%endfor%}</td>
             </tr>
             {% set Number = Number + 1%}
             {% endfor %}
