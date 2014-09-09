@@ -182,6 +182,7 @@ $(document).ready(function() {
             {"bVisible":true, "sWidth": "30%", "orderDataType": "dom-text"},  //Summary
             {"bVisible":true},  //Weight
             {"bVisible":true},  //Assigned to
+            {"bVisible":true},  //Status
             {"bVisible":true, "sWidth": "30%", "orderDataType": "dom-text"},  //Keywords
             {"bVisible":true},   //Highlighted Reasons
             {"bVisible":true, "sWidth": "20%", "orderDataType": "dom-text"},  //fix by product
@@ -206,6 +207,7 @@ $(document).ready(function() {
             {"bVisible":true, "sWidth": "30%", "orderDataType": "dom-text"},  //Summary
             {"bVisible":true},  //Weight
             {"bVisible":true},  //Assigned to
+            {"bVisible":true},  //Status
             {"bVisible":true, "sWidth": "30%", "orderDataType": "dom-text"},  //Keywords
             {"bVisible":true},  //Highlighted Reasons
             {"bVisible":true, "sWidth": "20%", "orderDataType": "dom-text"},  //fix by product
@@ -239,6 +241,7 @@ $(document).ready(function() {
                             <th>Summary</th>
                             <th>Weight</th>
                             <th>Assigned_to</th>
+                            <th>Status</th>
                             <th>Keywords</th>
                             <th>Highlighted Reasons</th>
                             <th>fix by product-version-phase</th>
@@ -252,6 +255,7 @@ $(document).ready(function() {
                             <td>{{ entry["short_desc"] }}</td>
                             <td>{{ entry["weight"] }}</td>
                             <td>{{ entry["assigned_rn"] }}</td>
+                            <td>{{ entry["bug_status"] }}{%if entry["bug_status"]=='resolved'%}:{{entry["resolution"]}}{%endif%}</td>
                             <td>{{ entry["keywords"] }}</td>
                             <td>{{ entry["highlighted_by"] }}</td>
                             <td>{{ entry["fix_by_product_rn"] }}-{{ entry["fix_by_version_rn"] }}-{{ entry["fix_by_phase_rn"] }}</td>
@@ -274,6 +278,7 @@ $(document).ready(function() {
                             <th>Summary</th>
                             <th>Weight</th>
                             <th>Assigned_to</th>
+                            <th>Status</th>
                             <th>Keywords</th>
                             <th>Highlighted Reasons</th>
                             <th>fix by product-version-phase</th>
@@ -287,6 +292,7 @@ $(document).ready(function() {
                             <td>{{ entry["short_desc"] }}</td>
                             <td>{{ entry["weight"] }}</td>
                             <td>{{ entry["assigned_rn"] }}</td>
+                            <td>{{ entry["bug_status"] }}{%if entry["bug_status"]=='resolved'%}:{{entry["resolution"]}}{%endif%}</td>
                             <td>{{ entry["keywords"] }}</td>
                             <td>{{ entry["highlighted_by"] }}</td>
                             <td>{{ entry["fix_by_product_rn"] }}-{{ entry["fix_by_version_rn"] }}-{{ entry["fix_by_phase_rn"] }}</td>
