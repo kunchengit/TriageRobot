@@ -255,7 +255,7 @@ $(document).ready(function() {
                             <td>{{ entry["short_desc"] }}</td>
                             <td>{{ entry["weight"] }}</td>
                             <td>{{ entry["assigned_rn"] }}</td>
-                            <td>{{ entry["bug_status"] }}{%if entry["bug_status"]=='resolved'%}:{{entry["resolution"]}}{%endif%}</td>
+                            <td>{{ entry["bug_status"] }}{%if entry["resolution"] %}:{{entry["resolution"]}}{%endif%}</td>
                             <td>{{ entry["keywords"] }}</td>
                             <td>{{ entry["highlighted_by"] }}</td>
                             <td>{{ entry["fix_by_product_rn"] }}-{{ entry["fix_by_version_rn"] }}-{{ entry["fix_by_phase_rn"] }}</td>
@@ -292,7 +292,7 @@ $(document).ready(function() {
                             <td>{{ entry["short_desc"] }}</td>
                             <td>{{ entry["weight"] }}</td>
                             <td>{{ entry["assigned_rn"] }}</td>
-                            <td>{{ entry["bug_status"] }}{%if entry["bug_status"]=='resolved'%}:{{entry["resolution"]}}{%endif%}</td>
+                            <td>{{ entry["bug_status"] }}{%if entry["resolution"] %}:{{entry["resolution"]}}{%endif%}</td>
                             <td>{{ entry["keywords"] }}</td>
                             <td>{{ entry["highlighted_by"] }}</td>
                             <td>{{ entry["fix_by_product_rn"] }}-{{ entry["fix_by_version_rn"] }}-{{ entry["fix_by_phase_rn"] }}</td>
