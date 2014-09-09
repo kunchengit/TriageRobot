@@ -31,7 +31,7 @@ $(document).ready(function() {
         paging:         false,
         autoWidth:      false,
         "aoColumns": [ 
-            {"bVisible":true},  //Checkbox
+            {"bVisible":true, "orderable": false},  //Checkbox
             {"bVisible":true},  //BugID
             {"bVisible":true, "sWidth": "30%", "orderDataType": "dom-text"},  //Summary
             {"bVisible":true, "sWidth": "30%", "orderDataType": "dom-text"},  //Keywords
@@ -69,7 +69,7 @@ $(document).ready(function() {
         paging:         false,
         autoWidth:      false,
         "aoColumns": [ 
-            {"bVisible":true},  //Checkbox
+            {"bVisible":true, "orderable": false},  //Checkbox
             {"bVisible":true},  //BugID
             {"bVisible":true, "sWidth": "30%", "orderDataType": "dom-text"},  //Summary
             {"bVisible":true, "sWidth": "20%", "orderDataType": "dom-text"},  //ETA
@@ -107,7 +107,7 @@ $(document).ready(function() {
         paging:         false,
         autoWidth:      false,
         "aoColumns": [ 
-            {"bVisible":true},  //Checkbox
+            {"bVisible":true, "orderable": false},  //Checkbox
             {"bVisible":true},  //BugID
             {"bVisible":true, "sWidth": "30%", "orderDataType": "dom-text"},  //Summary
             {"bVisible":true, "sWidth": "20%", "orderDataType": "dom-text"},  //Last Modified
@@ -159,7 +159,25 @@ function openPopup() {
     <table id="T_ETA_bugs_table" class="display" cellspacing="0" width="100%">
         <thead>
             <tr>
-                <th>Select All</th>
+                <th>Select ALL<br>
+                    <script>
+                    $(document).ready(function() {
+                        $('#selectall').click(function(event) {  //on click
+                            if(this.checked) { // check select status
+                                $('.checkbox1').each(function() { //loop through each checkbox
+                                    this.checked = true;  //select all checkboxes with class "checkbox1"              
+                                });
+                            }else{
+                                $('.checkbox1').each(function() { //loop through each checkbox
+                                    this.checked = false; //deselect all checkboxes with class "checkbox1"                      
+                                });        
+                            }
+                        });
+                       
+                    });
+                    </script>
+                    <input name="Custodians" type="checkbox" value="All" class="checkall" id="selectall">
+                </th>
                 <th>Bug ID</th>
                 <th>Summary</th>
                 <th>Keywords</th>
@@ -176,7 +194,7 @@ function openPopup() {
         <tbody>
         {% for entry in T_ETA_bug_results %}
             <tr>
-                <td><input type=checkbox id = T_ETA_{{ entry["bug_id"] }} value = {{ entry["bug_id"] }} name = T_ETA_check_{{ entry["bug_id"] }}></td>
+                <td><input class=checkbox1 type=checkbox id = T_ETA_{{ entry["bug_id"] }} value = {{ entry["bug_id"] }} name = T_ETA_check_{{ entry["bug_id"] }}></td>
                 <input type=hidden value = {{ entry["assigned_rn"] }} name = {{ entry["bug_id"] }}>
                 <td><a href=https://bugzilla.eng.vmware.com/show_bug.cgi?id={{ entry["bug_id"] }} target="_blank">{{ entry["bug_id"] }}</a></td>
                 <td>{{ entry["short_desc"] }}</td>
@@ -214,7 +232,25 @@ function openPopup() {
     <table id="ETA_bugs_table" class="display" cellspacing="0" width="100%">
         <thead>
             <tr>
-                <th>Select All</th>
+                <th>Select ALL<br>
+                    <script>
+                    $(document).ready(function() {
+                        $('#selectall2').click(function(event) {  //on click
+                            if(this.checked) { // check select status
+                                $('.checkbox2').each(function() { //loop through each checkbox
+                                    this.checked = true;  //select all checkboxes with class "checkbox1"              
+                                });
+                            }else{
+                                $('.checkbox2').each(function() { //loop through each checkbox
+                                    this.checked = false; //deselect all checkboxes with class "checkbox1"                      
+                                });        
+                            }
+                        });
+                       
+                    });
+                    </script>
+                    <input name="Custodians" type="checkbox" value="All" class="checkall" id="selectall2">
+                </th>
                 <th>Bug ID</th>
                 <th>Summary</th>
                 <th>ETA</th>
@@ -231,7 +267,7 @@ function openPopup() {
         <tbody>
         {% for entry in ETA_bug_results %}
             <tr>
-                <td><input type=checkbox id = ETA_{{ entry["bug_id"] }} value = {{ entry["bug_id"] }} name = ETA_check_{{ entry["bug_id"] }}></td>
+                <td><input class=checkbox2 type=checkbox id = ETA_{{ entry["bug_id"] }} value = {{ entry["bug_id"] }} name = ETA_check_{{ entry["bug_id"] }}></td>
                 <input type=hidden value = {{ entry["assigned_rn"] }} name = {{ entry["bug_id"] }}>
                 <td><a href=https://bugzilla.eng.vmware.com/show_bug.cgi?id={{ entry["bug_id"] }} target="_blank">{{ entry["bug_id"] }}</a></td>
                 <td>{{ entry["short_desc"] }}</td>
@@ -269,7 +305,25 @@ function openPopup() {
     <table id="W_U_bugs_table" class="display" cellspacing="0" width="100%">
         <thead>
             <tr>
-                <th>Select All</th>
+                <th>Select ALL<br>
+                    <script>
+                    $(document).ready(function() {
+                        $('#selectall3').click(function(event) {  //on click
+                            if(this.checked) { // check select status
+                                $('.checkbox3').each(function() { //loop through each checkbox
+                                    this.checked = true;  //select all checkboxes with class "checkbox1"              
+                                });
+                            }else{
+                                $('.checkbox3').each(function() { //loop through each checkbox
+                                    this.checked = false; //deselect all checkboxes with class "checkbox1"                      
+                                });        
+                            }
+                        });
+                       
+                    });
+                    </script>
+                    <input name="Custodians" type="checkbox" value="All" class="checkall" id="selectall3">
+                </th>
                 <th>Bug ID</th>
                 <th>Summary</th>
                 <th>Last Modified Time</th>
@@ -287,7 +341,7 @@ function openPopup() {
         <tbody>
         {% for entry in W_U_bug_results %}
             <tr>
-                <td><input type=checkbox id = W_U_{{ entry["bug_id"] }} value = {{ entry["bug_id"] }} name = W_U_check_{{ entry["bug_id"] }}></td>
+                <td><input class=checkbox3 type=checkbox id = W_U_{{ entry["bug_id"] }} value = {{ entry["bug_id"] }} name = W_U_check_{{ entry["bug_id"] }}></td>
                 <input type=hidden value = {{ entry["assigned_rn"] }} name = {{ entry["bug_id"] }}>
                 <td><a href=https://bugzilla.eng.vmware.com/show_bug.cgi?id={{ entry["bug_id"] }} target="_blank">{{ entry["bug_id"] }}</a></td>
                 <td>{{ entry["short_desc"] }}</td>
