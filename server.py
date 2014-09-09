@@ -64,24 +64,27 @@ CUSTOM_OPTION_DIRECTORY = os.path.join(SCRIPTS_DIR, "Custom_Setting/")
 BAR_OFILENAME = BAR_OPTION_DIRECTORY + "option.p"
 BAR_ADMINFILE = BAR_OPTION_DIRECTORY + "admin.p"
 
-T_ETA_DEFAULT_MESSAGE = """
-                Please Check the bug:{}
-                This bug is need to set a ETA after Triage-accepted
-                https://bugzilla.eng.vmware.com/show_bug.cgi?id={}
-                ======The upper part is generated automatically by TriageRobot ======
-                """
-ETA_DEFAULT_MESSAGE = """
-                Please Check the bug:{}
-                This bug is already expired
-                https://bugzilla.eng.vmware.com/show_bug.cgi?id={}
-                ======The upper part is generated automatically by TriageRobot ======
-                """
-W_U_DEFAULT_MESSAGE = """
-                Please Check the bug:{}
-                This bug is not updated for a long time
-                https://bugzilla.eng.vmware.com/show_bug.cgi?id={}
-                ======The upper part is generated automatically by TriageRobot ======
-                """
+EMAIL_PREFIX = """\
+"""
+
+T_ETA_DEFAULT_MESSAGE = EMAIL_PREFIX + """\
+Please Check the bug:{}
+This bug has been triage-accepted, but ETA is missing:
+https://bugzilla.eng.vmware.com/show_bug.cgi?id={}
+"""
+
+ETA_DEFAULT_MESSAGE = EMAIL_PREFIX + """\
+Please Check the bug:{}
+This bug's ETA is close to be expired to has already been expired:
+https://bugzilla.eng.vmware.com/show_bug.cgi?id={}
+"""
+
+W_U_DEFAULT_MESSAGE = EMAIL_PREFIX + """\
+Please Check the bug:{}
+This bug have been updated for at least 3 months:
+https://bugzilla.eng.vmware.com/show_bug.cgi?id={}
+"""
+
 EMAIL_WARNING_MESSAGE = "If you want to send additinal message after default {} format, please type here!"
 
 FMT_YMDHMS  = "%Y-%m-%d %H:%M:%S"
@@ -1721,41 +1724,38 @@ def Admin_Email_Processing():
         if "T_ETA_check" in key:
             Bug_id = str(request.form[key])
             to_addr = str(request.form[Bug_id]) + "@vmware.com"
-            subject = "Please Check the bug:{}".format(Bug_id)
-            
-            
+            subject = "[TriageRobot] Bug {} is missing ETA after triage-accepted".format(Bug_id)
             message = T_ETA_DEFAULT_MESSAGE.format(Bug_id, Bug_id)
             if request.form["T_ETA_Message"] != "":
-                message = message + str(request.form["T_ETA_Message"])
+                message = message + '\n' + str(request.form["T_ETA_Message"])
             #login = session['username']
             #password = str(session["password"])
-            sendemail(from_addr, to_addr, subject, message)
         elif "ETA_check" in key:
             Bug_id = str(request.form[key])
             to_addr = str(request.form[Bug_id]) + "@vmware.com"
-            subject = "Please Check the bug:{}".format(Bug_id)
+            subject = "[TriageRobot] Bug {}'s ETA is close to be/has already expired".format(Bug_id)
             
             message = ETA_DEFAULT_MESSAGE.format(Bug_id, Bug_id)
             if request.form["ETA_Message"] != "":
-                message = message + str(request.form["ETA_Message"])
+                message = message + '\n' + str(request.form["ETA_Message"])
             
             #login = session['username']
             #password = str(session["password"])
-            sendemail(from_addr, to_addr, subject, message)
         elif "W_U_check"in key:
             Bug_id = str(request.form[key])
             to_addr = str(request.form[Bug_id]) + "@vmware.com"
-            subject = "Please Check the bug:{}".format(Bug_id)
+            subject = "[TriageRobot] Bug {} haven't been updated for at least 3 month".format(Bug_id)
             
             message = W_U_DEFAULT_MESSAGE.format(Bug_id, Bug_id)
             if request.form["W_U_Message"] != "":
-                message = message + str(request.form["W_U_Message"])
+                message = message + '\n' + str(request.form["W_U_Message"])
             #print message
             #login = session['username']
             #password = str(session["password"])
-            sendemail(from_addr, to_addr, subject, message)
         else:
             continue
+        message = message+'\n======This email is automatically sent by TriageRobot ======\n'
+        sendemail(from_addr, to_addr, subject, message)
         logging.warning("{} sent email to {}, for {}, bug_id: {}".format(session['username'], to_addr, str(key), str(Bug_id)))
    
     
@@ -1815,7 +1815,7 @@ def format_sql(input_string):
                 
 #def sendemail(from_addr, to_addr_list, cc_addr_list, 
 def sendemail(from_addr, to_addr,
-        subject, message, SMTP_SERVER='smtp.vmware.com'):
+        subject, message, SMTP_SERVER='smtp.vmware.com', error=0):
     """
     This function helps users sending mail to vmware mail system
     
@@ -1827,14 +1827,20 @@ def sendemail(from_addr, to_addr,
     import smtplib
     header  = 'From: {}\n'.format(str(from_addr))
     header += 'To: {}\n'.format(str(to_addr))
-    header += 'CC: {}\n'.format(str(from_addr))
+    if not error:
+        header += 'CC: {}\n'.format(str(from_addr))
     header += 'Subject: {}\n\n'.format(str(subject))
-    message = header + message + '\n' + str(datetime.now())
+    #message = header + message + '\n' + str(datetime.now())
+    message = header + message
 
     
     server = smtplib.SMTP(SMTP_SERVER)
     #server.login(login, password)
-    server.sendmail(from_addr, [to_addr, from_addr], message)
+    if error:
+        server.sendmail(from_addr, to_addr, message)
+    else:
+        server.sendmail(from_addr, [to_addr, from_addr], message)
+
     server.quit()
     
 
@@ -2529,7 +2535,7 @@ def internal_error(error):
     subject = """[TriageRobot Problem Report] {}""".format(datetime.now().strftime(FMT_YMDHMS))
     message = traceback.format_exc()
     message += '\n\n'+str(request)+'\n\n'
-    sendemail(from_addr, to_addr, subject, message)
+    sendemail(from_addr, to_addr, subject, message, error=1)
     return render_template('error.html', error="OOPS! There is an internal error occured, a report has been filed.")
 
 def initialize_logger(output_dir):
