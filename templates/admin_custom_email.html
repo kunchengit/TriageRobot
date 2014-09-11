@@ -48,7 +48,19 @@ $(document).ready(function() {
             "aButtons": [
                 {
                     "sExtends": "print",
-                    "sButtonText": "View All"
+                    "sButtonText": "View All",
+                    "fnClick": function (nButton, oConfig, oFlash) {
+                        that = this;
+                        T_ETA_table.column(0).visible(false);
+                        $('div.dataTables_scrollHead').show();
+                        $(window).keyup(function(e){
+                              if(e.which==27){
+                                T_ETA_table.column(0).visible(true);
+                                that.fnPrint(false, oConfig);
+                              }
+                        });
+                        this.fnPrint(true, oConfig);
+                    }
                 },
             ]
         }
@@ -86,7 +98,19 @@ $(document).ready(function() {
             "aButtons": [
                 {
                     "sExtends": "print",
-                    "sButtonText": "View All"
+                    "sButtonText": "View All",
+                    "fnClick": function (nButton, oConfig, oFlash) {
+                        that = this;
+                        ETA_table.column(0).visible(false);
+                        $('div.dataTables_scrollHead').show();
+                        $(window).keyup(function(e){
+                              if(e.which==27){
+                                ETA_table.column(0).visible(true);
+                                that.fnPrint(false, oConfig);
+                              }
+                        });
+                        this.fnPrint(true, oConfig);
+                    }
                 },
             ]
         }
@@ -125,8 +149,20 @@ $(document).ready(function() {
             "aButtons": [
                 {
                     "sExtends": "print",
-                    "sButtonText": "View All"
-                },
+                    "sButtonText": "View All",
+                     "fnClick": function (nButton, oConfig, oFlash) {
+                        that = this;
+                        W_U_table.column(0).visible(false);
+                        $('div.dataTables_scrollHead').show();
+                        $(window).keyup(function(e){
+                              if(e.which==27){
+                                W_U_table.column(0).visible(true);
+                                that.fnPrint(false, oConfig);
+                              }
+                        });
+                        this.fnPrint(true, oConfig);
+                    }
+               },
             ]
         }
     } );
