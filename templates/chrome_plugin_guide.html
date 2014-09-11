@@ -1,0 +1,39 @@
+{% extends "layout.html" %}
+{% if session.logged_in and session.admin %}
+{% block body %}
+
+<script type='text/javascript' src='static/js/jquery-1.11.1.js'></script>
+<script>
+$(document).ready(function(){
+    var theUrl = "{{url_for('Start_download_chrome_plugin')}}";
+    window.open(theUrl);
+})
+</script>
+
+
+<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+    <h2></h2>
+    <h2>Start downloading Chrome plugin...</h2>
+        <h3>How to add the extension:</h3>
+        <ul>
+            <li>
+            1.Save the .crx file to your computer.
+            </li>
+            <li>
+            2.Click the Chrome menu icon <img src="//storage.googleapis.com/support-kms-prod/SNP_9721C573E41777FBA43E1498AD084E3B160C_2696434_en_v2" width="29" height="29" alt="Chrome menu" title="Chrome menu"> on the browser toolbar.
+            </li>
+            <li>
+            3.Select Tools > Extensions.
+            </li>
+            <li>
+            4.Locate the extension file on your computer and drag the file onto the Extensions page.
+            </li>
+            <li>
+            5.Click Install.
+            </li>
+        </ul>
+    <h3>Click <a href={{url_for('Start_download_chrome_plugin')}}>here</a> if the auto-downloading doesn't work</h3>
+
+</div>
+{% endblock %}
+{% endif %}

@@ -79,6 +79,7 @@
                                 <li id="Custom_Alias"><a href="{{url_for('Custom_Alias')}}">{% if request.path == url_for('Custom_Alias') %}<b>{%endif%}Alias{% if request.path == url_for('Custom_Alias') %}</b>{%endif%}</a></li>
                                 </ul>
                             </li>
+                        <li {% if request.path == url_for('Download_chrome_plugin') %} class="active" {% endif %}><a href={{url_for('Download_chrome_plugin')}}>Download_chrome_plugin</a></li>
                     </ul>
                 {% endif %}
             </div>

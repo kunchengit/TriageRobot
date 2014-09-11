@@ -11,7 +11,7 @@ from BAR import gRecordSchema
 from flask import request
 from flask import render_template
 from flask import flash
-from flask import Flask, session, redirect, url_for, escape, request
+from flask import Flask, session, redirect, url_for, escape, request, send_file
 from werkzeug.contrib.cache import SimpleCache
 import MySQLdb
 import hashlib
@@ -2166,6 +2166,15 @@ def Admin_Custom_List():
         admin_list_add = str(request.form["admin_list_add"]).rstrip(',').split(",")
         admin_list_remove = str(request.form["admin_list_remove"]).rstrip(',').split(",")
         return render_template('admin_custom_list.html', admin_list_add=admin_list_add, admin_list_remove=admin_list_remove, admin_list=final_result, admin_ori=admin_ori, message = "Finish List Editing at {}".format(datetime.now().strftime(FMT_YMDHMS)))
+
+@app.route('/Download_chrome_plugin')
+def Download_chrome_plugin():
+    return render_template('chrome_plugin_guide.html')
+
+@app.route('/Start_download_chrome_plugin')
+def Start_download_chrome_plugin():
+    plugin_file = os.path.join(SCRIPTS_DIR,"Walle-Plug-in.crx")
+    return send_file(plugin_file, as_attachment=True, attachment_filename="TriageRobot-chrome.crx")
 
 def common_get_candidate_bug_id_list(profile_number, fix_by_tuple):
     res = {'result':'error'}
