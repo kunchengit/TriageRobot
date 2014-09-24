@@ -1223,6 +1223,65 @@ def Admin_Custom_Triage_Chart():
     
     return render_template('admin_custom_triage_chart.html', TA_by_results = TA_by_results, TA_Own_results = TA_Own_results, chart_flag = True, assigned = assigned_to, TA_by_data = TA_by_data_list, TA_Own_data = TA_Own_data_list)
 
+@app.route('/Triage_Report', methods=['GET', 'POST'])
+def Triage_Report():
+    if request.method == 'GET':
+        date = dict()
+        date['date_end_cal'] = datetime.now().strftime('%Y/%m/%d')
+        date['date_end'] = datetime.now().strftime('%Y:%m:%d')
+        date['date_begin_cal'] = (datetime.now() - relativedelta(days = 7)).strftime('%Y/%m/%d')
+        date['date_begin'] = (datetime.now() - relativedelta(days = 7)).strftime('%Y:%m:%d')
+        return render_template('triage_chart_query.html', date=date)
+
+    #Start generating triage report
+    assigned_to = common_get_assigned_to_list(request.form["assigned_to"]) 
+    if not assigned_to:
+        return render_template('email_query.html', error="Fail to Connect MySQL, Please try again later")
+
+    res = common_assigned_to_verify_update(assigned_to)
+    if res['result'] == 'error':
+        return render_template('email_query.html', error=res['message'])
+    rn_to_number = res['data']
+
+    res = common_get_fix_bys(request)
+    if res['result'] == 'error':
+        return render_template('email_query.html', error=res['message'])
+    fix_by_tuple = res['data']
+
+    fix_by_product_name = list()
+    if request.form['fix_by_product']:
+        fix_by_product_name.append(str(request.form['fix_by_product']).strip())
+    else:
+        return render_template('email_query.html', error='must specify product name')
+
+    fix_by_version_name = list()
+    if request.form['fix_by_version']:
+        fix_by_version_name.append(str(request.form['fix_by_version']).strip())
+        fix_by_version_name.append(str(request.form['fix_by_version']).strip()+'PS')
+
+    fix_by_phase_name = list()
+    if request.form['fix_by_phase']:
+        fix_by_phase_name.append(str(request.form['fix_by_phase']).strip())
+
+    report = list()
+    import Triage_Report
+    options = dict()
+    options['assigned_to'] = assigned_to
+    options['date_begin'] = str(request.form['date_begin']).replace(':','-')
+    options['date_end'] = str(request.form['date_end']).replace(':','-')
+    options['fix_by_product_name'] = fix_by_product_name
+    options['fix_by_version_name'] = fix_by_version_name
+    options['fix_by_phase_name'] = fix_by_phase_name
+    tr = Triage_Report.Triage_Report(session['username'], session['password'])    
+    report_name_list = tr.get_report_name_list()
+    for report_item in report_name_list:
+        report.append(tr.get_report_data(report_item, options))
+
+    print report
+    return render_template('triage_chart_report.html', report=report)
+
+ 
+
 @app.route('/Admin_Custom_Update', methods=['GET', 'POST'])
 def Admin_Custom_Update():
     filename = BAR_OFILENAME;

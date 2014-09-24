@@ -1,0 +1,103 @@
+{% extends "layout.html" %}
+{% if session.logged_in and session.admin %}
+{%block head%}
+<link rel='stylesheet' type='text/css' href='static/css/dataTables.bootstrap.css'>
+<link rel="stylesheet" type="text/css" href="static/css/jquery.dataTables.css">
+<link rel="stylesheet" type="text/css" href="static/css/dataTables.colVis.css">
+<link rel="stylesheet" type="text/css" href="static/css/dataTables.tableTools.css">
+
+<script type='text/javascript' src='static/js/jquery-1.11.1.js'></script>
+<script type='text/javascript' src='static/js/dataTables.bootstrap.js'></script>
+<script type='text/javascript' src='static/js/bootstrap-3.1.1.js'></script>
+<script type='text/javascript' src='static/js/jquery.dataTables.js'></script>
+<script type='text/javascript' src='static/js/dataTables.colVis.js'></script>
+<script type='text/javascript' src='static/js/dataTables.fixedColumns.js'></script>
+<script type="text/javascript" src="static/js/dataTables.tableTools.js"></script>
+<script src="static/highstock.js"></script>
+
+<!--
+When setting the name of posted variables, the name of "check_id", "comment_id" should not be assigned since I used the check_id to represent the checkboxes and comment_id to represent the comments
+07/15/2014 ShinYeh
+-->
+<link rel="stylesheet" type="text/css" href="static/css/jquery-ui.css">
+<script type='text/javascript' src='static/js/Chart.js'></script>
+<script type='text/javascript' src='static/js/jquery-ui.js'></script>
+
+{%endblock%}
+{%block body%}
+
+<script>
+function openPopup() {
+  var popup = window.open("", ""),
+      table = document.getElementById("T_ETA_bugs_table");
+
+  popup.document.write(table.outerHTML);
+  popup.document.close();
+  if (window.focus) 
+    popup.focus();
+}
+</script>
+
+
+<form action="{{ url_for('Admin_Email_Processing') }}" method=post>
+<ul class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+
+{% set num_report = 1%}
+{% for report_item in report %}
+
+<script>
+$(document).ready(function(){
+    var {{report_item['name']}}_table = $('#Table_{{report_item['name']}}').DataTable({
+        dom: 'lrtip',
+        //scrollY:        true,
+        //scrollX:        true,
+        paging:         false,
+        autoWidth:      false,
+        //"aoColumns": [ 
+        //    {%for head in report_item['head']%}
+        //    {"bVisible":true},  
+        //    {%endfor%}
+        //]
+    });
+});
+</script>
+
+    <h3><span class="label label-primary">
+        {{num_report}}. {{report_item['description']}}
+    </span></h3>
+    {%if not report_item['head']==['']%}
+    <table id="Table_{{report_item['name']}}" class="display" cellspacing="0" width="100%">
+        <thead>
+            <tr>
+                {%for head in report_item['head']%}
+                <th>{{head}}</th>
+                {%endfor%}
+            </tr>
+        </thead>
+        <tbody>
+        {% for row in report_item['data'] %}
+            <tr>
+                {%set flag=0%}
+                {%for cell in row%}
+                {%if flag==0%}
+                <td><a href=https://bugzilla.eng.vmware.com/show_bug.cgi?id={{cell}} }} target="_blank">{{cell}}</a></td>
+                {%set flag=1%}
+                {%else%}
+                <td>{{cell}}</td>
+                {%endif%}
+                {%endfor%}
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {%else%}
+    N/A
+    {%endif%}
+    <br>
+{% set num_report = num_report+1 %}
+{%endfor%}
+
+</ul>
+</form>
+{% endblock %}
+{% endif %}
