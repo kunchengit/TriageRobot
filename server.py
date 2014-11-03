@@ -1852,6 +1852,7 @@ def milestone_check(product, version):
         (select id from phases where version_id = {}) 
         and milestone.phase_id = phases.id
         and milestone.name not like "%vum%"
+        and milestone.name not like "%p99%"
         ORDER by eta desc
     """.format(version)
     #print sql
