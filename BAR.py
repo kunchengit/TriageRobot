@@ -1202,7 +1202,8 @@ def Update_Information():
     cursor.close()
     conn.commit()
     conn.close()
-    
+
+Last_Update_Time = ""    
 def Periodically_Update(Get_ID = True):
     """
     Query Information and connect with our db
@@ -1226,13 +1227,21 @@ def Periodically_Update(Get_ID = True):
             Bug_id_Result.append(record[0])
     #Total_Bug_id = ",".join(map(str, Result))
     
-    sql = """SELECT update_time from update_information 
-    where update_time in (select max(update_time) from update_information)
-    """
-    cursor.execute(sql)
-    Result = cursor.fetchone()
-    cursor.close()
-    conn.close()
+    global Last_Update_Time
+    if not Last_Update_Time:
+
+        sql = """SELECT update_time from update_information 
+        where update_time in (select max(update_time) from update_information)
+        """
+        cursor.execute(sql)
+
+        Result = cursor.fetchone()
+        Last_Update_Time = Result
+        cursor.close()
+        conn.close()
+    else:
+        Result = Last_Update_Time
+
     """
     The time should be changed to asia time, since the modified time on Bugzilla is PST time
     Therefore, I sub a day of GMT+8
@@ -1473,7 +1482,7 @@ if __name__ == "__main__":
             bz_date_begin = datetime(t[0], t[1], t[2], 0,0,0).strftime(FMT_YMDHMS)
         except:
             #bz_date_begin = None
-            bz_date_begin = Periodically_Update()[0]
+            bz_date_begin = Periodically_Update(Get_ID=False)[0]
         try:
             t = time.strptime(okey[5], FMT_YMD)
             bz_date_end = datetime(t[0], t[1], t[2],23,59,59).strftime(FMT_YMDHMS)
