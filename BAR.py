@@ -1041,8 +1041,10 @@ def Connect_With_OurDB(Total_Result, Rules=[], Update=False, Update_end=None):
                         ','.join('{}={}'.format(k,temp_sql[k]) for k in temp_sql)
                         )     # python variables
             else:
-                sql = """DELETE FROM bug_fix_by_map where bug_id = {}
-                """.format(sdata["bug_id"])
+                pass
+                #do not clear fix_by map for now
+                #sql = """DELETE FROM bug_fix_by_map where bug_id = {}
+                #""".format(sdata["bug_id"])
             cursor.execute(sql)
     """
     Process longdescs(comments)

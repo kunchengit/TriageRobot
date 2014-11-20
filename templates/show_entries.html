@@ -40,14 +40,13 @@ $.fn.dataTable.ext.order['dom-text'] = function  ( settings, col )
 
 
 <script>
-    $(function() {
-        $(".search-product").autocomplete({
-            source: "{{url_for("autocomplete_product")}}",
-            minLength: 2
-        });
+$(function(){
+    $(".search-product").autocomplete({
+        source: "{{url_for("autocomplete_product")}}",
+        minLength: 2
     });
+});
 </script>
-
 </style>
 
 <script>    
@@ -62,8 +61,13 @@ $(document).ready(function() {
     $('.main').each(function(){
         this.style.width = "100%";
         this.style.marginLeft = 0;
-    })
+    });
 
+    $('.table_div').each(function(){
+        this.style.width = "120%";
+        this.style.marginLeft = 0;
+    });
+    
     var oTable = $('#bugs_table').DataTable({
         paging:         true, 
         "lengthMenu": [ [-1, 5, 10, 25, 50], ["All", 5, 10, 25, 50] ],
@@ -86,8 +90,9 @@ $(document).ready(function() {
             {"bVisible":true},  //Highlighted Reasons
             {"bVisible":true}   //Comments
         ],
+        "order": [[ 4, "desc" ]]
     } );
-    
+
     /*$('form').submit( function () {
 
        //Loop through the TR records
@@ -115,13 +120,17 @@ $(document).ready(function() {
 </script>
 
 <script>
+
 $(document).ready(function() {
     var milestone_table = $('#milestone_table').DataTable(
     {
         "lengthMenu": [ [-1, 10, 25, 50], ["All",10, 25, 50] ],
         "order": [[ 1, "desc" ]]
     });
+
 } );
+
+//setTimeout(render_chart,2000);
 </script>
 
 <script>
@@ -149,7 +158,7 @@ $(document).ready(function() {
         {
 			responsive: true
 		});
-	}
+    }
 </script>
 <link rel="stylesheet" type="text/css" href="static/css/vis.css">
 <script type="text/javascript" src="static/js/vis.js"></script>
@@ -171,7 +180,7 @@ $(document).ready(function() {
             {% set fix_by_x = fix_by_x + '-' + query["fix_by_phase"] %}
         {% endif %}
         <h3><span class="label label-primary">
-            The Statistic of Triage-Accepted of {{assigned}}
+            The Statistic of Sprint-Accepted of {{assigned}}
         </span></h3>
         {% if fix_by_x %}
         <h3><span class="label label-info">
@@ -232,27 +241,27 @@ $(document).ready(function() {
     {% endif %}
 </div>
     <form name="bugs_table_form" action="{{ url_for('Entries_Processing') }}" id="bugs_table_form" method="post">
-        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+        <div class="col-sm-9 col-sm-offset-3 col-md-12 col-md-offset-1 main table_div" style="width: 120%; margin-left: 0px;">
             <h1 class="page-header">
-                <h2 class="sub-header">CPD - Filter</h2>
+                <h2 class="sub-header">CPD - Backlog</h2>
             </h1>            
         <dl>
         <b>Keywords<br>Add:</b>
             <input type=text list=browsers name="Add_keywords">
                 <datalist id=browsers >
-                    <option> triage-accepted
-                    <option> triage-required
-                    <option> SR
-                    <option> cosmetic
+                    <option> Sprint-Accepted
+                    <option> sprint-ready
+                    <option> Debugging
+                    <option> GuruQueue
                 </datalist>
         <b>Remove:</b>
             <input type=text list=browsers name="Remove_keywords">
                 <datalist id=browsers >
-                    <option> triage-accepted
-                    <option> triage-required
-                    <option> SR
-                    <option> cosmetic
-            </datalist>
+                    <option> Sprint-Accepted
+                    <option> sprint-ready
+                    <option> Debugging
+                    <option> GuruQueue
+                </datalist>
     </dl>
     <table id="bugs_table" class="display" cellspacing="0" width="100%">
         <thead>
@@ -306,7 +315,7 @@ $(document).ready(function() {
                 <!--The following two scripts are implemented for auto-completion-->
                 <td>
                     {% set fix_number = 1 %}
-                    {% for fix_entry in fix_by[entry["bug_id"]] %}
+                    {% for fix_entry in fix_by[entry["bug_id"]]%}
                     <script>
                         $(function() {
                             $("#fix_by_{{entry['bug_id']}}_{{fix_number }}_version").autocomplete({
@@ -349,6 +358,7 @@ $(document).ready(function() {
                           });
                         });
                     </script>
+
                     {%if fix_entry['product'] or fix_number==1%} 
                     <input size="5" type=text id="fix_by_{{entry['bug_id']}}_{{fix_number }}_product" name="fix_by_{{entry['bug_id']}}_{{fix_number }}_product" value = "{{fix_entry['product']}}" size = "8" class = "search-product">
                     <input size="5" type=text id="fix_by_{{entry['bug_id']}}_{{fix_number }}_version" name="fix_by_{{entry['bug_id']}}_{{fix_number }}_version" value = "{{fix_entry['version']}}" size = "8" class = "search-version">
@@ -439,6 +449,11 @@ $(function(){
 
         $('.main').each(function(){
             this.style.width = "100%";
+            this.style.marginLeft = '0px';
+        })
+
+        $('.table_div').each(function(){
+            this.style.width = "120%";
             this.style.marginLeft = '0px';
         })
     })

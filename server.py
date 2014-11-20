@@ -69,7 +69,7 @@ EMAIL_PREFIX = """\
 
 T_ETA_DEFAULT_MESSAGE = EMAIL_PREFIX + """\
 Please Check the bug:{}
-This bug has been triage-accepted, but ETA is missing:
+This bug has been Sprint-Accepted, but ETA is missing:
 https://bugzilla.eng.vmware.com/show_bug.cgi?id={}
 """
 
@@ -161,7 +161,7 @@ def Login():
     cache.set('cookie', cookie_file)
     logging.warning("{} login into the bugzilla successfully.".format(session['username']))
     
-    
+    session['default_query_result'] = common_get_user_default_query()
     return Query()
     #return render_template('query.html')
 
@@ -566,6 +566,41 @@ def Query():
     else:
         return render_template('query.html')
 
+def common_get_user_default_query():
+    default_query_result = {}
+    if "logged_in" in session.keys() and session['logged_in']:
+         
+        conn = MySQLdb.connect(host=LOCAL_DATABASE_HOST, user=LOCAL_DATABASE_USER, passwd=LOCAL_DATABASE_PW, db=LOCAL_DATABASE_DATABASE)
+        cursor = conn.cursor()
+        
+        sql="""
+            select userid from profiles where login_name = '{}'
+            """.format(session["username"])
+        cursor.execute(sql)
+        profile_number = cursor.fetchone()[0]
+        
+        sql="""
+        select * from custom_setting where userid = {}
+        """.format(profile_number)
+        cursor.execute(sql)
+        
+        columns = [column[0] for column in cursor.description]
+        results = []
+        for row in cursor.fetchall():
+            results.append(dict(zip(columns, row)))
+        if results:
+            default_query_result['query_assignee'] = results[0]["query_assignee"]
+            default_query_result['query_product'] = results[0]["query_product"]
+            default_query_result['query_version'] = results[0]["query_version"]
+            default_query_result['query_phase'] = results[0]["query_phase"]
+
+        cursor.close()
+        conn.close()
+        print "fangchiw"
+        print default_query_result
+
+    return default_query_result
+
 @app.route('/Show_Entries', methods=['POST'])
 def Show_Entries():
     """
@@ -895,7 +930,7 @@ def Show_Entries():
     sql = """SELECT * from bugs 
     where assigned_to in ({}) 
     and delta_ts between {} and {}
-    and keywords not like "%triage-accepted%"
+    and keywords not like "%sprint-accepted%"
     ORDER by highlighted_by DESC, weight DESC, bug_id""".format(
     profile_number,
     Date_begin, 
@@ -966,7 +1001,7 @@ def Show_Entries():
     
     """
     Finish Bugs_table generation.
-    The below parts are using to generate charts for triage-accepted
+    The below parts are using to generate charts for Sprint-Accepted
     In order to match the form of bugzilla database, I change the name of variable to query.
     The minimal unit is version, if programmers want to implement phase only, the code is similar to the product and version
     """
@@ -979,7 +1014,7 @@ def Show_Entries():
     select delta_ts from bugs, bug_fix_by_map
     where assigned_to in ({}) 
     and delta_ts>'{}' 
-    and keywords like '%triage-accepted%'
+    and keywords like '%sprint-accepted%'
     and bug_fix_by_map.bug_id = bugs.bug_id
     and bug_fix_by_map.product_id = {}
     and bug_fix_by_map.version_id = {}
@@ -1026,6 +1061,8 @@ def Show_Entries():
         milestone_flag = False
 
     session['last_query_info'] = request.form
+
+    Pure_results = Pure_results[0:50]
     
     return render_template('show_entries.html', 
     bugs = Pure_results, 
@@ -1066,7 +1103,7 @@ def Admin_Custom_Webpage():
 def Admin_Custom_Triage_Chart():
     
     """
-    This function is using to made chart of triage-accepted chart
+    This function is using to made chart of Sprint-Accepted chart
     Besides, in order to get weight and all the bugs(included resolved and closed), we have to do realtime calculation.
     Therefore, we did not query bug from local database, we query all the data from bugzilla
     """
@@ -1112,7 +1149,7 @@ def Admin_Custom_Triage_Chart():
     
     
     """
-    Handle and chart the bugs which are triage-accepted by the user
+    Handle and chart the bugs which are Sprint-Accepted by the user
     There are two similar charting codes in the below parts.
     The only difference is the sql code.
     However, I still did not implement them into a function.
@@ -1122,7 +1159,7 @@ def Admin_Custom_Triage_Chart():
     """
     
     sql = """
-        select bug_when, bug_id from bugs_activity where who in ({}) and bug_when>'{}' and fieldid = 12 and added = 'triage-accepted'
+        select bug_when, bug_id from bugs_activity where who in ({}) and bug_when>'{}' and fieldid = 12 and added = 'Sprint-Accepted'
         """.format(profile_number, date.today() - relativedelta(months = 6) + relativedelta(day=1))
     """
     Connect to bugzilla
@@ -1166,11 +1203,11 @@ def Admin_Custom_Triage_Chart():
     
     
     """
-    Handle and chart the bugs which are triage-accepted and are owned by the user
+    Handle and chart the bugs which are Sprint-Accepted and are owned by the user
     """
     
     sql = """
-        select delta_ts, bug_id from bugs where assigned_to in ({}) and delta_ts>'{}' and keywords like '%triage-accepted%'
+        select delta_ts, bug_id from bugs where assigned_to in ({}) and delta_ts>'{}' and keywords like '%sprint-accepted%'
         """.format(profile_number, date.today() - relativedelta(months = 6) + relativedelta(day=1))
     
     cursor.execute(sql)
@@ -1226,6 +1263,8 @@ def Admin_Custom_Triage_Chart():
 @app.route('/Triage_Report', methods=['GET', 'POST'])
 def Triage_Report():
     if request.method == 'GET':
+        if 'default_query_result' not in session.keys() or not session['default_query_result']:
+           session['default_query_result'] = common_get_user_default_query()
         date = dict()
         date['date_end_cal'] = datetime.now().strftime('%Y/%m/%d')
         date['date_end'] = datetime.now().strftime('%Y:%m:%d')
@@ -1236,23 +1275,24 @@ def Triage_Report():
     #Start generating triage report
     assigned_to = common_get_assigned_to_list(request.form["assigned_to"]) 
     if not assigned_to:
-        return render_template('email_query.html', error="Fail to Connect MySQL, Please try again later")
+        return render_template('triage_chart_query.html', error="Fail to Connect MySQL, Please try again later")
 
     res = common_assigned_to_verify_update(assigned_to)
     if res['result'] == 'error':
-        return render_template('email_query.html', error=res['message'])
+        return render_template('triage_chart_query.html', error=res['message'])
     rn_to_number = res['data']
 
     res = common_get_fix_bys(request)
     if res['result'] == 'error':
-        return render_template('email_query.html', error=res['message'])
+        return render_template('triage_chart_query.html', error=res['message'])
     fix_by_tuple = res['data']
 
     fix_by_product_name = list()
     if request.form['fix_by_product']:
         fix_by_product_name.append(str(request.form['fix_by_product']).strip())
     else:
-        return render_template('email_query.html', error='must specify product name')
+        pass
+        #return render_template('email_query.html', error='must specify product name')
 
     fix_by_version_name = list()
     if request.form['fix_by_version']:
@@ -1277,10 +1317,85 @@ def Triage_Report():
     for report_item in report_name_list:
         report.append(tr.get_report_data(report_item, options))
 
-    print report
-    return render_template('triage_chart_report.html', report=report)
+    summary_info = get_sprint_summary(options)
+    #print summary_info
+    #print report
+    # restore option time
+    options['date_begin'] = str(request.form['date_begin']).replace(':','-')
+    options['date_end'] = str(request.form['date_end']).replace(':','-')
+    return render_template('triage_chart_report.html', report=report, summary_info=summary_info, options=options)
 
+def get_sprint_summary(options):
+    date_begin = options['date_begin']
+    date_end = options['date_end']
+    # date_begin and date_end is year-mon-day
+    sprint_summary = []
+    if 'sprint_date' not in session.keys() or not session['sprint_date']:
+        session['sprint_date'] = get_sprint_date()
+    start_sprint = get_sprint_from_date(date_begin)
+    end_sprint = get_sprint_from_date(date_end)
+    if start_sprint and end_sprint:
+        for i in range(int(start_sprint), int(end_sprint)+2):
+            print "i"
+            print i
+            if i > 0 and i < 101:
+                sprint_summary.append(get_sprint_summary_single(i-1, options))
+       
+    return sprint_summary 
+
+def get_sprint_summary_single(index, options):
+    summary_single = {}    
+    if 'sprint_date' not in session.keys() or not session['sprint_date']:
+        session['sprint_date'] = get_sprint_date()
+
+    date_end = session['sprint_date'][index][2]
+    date_begin = session['sprint_date'][index][1]
+   
+    summary_single['index'] = index+1
+    summary_single['date_begin'] = date_begin
+    summary_single['date_end'] = date_end
+    options['date_begin'] = date_begin
+    options['date_end'] = date_end
+    import Sprint_Summary
+    ss = Sprint_Summary.Sprint_Summary(session['username'], session['password'])
+    for name in ss.names:
+        summary_single[name] = ss.get_data(options, name)
+
+    return summary_single
  
+def get_sprint_from_date(date):
+    date = datetime.strptime(date,"%Y-%m-%d").date() 
+    for sprint in session["sprint_date"]:
+        begin = datetime.strptime(sprint[1],"%Y-%m-%d").date() 
+        end = datetime.strptime(sprint[2],"%Y-%m-%d").date() 
+        if date < end and date > begin:
+            return sprint[0]
+    
+def get_sprint_date():
+    
+    sprint_date = []
+    
+    conn = MySQLdb.connect(host=LOCAL_DATABASE_HOST, user=LOCAL_DATABASE_USER, passwd=LOCAL_DATABASE_PW, db=LOCAL_DATABASE_DATABASE)
+    cursor=conn.cursor()
+    
+    sql = """
+        select *
+        from megasprint
+    """
+    #print sql
+    cursor.execute(sql)
+    
+    columns = [column[0] for column in cursor.description]
+    results = []
+    for row in cursor.fetchall():
+        results.append(dict(zip(columns, row)))
+    cursor.close()
+    
+    for item in results:
+        sprint_date.append([item['id'], item['start'], item['end']])
+    #print results
+    
+    return sprint_date
 
 @app.route('/Admin_Custom_Update', methods=['GET', 'POST'])
 def Admin_Custom_Update():
@@ -1580,7 +1695,24 @@ def Chrome_Extension(number):
         ID_String = str(number)
         command = "cd %s; python BAR.py" %SCRIPTS_DIR
         os.system(command + " --ID " + ID_String)
+        
+    sql = """select bug_id, fix_by_version_id, fix_by_version_rn from bug_fix_by_map
+    where bug_id = {}
+    """.format(str(number))
     
+    cursor.execute(sql)
+    fix_by = cursor.fetchall()
+    milestone_flag = ''
+    milestone_results = []
+    for key in fix_by:
+        if key[1] and key[1]!='0':
+            milestone_results = milestone_check("", key[1])
+            milestone_flag = key[2]
+            break
+
+    print "fangchiw"
+    print milestone_flag
+    print milestone_results
     
     bzdb_conn = MySQLdb.connect(host=BUGZILLA_DATABASE_HOST, port=BUGZILLA_DATABASE_PORT, user=BUGZILLA_DATABASE_USER, passwd=BUGZILLA_DATABASE_PW, db=BUGZILLA_DATABASE_DATABASE)
     cursor = bzdb_conn.cursor()        
@@ -1599,7 +1731,7 @@ def Chrome_Extension(number):
     assigned = str(profile_data[0]) + " - (" + str(profile_data[1]) + ")"
     
     sql = """
-        select delta_ts from bugs where assigned_to in ({}) and delta_ts>'{}' and keywords like '%triage-accepted%'
+        select delta_ts from bugs where assigned_to in ({}) and delta_ts>'{}' and keywords like '%sprint-accepted%'
         """.format(profile_number, date.today() - relativedelta(months = 6) + relativedelta(day=1))
     
     cursor.execute(sql)
@@ -1620,10 +1752,14 @@ def Chrome_Extension(number):
     for key in date_bins:
         TA_Own_results.append(dict(Month = month_name[key.month], Value = date_bins[key]))
     TA_Own_results.reverse()
-    
-    
-    
-    return render_template('Chrome_Extension.html', TA_Own_results = TA_Own_results, assigned = assigned)
+
+   
+    return render_template('Chrome_Extension.html', 
+                            TA_Own_results = TA_Own_results, 
+                            assigned = assigned,
+                            milestone_flag = milestone_flag,
+                            milestone_results = milestone_results
+                          )
     
     
     labels = '"' + '","'.join(k["Month"] for k in TA_Own_results) + '"'
@@ -1636,13 +1772,15 @@ def Chrome_Extension(number):
 @app.route('/Admin_Custom_Email', methods=['GET', 'POST'])
 def Admin_Custom_Email():
     if request.method == 'GET':
+        if 'default_query_result' not in session.keys() or not session['default_query_result']:
+           session['default_query_result'] = common_get_user_default_query()
         return render_template('email_query.html')
     
     """
     The rest handles the webpage of admin_custom_email.html
     This function sends several types of sql and show the tables
     In 0718, Shin-Yeh implemented three types of email.
-    1. Send email to ask adding ETA when the bug is triage-accepted
+    1. Send email to ask adding ETA when the bug is sprint-accepted
     2. Send email to ask checking ETA since the bug is expired or in rush
     3. Send email to ask updateing since the bug is not updated for a long time
     """
@@ -1671,11 +1809,11 @@ def Admin_Custom_Email():
     conn = MySQLdb.connect(host=LOCAL_DATABASE_HOST, user=LOCAL_DATABASE_USER, passwd=LOCAL_DATABASE_PW, db=LOCAL_DATABASE_DATABASE)
     
     """
-    The first sql is aimed to find the bugs which are already triage-accepted but withoug setting ETA
+    The first sql is aimed to find the bugs which are already sprint-accepted but withoug setting ETA
     """
     
     sql = """SELECT * from bugs 
-        where keywords like "%triage-accepted%"
+        where keywords like "%Sprint-Accepted%"
         and cf_eta is NULL
         and bug_id in ({})
         and keywords not like "%CheckinAppro%"
@@ -1757,7 +1895,7 @@ def Admin_Custom_Email():
         W_U_bug_fix_by_results = bug_fix_by_SQL(sql, cursor)
     
     
-    T_ETA_Message = EMAIL_WARNING_MESSAGE.format("'Should Set ETA After Triage-accepted'")
+    T_ETA_Message = EMAIL_WARNING_MESSAGE.format("'Should Set ETA After Sprint-Accepted'")
     ETA_Message = EMAIL_WARNING_MESSAGE.format("'ETA Expired'")
     W_U_Message = EMAIL_WARNING_MESSAGE.format("'Longtime Without Update'")
     
@@ -1801,7 +1939,7 @@ def Admin_Email_Processing():
         if "T_ETA_check" in key:
             Bug_id = str(request.form[key])
             to_addr = str(request.form[Bug_id]) + "@vmware.com"
-            subject = "[TriageRobot] Bug {} is missing ETA after triage-accepted".format(Bug_id)
+            subject = "[TriageRobot] Bug {} is missing ETA after Sprint-Accepted".format(Bug_id)
             message = T_ETA_DEFAULT_MESSAGE.format(Bug_id, Bug_id)
             if request.form["T_ETA_Message"] != "":
                 message = message + '\n' + str(request.form["T_ETA_Message"])

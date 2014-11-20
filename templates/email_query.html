@@ -152,6 +152,10 @@
                             </tr>
                         </thead>
                         <tbody>
+                            {% set query_assignee = session['default_query_result']['query_assignee']%}
+                            {% set query_product = session['default_query_result']['query_product']%}
+                            {% set query_version = session['default_query_result']['query_version']%}
+                            {% set query_phase = session['default_query_result']['query_phase']%}
                             <tr>
                                 <td>
                                     <div class="ui-widget">

@@ -10,20 +10,17 @@ from bs4 import BeautifulSoup
 
 #report_order = ['triaged', 'fixed']
 #report_order = ['triaged','fixed', 'no_checkin_request', 'no_checkin']
-report_order = ['sprint_accepted', 'fixed', 'no_checkin']
 
-class Triage_Report:
+class Sprint_Summary:
     def __init__(self, username, password):
         self.username = username
         self.password = password
-        self.report_item = dict()
-        self.report_item['fixed'] = {'params_func':self.fixed_params, 'desc_func':self.fixed_description}
-        self.report_item['triaged'] = {'params_func':self.triaged_params, 'desc_func':self.triaged_description}
-        self.report_item['no_checkin_request'] = {'params_func':self.no_checkin_request_params, 'desc_func':self.no_checkin_request_description}
-        self.report_item['no_checkin'] = {'params_func':self.no_checkin_params, 'desc_func':self.no_checkin_description}
-        self.report_item['sprint_accepted'] = {'params_func':self.sprint_accepted_params, 'desc_func':self.sprint_accepted_description}
-        self.report_list = report_order
-        
+        self.names = ['Debugging', 'sprint-ready', 'Sprint-Accepted', 'Fixed']
+        self.summary_items = dict()
+        self.summary_items['Debugging'] = {'params_func':self.debugging_params}
+        self.summary_items['sprint-ready'] = {'params_func':self.sprint_ready_params}
+        self.summary_items['Sprint-Accepted'] = {'params_func':self.sprint_accepted_params}
+        self.summary_items['Fixed'] = {'params_func':self.fixed_params}
 
     def get_logined_browser(self):
         username = self.username
@@ -64,8 +61,8 @@ class Triage_Report:
         #print res
         return br
 
-    def get_report_data(self, report_name, options):
-        params = self.report_item[report_name]['params_func'](options)
+    def get_data(self, options, name):
+        params = self.summary_items[name]['params_func'](options)
         
         br = self.get_logined_browser()
         data = urllib.urlencode(params)
@@ -76,14 +73,15 @@ class Triage_Report:
         page = br.open(post_url,data)
 
         try:
+            print name
             result = self.page_to_dict(page)
         except:
             result = dict()
             result['head'] = ['']
             result['data'] = ['']
-        result['params'] = data
-        result['name'] = report_name
-        result['description'] = self.report_item[report_name]['desc_func'](options)
+        #result['params'] = data
+        #result['name'] = report_name
+        #result['description'] = self.report_item[report_name]['desc_func'](options)
         return result
 
     def page_to_dict(self, page):
@@ -108,8 +106,8 @@ class Triage_Report:
     
         result['head'] = head
         result['data'] = data
-        
-        return result
+        print len(data)
+        return len(data)
 
     def read_default_params(self, filename):
         file_name = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'Triage_Chart_Query_Template', filename)
@@ -128,11 +126,10 @@ class Triage_Report:
         return self.report_list
 
     def fixed_params(self, options):
-        params = self.read_default_params('fixed.txt')
+        params = self.read_default_params('fixed_sprint_all.txt')
         assigned_to = options['assigned_to']
         params.append(('email1', assigned_to))
 
-        params.append(('chfieldfrom', options['date_begin']))
         params.append(('chfieldto', options['date_end']))
         
         for fix_by_product_name in options['fix_by_product_name']:
@@ -146,17 +143,12 @@ class Triage_Report:
 
         return params
 
-    def fixed_description(self, options):
-        return "Bugs been fixed between %s and %s" %(options['date_begin'], options['date_end'])
-
-    def triaged_params(self, options):
-        params = self.read_default_params('triaged.txt')
+    def debugging_params(self, options):
+        params = self.read_default_params('debugging.txt')
         assigned_to = options['assigned_to']
         params.append(('email1', assigned_to))
-
-        params.append(('chfieldfrom', options['date_begin']))
         params.append(('chfieldto', options['date_end']))
-        
+
         for fix_by_product_name in options['fix_by_product_name']:
             params.append(('fix_by_product_name', fix_by_product_name))
 
@@ -168,18 +160,29 @@ class Triage_Report:
 
         return params
 
+    def sprint_ready_params(self, options):
+        params = self.read_default_params('sprint_ready.txt')
+        assigned_to = options['assigned_to']
+        params.append(('email1', assigned_to))
+        params.append(('chfieldto', options['date_end']))
 
-    def triaged_description(self, options):
-        return "Bugs been Sprint-Accepted between %s and %s" %(options['date_begin'], options['date_end'])
+        for fix_by_product_name in options['fix_by_product_name']:
+            params.append(('fix_by_product_name', fix_by_product_name))
+
+        for fix_by_version_name in options['fix_by_version_name']:
+            params.append(('fix_by_version_name', fix_by_version_name))
+
+        for fix_by_phase_name in options['fix_by_phase_name']:
+            params.append(('fix_by_phase_name', fix_by_phase_name))
+
+        return params
 
     def sprint_accepted_params(self, options):
-        params = self.read_default_params('sprint_accepted.txt')
+        params = self.read_default_params('sprint_accepted_all.txt')
         assigned_to = options['assigned_to']
         params.append(('email1', assigned_to))
-
-        params.append(('chfieldfrom', options['date_begin']))
         params.append(('chfieldto', options['date_end']))
-        
+
         for fix_by_product_name in options['fix_by_product_name']:
             params.append(('fix_by_product_name', fix_by_product_name))
 
@@ -190,68 +193,3 @@ class Triage_Report:
             params.append(('fix_by_phase_name', fix_by_phase_name))
 
         return params
-
-
-    def sprint_accepted_description(self, options):
-        return "Bugs been Sprint-Accepted between %s and %s" %(options['date_begin'], options['date_end'])
-
-    def no_checkin_request_params(self, options):
-        params = self.read_default_params('no_checkin_request.txt')
-        assigned_to = options['assigned_to']
-        params.append(('email1', assigned_to))
-
-        #no need time frame
-        #params.append(('chfieldfrom', options['date_begin']))
-        #params.append(('chfieldto', options['date_end']))
-        
-        for fix_by_product_name in options['fix_by_product_name']:
-            params.append(('fix_by_product_name', fix_by_product_name))
-
-        for fix_by_version_name in options['fix_by_version_name']:
-            params.append(('fix_by_version_name', fix_by_version_name))
-
-        for fix_by_phase_name in options['fix_by_phase_name']:
-            params.append(('fix_by_phase_name', fix_by_phase_name))
-
-        return params
-
-    def no_checkin_request_description(self, options):
-        return "Bugs in Sprint-Accepted status, but have not been checked in"
-
-    def no_checkin_params(self, options):
-        params = self.read_default_params('no_checkin.txt')
-        assigned_to = options['assigned_to']
-        params.append(('email1', assigned_to))
-
-        #no need time frame
-        #params.append(('chfieldfrom', options['date_begin']))
-        #params.append(('chfieldto', options['date_end']))
-        
-        for fix_by_product_name in options['fix_by_product_name']:
-            params.append(('fix_by_product_name', fix_by_product_name))
-
-        for fix_by_version_name in options['fix_by_version_name']:
-            params.append(('fix_by_version_name', fix_by_version_name))
-
-        for fix_by_phase_name in options['fix_by_phase_name']:
-            params.append(('fix_by_phase_name', fix_by_phase_name))
-
-        return params
-
-    def no_checkin_description(self, options):
-        return "Bugs in Sprint-Accepted status and shoud be fixed in this sprint, but is still open"
-
-def test():
-    options = dict()
-    options['assigned_to'] = 'fangchiw,hillzhao,vaibhavk,shanpeic,nmukuri'
-    options['date_begin'] = '2014-09-15'
-    options['date_end'] = '2014-09-23'
-    options['fix_by_product_name'] = ['vsphere', 'esx']
-    options['fix_by_version_name'] = ['5.1 P06', '5.1 P06Ps']
-    options['fix_by_phase_name'] = []
-    
-    tr = Triage_Report('fangchiw', '''we'reno.2''')
-    for report_item in tr.get_report_name_list():
-        print tr.get_report_data(report_item, options)
-
-#test()

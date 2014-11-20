@@ -41,8 +41,54 @@ function openPopup() {
 
 <form action="{{ url_for('Admin_Email_Processing') }}" method=post>
 <ul class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+<!--summary section-->
+<script>
+$(document).ready(function(){
+    var sprint_summary_table = $('#Table_sprint_summary').DataTable({
+        dom: 'lrtip',
+        //scrollY:        true,
+        //scrollX:        true,
+        paging:         false,
+        autoWidth:      false,
+        //"aoColumns": [ 
+        //    {"bVisible":true},  
+        //]
+    });
+});
+</script>
 
-{% set num_report = 1%}
+    <h3><span class="label label-primary">
+        1. Sprint Stats around {{options['date_begin']}} and {{options['date_end']}}
+    </span></h3>
+    <table id="Table_sprint_summary" class="display" cellspacing="0" width="100%">
+        <thead>
+            <tr>
+                <th>Sprint #</th>
+                <th>Start</th>
+                <th>End</th>
+                <th>Debugging</th>
+                <th>sprint-ready</th>
+                <th>Sprint-Acceptd</th>
+                <th>fixed</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for entry in summary_info%}
+            <tr>
+                <td>{{entry['index']}}</td>
+                <td>{{entry['date_begin']}}</td>
+                <td>{{entry['date_end']}}</td>
+                <td>{{entry['Debugging']}}</td>
+                <td>{{entry['sprint-ready']}}</td>
+                <td>{{entry['Sprint-Accepted']}}</td>
+                <td>{{entry['Fixed']}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <br>
+<!--summary section end-->
+{% set num_report = 2%}
 {% for report_item in report %}
 
 <script>
@@ -58,6 +104,7 @@ $(document).ready(function(){
         //    {"bVisible":true},  
         //    {%endfor%}
         //]
+        "order": [[ 6, "desc" ]]
     });
 });
 </script>

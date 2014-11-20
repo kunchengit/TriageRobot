@@ -1,9 +1,17 @@
 <head>
     <meta charset="utf-8">
 <link rel='stylesheet' type='text/css' href='../static/css/jquery-ui.css'>
+<link rel='stylesheet' type='text/css' href='/static/css/dataTables.bootstrap.css'>
+<link rel="stylesheet" type="text/css" href="/static/css/jquery.dataTables.css">
+<link rel="stylesheet" type="text/css" href="/static/css/dataTables.colVis.css">
 <script src="../static/js/jquery-1.11.1.js"></script>
 <script src="../static/js/jquery-ui.js"></script>
 <script type='text/javascript' src='../static/js/Chart.js'></script>
+<script type='text/javascript' src='/static/js/jquery.dataTables.js'></script>
+<script type='text/javascript' src='/static/js/dataTables.colVis.js'></script>
+<script type='text/javascript' src='/static/js/dataTables.fixedColumns.js'></script>
+<script type="text/javascript" src="/static/js/dataTables.fnGetFilteredNodes.js"></script>
+<script type="text/javascript" src="/static/js/dataTables.fnGetHiddenNodes.js"></script>
 <script>
     var TA_OWN_lineChartData = 
     {
@@ -32,9 +40,63 @@
 	}
 </script>
 </head>
+
+<script>
+$(document).ready(function() {
+    var milestone_table = $('#milestone_table').DataTable(
+    {
+        dom: 't',
+        "lengthMenu": [ [-1, 10, 25, 50], ["All",10, 25, 50] ],
+        "order": [[ 1, "desc" ]]
+    });
+
+} );
+</script>
+
+
 <body>
     <div width="30%">
-    <dd><font face="arial">The Triage-Accepted bugs which are owned by {{assigned}} </font>
-    <dd><canvas id="TA_OWN_RESULTS" height="450" width="900"></canvas>
+    {% if milestone_flag %}
+    <font face="arial">Milestone for {{milestone_flag}}</font>
+    <table id="milestone_table" class="display" cellspacing="0" width="100%">
+        <thead>
+            <tr>
+                <td>Name</td>
+                <td>ETA</td>
+                <td>Weight</td>
+            </tr>
+        </thead>
+        <tbody>
+            {% for entry in milestone_results %}
+            <tr>
+                <td>{{entry["name"]}}</td>
+                <td>{{entry["eta"]}}</td>
+                <td>{{entry["weight"]}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {%endif%}
+    <p class="expand-one"><a href="#">Click to see the Sprint-Accepted trend</a></p>
+    <div class="content-one">
+        <font face="arial">The Sprint-Accepted bugs which are owned by {{assigned}} </font>
+        <br>
+        <canvas id="TA_OWN_RESULTS" height="450" width="900"></canvas>
+    </div> <!--content-one-->
     </div>
+
+<script>
+$('.expand-one').click(function(){
+    $('.content-one').slideToggle('slow');
+});
+
+$('.content-one').slideToggle('slow');
+</script>
+
+<style>
+div.lcontent-one {
+    display:none;
+}
+</style>
+
 </body>

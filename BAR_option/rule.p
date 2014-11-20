@@ -1,3 +1,3 @@
 triage-required
-SR
 noqacost
+sprint-ready
