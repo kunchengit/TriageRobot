@@ -70,8 +70,9 @@
                             </li>
                         {% endif %}
                         <li {% if request.path in [url_for('Query'), '/', url_for('Show_Entries'), url_for('Entries_Processing')]%} class="active" {% endif %}><a href={{url_for('Query')}}>Triage Decision</a></li>
+                        <li {% if request.path in [url_for('QueryX'), url_for('Show_EntriesX')]%} class="active" {% endif %}><a href={{url_for('QueryX')}}>Kanban (BETA)</a></li>
                         <li {% if request.path == url_for('Admin_Custom_Email') or request.path == url_for('Admin_Email_Processing') %} class="active" {% endif %}><a href={{url_for('Admin_Custom_Email')}}>Email Notification</a></li>
-                        <li {% if request.path == url_for('Triage_Report') %} class="active" {% endif %}><a href={{url_for('Triage_Report')}}>Triage Report (BETA)</a></li>
+                        <li {% if request.path == url_for('Triage_Report') %} class="active" {% endif %}><a href={{url_for('Triage_Report')}}>Triage Report</a></li>
                         <li {% if request.path == url_for('Custom_Webpage') %} class="active" {% endif %}><a href={{url_for('Custom_Webpage')}}>Customize</a></li>
                             <li class="submenu"><!-- active open -->
                             <ul>
