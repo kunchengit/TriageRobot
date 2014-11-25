@@ -1570,7 +1570,7 @@ def Show_Entries():
 
     session['last_query_info'] = request.form
 
-    Pure_results = Pure_results[0:50]
+    #Pure_results = Pure_results[0:50]
     
     return render_template('show_entries.html', 
     bugs = Pure_results, 
