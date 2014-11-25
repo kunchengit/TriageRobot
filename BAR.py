@@ -1249,7 +1249,7 @@ def Periodically_Update(Get_ID = True):
     Therefore, I sub a day of GMT+8
     """
     if Result:
-        return [(Result[0]-timedelta(hours=15)).strftime(FMT_YMDHMS), Bug_id_Result]
+        return [(Result[0]-timedelta(hours=20)).strftime(FMT_YMDHMS), Bug_id_Result]
     else:
         now = datetime.now()
         return [datetime(now.year, 1,1).strftime(FMT_YMDHMS), Bug_id_Result]
