@@ -2218,10 +2218,6 @@ def Chrome_Extension(number):
             milestone_flag = key[2]
             break
 
-    print "fangchiw"
-    print milestone_flag
-    print milestone_results
-    
     bzdb_conn = MySQLdb.connect(host=BUGZILLA_DATABASE_HOST, port=BUGZILLA_DATABASE_PORT, user=BUGZILLA_DATABASE_USER, passwd=BUGZILLA_DATABASE_PW, db=BUGZILLA_DATABASE_DATABASE)
     cursor = bzdb_conn.cursor()        
     

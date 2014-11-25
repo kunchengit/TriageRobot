@@ -74,17 +74,17 @@ $(document).ready(function() {
         "aoColumns": [ 
             {"bVisible":true},  //Number
             {"bVisible":true},  //BugID
-            {"bVisible":true},  //Summary-short_desc
+            {"bVisible":true,"bSearchable":false},  //Summary-short_desc
             {"bVisible":true},  //Keywords
             {"bVisible":true},  //Weights
             {"bVisible":false}, //Priority
             {"bVisible":false}, //Severity
             {"bVisible":false}, //Case count
             {"bVisible":true, "sWidth":"20%", "orderDataType": "dom-text"},  //Fix_by_x
-            {"bVisible":true},  //Assigned to
+            {"bVisible":false},  //Assigned to
             {"bVisible":true},  //ETA
             {"bVisible":false},  //Last Modified
-            {"bVisible":true},  //Highlighted Reasons
+            {"bVisible":true, "bSearchable":false},  //Highlighted Reasons
         ],
     } );
 
@@ -138,42 +138,115 @@ $(document).ready(function() {
 </head>
 <body>
 {% block body%}
+
+{% set debugging_cnt = [] %}
+{% set ready_cnt = [] %}
+{% set accepted_cnt = [] %}
+{% set total_cnt = [] %}
+{% set people_list = [] %}
+{% for entry in bugs %}
+    {% if total_cnt.append(1) %} {% endif %}
+    {% if entry["keywords"].find("Sprint-Accepted") >= 0 %}
+        {% if accepted_cnt.append(1) %} {% endif %}
+        {% if people_list.append(entry["assigned_rn"]) %} {% endif %}
+        {% if people_list.append("Sprint-Accepted") %} {% endif %}
+    {% elif entry["keywords"].find("sprint-ready") >= 0 %}
+        {% if ready_cnt.append(1) %} {% endif %}
+        {% if people_list.append(entry["assigned_rn"]) %} {% endif %}
+        {% if people_list.append("sprint-ready") %} {% endif %}
+    {% elif entry["keywords"].find("Debugging") >= 0 %}
+        {% if debugging_cnt.append(1) %} {% endif %}
+        {% if people_list.append(entry["assigned_rn"]) %} {% endif %}
+        {% if people_list.append("Debugging") %} {% endif %}
+    {% endif %}
+{% endfor %}
+
+
+{% set piechart = 1 %}
+{% if piechart == 1 %}
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+      google.load("visualization", "1", {packages:["corechart"]});
+      google.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+          ['Kanban State', 'Count'],
+          ['Total : {{ total_cnt|length }}', {{ total_cnt|length }}],
+          ['Debugging : {{ debugging_cnt|length }}',     {{ debugging_cnt|length }}],
+          ['sprint-ready : {{ ready_cnt|length }}',      {{ ready_cnt|length }}],
+          ['Sprint-Accepted : {{ accepted_cnt|length }}',  {{ accepted_cnt|length }}],
+        ]);
+
+        var options = {
+          backgroundColor: '#eeeeff',
+          is3D: true,
+          pieSliceTextStyle: {
+            color: 'black',
+          },
+          slices: {
+            0: { color: '#cccccc' },
+            1: { color: '#aaffaa' },
+            2: { color: '#ffffaa' },
+            3: { color: '#ffaaaa' }
+          },
+          legend: {textStyle: {
+            color: 'black',
+            fontSize: 20,
+            bold: true,
+            italic: false },
+            position: 'bottom',
+            alignment: 'center',
+          }
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('piechart_3d'));
+        chart.draw(data, options);
+        google.visualization.events.addListener(chart, 'click', function(targetID) {
+          var tid = targetID.targetID;
+          var txt = document.getElementById('bugs_table_filter');
+          txt = txt.children[0].children[0];
+          if (tid == "slice#1" || tid == "legendentry#1")
+              txt.value = "Debugging";
+          else if (tid == "slice#2" || tid == "legendentry#2")
+              txt.value = "sprint-ready";
+          else if (tid == "slice#3" || tid == "legendentry#3")
+              txt.value = "Sprint-Accepted";
+          else if (tid == "slice#0" || tid == "legendentry#0")
+              txt.value = "";
+          var table = $('#bugs_table').DataTable();
+          table.search(txt.value).draw();
+        });
+      }
+    </script>
+    <div id="piechart_3d" style="width: 100%; height: 400px;"></div>
+{% else %}
+<script>
+function filter_my_table(id) {
+    var txt = document.getElementById('bugs_table_filter');
+    txt = txt.children[0].children[0];
+    var v = id;
+    txt.value = v;
+    var table = $('#bugs_table').DataTable();
+    table.search(txt.value).draw();
+}
+</script>
+<table id="summary_table" align="right">
+<tbody>
+<tr>
+    <td onclick="filter_my_table('');" style="background:#cccccc;color:black;font-weight:bold;font-size:30px;"> &nbsp;&nbsp;&nbsp;&nbsp; Total : {{ total_cnt|length }} &nbsp;&nbsp;&nbsp;&nbsp; </td>
+    <td onclick="filter_my_table('Debugging');" style="background:#aaffaa;font-weight:bold;font-size:30px;"> &nbsp;&nbsp;&nbsp;&nbsp; Debugging : {{ debugging_cnt|length }} &nbsp;&nbsp;&nbsp;&nbsp; </td>
+    <td onclick="filter_my_table('sprint-ready');" style="background:#ffffaa;font-weight:bold;font-size:30px;"> &nbsp;&nbsp;&nbsp;&nbsp; sprint-ready : {{ ready_cnt|length }} &nbsp;&nbsp;&nbsp;&nbsp; </td>
+    <td onclick="filter_my_table('Sprint-Accepted');" style="background:#ffaaaa;font-weight:bold;font-size:30px;"> &nbsp;&nbsp;&nbsp;&nbsp;Sprint-Accepted : {{ accepted_cnt|length }} &nbsp;&nbsp;&nbsp;&nbsp; </td>
+</tr>
+</tbody>
+</table>
+{% endif %}
 <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main" id='div_main'>
 <form name="bugs_table_form" action="" id="bugs_table_form" method="post">
     <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
         <h1 class="page-header">
             <h2 class="sub-header">CPD - Kanban Status</h2>
         </h1>
-
-<table id="summary_table" align="right">
-<tbody>
-{% set debugging_cnt = [] %}
-{% set ready_cnt = [] %}
-{% set accepted_cnt = [] %}
-{% set total_cnt = [] %}
-<tr>
-{% for entry in bugs %}
-    {% if total_cnt.append(1) %} {% endif %}
-    {% if entry["keywords"].find("Sprint-Accepted") >= 0 %}
-        {% if accepted_cnt.append(1) %} {% endif %}
-    {% elif entry["keywords"].find("sprint-ready") >= 0 %}
-        {% if ready_cnt.append(1) %} {% endif %}
-    {% elif entry["keywords"].find("Debugging") >= 0 %}
-        {% if debugging_cnt.append(1) %} {% endif %}
-    {% endif %}
-{% endfor %}
-    <td style="background:#000000;color:#ffffff;font-weight:bold;font-size:30px;"> &nbsp;&nbsp;&nbsp;&nbsp; Total : {{ total_cnt|length }} &nbsp;&nbsp;&nbsp;&nbsp; </td>
-    <td style="background:#aaffaa;font-weight:bold;font-size:30px;"> &nbsp;&nbsp;&nbsp;&nbsp; Debugging : {{ debugging_cnt|length }} &nbsp;&nbsp;&nbsp;&nbsp; </td>
-    <td style="background:#ffffaa;font-weight:bold;font-size:30px;"> &nbsp;&nbsp;&nbsp;&nbsp; sprint-ready : {{ ready_cnt|length }} &nbsp;&nbsp;&nbsp;&nbsp; </td>
-    <td style="background:#ffaaaa;font-weight:bold;font-size:30px;"> &nbsp;&nbsp;&nbsp;&nbsp;Sprint-Accepted : {{ accepted_cnt|length }} &nbsp;&nbsp;&nbsp;&nbsp; </td>
-</tr>
-</tbody>
-</table>
-<br>
-<br>
-<br>
-<br>
-
 <script>
 function imgError(image) {
     image.onerror = "";
@@ -190,8 +263,15 @@ function imgError(image) {
             {% if entry["assigned_rn"] != prev_name %}
                 <tr style="background: #aaaaff; font-size: 50px;" width="100%">
                     <td /><td><img src=https://orgchart.vmware.com/employees/{{ entry["assigned_rn"] }}.jpg height="70" width="70" onerror="imgError(this);"/></td>
-                    <td>{{ entry["assigned_rn"] }}<font color="#aaaaff" size="0px" hidden="true">Debugging,Spring-Ready,Sprint-Accepted</font></td>
-                    <td /><td /><td /><td /><td /><td /><td /><td /><td /><td />
+                    <td>{{ entry["assigned_rn"] }}</td>
+                    {% set people_key = [] %}
+                    {% for pk1 in people_list %}
+                        {% if pk1 == entry["assigned_rn"] %}
+                            {% if people_key.append(people_list[loop.index]) %} {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                    <td><font color="#aaaaff" size="0px" hidden="true">{{ people_key|join(',') }}</font></td>
+                    <td /><td /><td /><td /><td /><td /><td /><td /><td />
                 </tr>
                 <tr style="font-weight:bold;background:#aaaaff;" width="100%">
                   <td>#</td>
@@ -202,11 +282,11 @@ function imgError(image) {
                   <td>Priority</td>
                   <td>Severity</td>
                   <td>Case Count</td>
-                  <td width=80%>fix by product-version-phase</td>
+                  <td>Fix By</td>
                   <td>Assigned_to</td>
                   <td>ETA</td>
                   <td>Last Modified</td>
-                  <td>Highlighted Reasons</td>
+                  <td>Highlighted<br>Reasons</td>
                 </tr>
 
             {% set cnt = 1 %}
