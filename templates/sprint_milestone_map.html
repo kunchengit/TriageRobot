@@ -1,0 +1,35 @@
+<table id="sprint_table" class="display" cellspacing="0" width="100%">
+        <thead>
+            <tr>
+                <th>Sprint #</th>
+                <th>Start</th>
+                <th>End</th>
+                {% for product in product_list%}
+                <th>{{product}}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+        {% for entry in sprint_list %}
+            <tr>
+                <td>{{entry[0]}}</td>
+                <td>{{entry[1]}}</td>
+                <td>{{entry[2]}}</td>
+                {% for product in product_list%}
+                <td>
+                    {% for milestone in entry[3:]%}
+                        {% if milestone['product_name'] == product%}
+                            {% if milestone['show_eta'] == 0 %}
+                                {{milestone['phase_name']}}<br>
+                            {% else %}
+                                {{milestone['phase_name']}}:{{milestone['eta']}}<br>
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                </td>
+                {% endfor%}
+            </tr>
+        {% endfor %}
+        </tbody>
+</table>
+

@@ -10,7 +10,7 @@ from BAR_Rules import *
 from BAR import gRecordSchema
 from flask import request
 from flask import render_template
-from flask import flash
+from flask import flash, jsonify
 from flask import Flask, session, redirect, url_for, escape, request, send_file
 from werkzeug.contrib.cache import SimpleCache
 import MySQLdb
@@ -2877,6 +2877,112 @@ def Download_chrome_plugin():
 def Start_download_chrome_plugin():
     plugin_file = os.path.join(SCRIPTS_DIR,"Walle-Plug-in.crx")
     return send_file(plugin_file, as_attachment=True, attachment_filename="TriageRobot-chrome.crx")
+
+@app.route('/Sprint_Schedule')
+def Sprint_Schedule():
+    return render_template('sprint_schedule.html', sprint_list = get_sprint_date())
+
+@app.route('/Sprint_Schedule_Table')
+def Sprint_Schedule_Table():
+    para = request.args
+    product_name = para.get('name', '').strip()
+    active_product_rn_list = list()
+    active_product_rn_list = get_active_product_list(product_name)
+    active_milestone = dict()
+    for product in active_product_rn_list:
+        active_milestone[product] = get_milestone_from_rn(product)
+    megasprint = get_sprint_date()
+    for sprint in megasprint:
+        for product in active_product_rn_list:
+            for milestone in active_milestone[product]:
+                if check_milestone_within(milestone, sprint):
+                    milestone['show_eta'] = 1
+                    if milestone['phase_name'].lower().startswith('sprint'):
+                        milestone['show_eta'] = 0
+                    sprint.append(milestone)
+    #print megasprint
+    #print active_product_rn_list
+
+    #return jsonify({'res':'see log'})
+
+    res = dict()
+    res['res'] = 'success'
+    res['data'] = render_template("sprint_milestone_map.html", sprint_list = megasprint, product_list = active_product_rn_list)
+
+    return jsonify(res)
+    
+def check_milestone_within(milestone, sprint):
+    if milestone['matched'] == 1:
+        return False
+    date = datetime.strptime(str(milestone['eta']),"%Y-%m-%d").date() 
+    begin = datetime.strptime(sprint[1],"%Y-%m-%d").date() 
+    end = datetime.strptime(sprint[2],"%Y-%m-%d").date() 
+    # matched
+    if date <= end and date > begin:
+        milestone['matched'] = 1
+        return True
+    return False
+
+def get_active_product_list(name):
+    conn = MySQLdb.connect(host=LOCAL_DATABASE_HOST, user=LOCAL_DATABASE_USER, passwd=LOCAL_DATABASE_PW, db=LOCAL_DATABASE_DATABASE)
+    cursor=conn.cursor()
+    
+    sql = """SELECT * from active_product where product_name like %(product_name)s ORDER BY active_product_name"""
+    #print sql
+    cursor.execute(sql, {"product_name": name})
+    
+    columns = [column[0] for column in cursor.description]
+    results = []
+    for row in cursor.fetchall():
+        results.append(row[1])
+
+    conn.commit()
+    conn.close()
+    cursor.close()
+    
+    return results
+
+def get_milestone_from_rn(product):
+    result = list()
+     
+    conn = MySQLdb.connect(host=LOCAL_DATABASE_HOST, user=LOCAL_DATABASE_USER, passwd=LOCAL_DATABASE_PW, db=LOCAL_DATABASE_DATABASE)
+    cursor=conn.cursor()
+
+    sql = """
+        select phases.name as phase_name, eta, weight, milestone.name as product_name
+        from milestone, phases 
+        where milestone.phase_id in 
+        (select milestone.phase_id from milestone where milestone.name = '{}') 
+        and milestone.phase_id = phases.id
+        and milestone.name not like "%vum%"
+        and milestone.name not like "%p99%"
+        ORDER by eta
+    """.format(product)
+    #print sql
+    print sql
+    cursor.execute(sql)
+    
+    columns = [column[0] for column in cursor.description]
+    results = []
+    for row in cursor.fetchall():
+        results.append(dict(zip(columns, row)))
+    conn.commit()
+    conn.close()
+    cursor.close()
+    
+    """
+    Since the datetime in database is too precise, we have to remove the HMS message
+    """
+    for key in results:
+        key['matched'] = 0
+        if key["eta"] == "null":
+            continue
+        key["eta"] = key["eta"].date()
+    
+    return results
+    
+
+
 
 def common_get_candidate_bug_id_list(profile_number, fix_by_tuple):
     res = {'result':'error'}

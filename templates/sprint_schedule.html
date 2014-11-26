@@ -1,0 +1,100 @@
+{% extends "layout.html" %}
+{% if session.logged_in and session.admin %}
+{% block body %}
+
+<link rel='stylesheet' type='text/css' href='static/css/dataTables.bootstrap.css'>
+<link rel="stylesheet" type="text/css" href="static/css/jquery.dataTables.css">
+<link rel="stylesheet" type="text/css" href="static/css/dataTables.colVis.css">
+<script type='text/javascript' src='static/js/jquery-1.11.1.js'></script>
+<script type='text/javascript' src='static/js/dataTables.bootstrap.js'></script>
+<script type='text/javascript' src='static/js/bootstrap-3.1.1.js'></script>
+<script type='text/javascript' src='static/js/jquery.dataTables.js'></script>
+<script type='text/javascript' src='static/js/dataTables.colVis.js'></script>
+<script type='text/javascript' src='static/js/dataTables.fixedColumns.js'></script>
+<script type="text/javascript" src="static/js/dataTables.fnGetFilteredNodes.js"></script>
+<script type="text/javascript" src="static/js/dataTables.fnGetHiddenNodes.js"></script>
+
+<script>
+var fnBuild = function(){
+      var oTable = $('#sprint_table').DataTable({
+          paging:         true, 
+          "lengthMenu": [ [-1, 5, 10, 25, 50], ["All", 5, 10, 25, 50] ],
+          dom: 'C<"clear">lfrtip',
+          //scrollY:        "600px",
+      });
+}
+$(document).ready(function(){
+    fnBuild();
+})
+function update_table() {
+  var elem = document.getElementById("p_id");
+  p_id = elem.options[elem.selectedIndex].value;
+  /*
+  if(p_id==''){
+    return;
+  }
+  */
+  document.getElementById("main_table").innerHTML = "Loading...";
+  //alert(p_id);
+  $.ajax({
+      type:"GET",
+      url:"/Sprint_Schedule_Table",
+      data:"name="+p_id,
+      cache:false, //......
+      success:function(res){
+          if(res.res=="success"){
+              //originalHTML = document.getElementById("tool_info").innerHTML;
+              document.getElementById("main_table").innerHTML = res.data;
+              fnBuild();
+          }
+          else{
+              alert(res.res);
+          }
+      }
+  });
+
+}
+</script>
+
+
+<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+
+<table>
+     <tbody><tr>
+        <td><label class="col-md-2 control-label">Product:</label></td>
+        <td><select size="1" name="p_id" id="p_id" class="form-control" onchange="update_table();">
+            <option value=""></option>
+            <option value="ESX">ESX</option>
+            <option value="None">Others Coming Soon</option>
+            </select>
+        </td>
+      </tr>
+    </tbody>
+</table>
+
+<h1 class="page-header"></h1>
+<div id='main_table'>
+<table id="sprint_table" class="display" cellspacing="0" width="100%">
+        <thead>
+            <tr>
+                <th>Sprint #</th>
+                <th>Start</th>
+                <th>End</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entry in sprint_list %}
+            <tr>
+                <td>{{entry[0]}}</td>
+                <td>{{entry[1]}}</td>
+                <td>{{entry[2]}}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+</table>
+
+</div>
+
+</div> <!--main-->
+{% endblock %}
+{% endif %}
