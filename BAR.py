@@ -1028,8 +1028,12 @@ def Connect_With_OurDB(Total_Result, Rules=[], Update=False, Update_end=None):
                 else:
                     temp_sql[dkey] = str(sdata[dkey][ikey])
             temp_sql["bug_id"] = str(sdata["bug_id"])
+            sql = """DELETE FROM bug_fix_by_map where bug_id = {}
+                  """.format(sdata["bug_id"])
+            cursor.execute(sql)
             if sdata["bug_status"] not in ["resolved", "closed"]:
-                sql = """INSERT INTO bug_fix_by_map 
+                sql = """
+                        INSERT INTO bug_fix_by_map 
                         ({})
                         VALUES 
                         ({})
@@ -1466,7 +1470,7 @@ if __name__ == "__main__":
     if args.update == True:
         Periodically_Update_Data = Periodically_Update()
         if args.full == True:
-            Update_begin = "2014-01-1"
+            Update_begin = "2012-01-1"
         else:
             Update_begin = Periodically_Update_Data[0]
         Update_end = datetime.now().strftime(FMT_YMDHMS)
