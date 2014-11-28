@@ -24,7 +24,22 @@ var fnBuild = function(){
       });
 }
 $(document).ready(function(){
-    fnBuild();
+    $.ajax({
+        type:"GET",
+        url:"/Sprint_Schedule_Table",
+        data:"name=ESX",
+        cache:false, //......
+        success:function(res){
+            if(res.res=="success"){
+                //originalHTML = document.getElementById("tool_info").innerHTML;
+                document.getElementById("main_table").innerHTML = res.data;
+                fnBuild();
+            }
+            else{
+                alert(res.res);
+            }
+        }
+    });
 })
 function update_table() {
   var elem = document.getElementById("p_id");
@@ -63,7 +78,6 @@ function update_table() {
      <tbody><tr>
         <td><label class="col-md-2 control-label">Product:</label></td>
         <td><select size="1" name="p_id" id="p_id" class="form-control" onchange="update_table();">
-            <option value=""></option>
             <option value="ESX">ESX</option>
             <option value="None">Others Coming Soon</option>
             </select>
@@ -74,6 +88,8 @@ function update_table() {
 
 <h1 class="page-header"></h1>
 <div id='main_table'>
+Loading...
+<!--
 <table id="sprint_table" class="display" cellspacing="0" width="100%">
         <thead>
             <tr>
@@ -92,7 +108,7 @@ function update_table() {
         {% endfor %}
         </tbody>
 </table>
-
+-->
 </div>
 
 </div> <!--main-->
