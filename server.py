@@ -133,6 +133,8 @@ def Login():
     
     
     session['username'] = request.form['BG_account']
+    if session['username']:
+        session['username'] = session['username'].split('@')[0]
     session['password'] = request.form['BG_password']
     session['cookie_file'] = cookie_file
     
