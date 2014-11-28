@@ -1796,29 +1796,30 @@ def Admin_Custom_Triage_Chart():
 
 @app.route('/Triage_Report', methods=['GET', 'POST'])
 def Triage_Report():
+    
+    date = dict()
+    date['date_end_cal'] = datetime.now().strftime('%Y/%m/%d')
+    date['date_end'] = datetime.now().strftime('%Y:%m:%d')
+    date['date_begin_cal'] = (datetime.now() - relativedelta(days = 7)).strftime('%Y/%m/%d')
+    date['date_begin'] = (datetime.now() - relativedelta(days = 7)).strftime('%Y:%m:%d')
     if request.method == 'GET':
         if 'default_query_result' not in session.keys() or not session['default_query_result']:
            session['default_query_result'] = common_get_user_default_query()
-        date = dict()
-        date['date_end_cal'] = datetime.now().strftime('%Y/%m/%d')
-        date['date_end'] = datetime.now().strftime('%Y:%m:%d')
-        date['date_begin_cal'] = (datetime.now() - relativedelta(days = 7)).strftime('%Y/%m/%d')
-        date['date_begin'] = (datetime.now() - relativedelta(days = 7)).strftime('%Y:%m:%d')
         return render_template('triage_chart_query.html', date=date)
 
     #Start generating triage report
     assigned_to = common_get_assigned_to_list(request.form["assigned_to"]) 
     if not assigned_to:
-        return render_template('triage_chart_query.html', error="Fail to Connect MySQL, Please try again later")
+        return render_template('triage_chart_query.html', error="Error while processing assignee names, please check again", date=date)
 
     res = common_assigned_to_verify_update(assigned_to)
     if res['result'] == 'error':
-        return render_template('triage_chart_query.html', error=res['message'])
+        return render_template('triage_chart_query.html', error=res['message'], date=date)
     rn_to_number = res['data']
 
     res = common_get_fix_bys(request)
     if res['result'] == 'error':
-        return render_template('triage_chart_query.html', error=res['message'])
+        return render_template('triage_chart_query.html', error=res['message'], date=date)
     fix_by_tuple = res['data']
 
     fix_by_product_name = list()
