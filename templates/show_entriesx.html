@@ -167,7 +167,8 @@ $(document).ready(function() {
     {% endif %}
 {% endfor %}
 
-{% set piechart = 1 %}
+{% set piechart = 0 %}
+{% set barchart = 1 %}
 {% if piechart == 1 %}
     <script type="text/javascript" src="https://www.google.com/jsapi"></script>
     <script type="text/javascript">
@@ -228,7 +229,67 @@ $(document).ready(function() {
       }
     </script>
     <div id="piechart_3d" style="width: 100%; height: 400px;"></div>
+{% elif barchart == 1 %}
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+      google.load("visualization", "1", {packages:["corechart"]});
+      google.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var column_chart = 1;
+        var data = new google.visualization.arrayToDataTable([
+          ['State', 'Count', { role: 'style' }, { role: 'annotation' } ],
+          ['Pending', {{pending_cnt|length}}, 'color: #444444', '{{pending_cnt|length}}'],
+          ['Debuggin', {{debugging_cnt|length}}, 'color: #aaffaa', '{{debugging_cnt|length}}'],
+          ['sprint-ready', {{ready_cnt|length}}, 'color: #ffffaa', '{{ready_cnt|length}}'],
+          ['Sprint-Accepted', {{accepted_cnt|length}}, 'color: ffaaaa', '{{accepted_cnt|length}}'],
+          //['Total', {{total_cnt|length}}, 'color: #cccccc', '{{total_cnt|length}}'],
+        ]);
+
+        var options = {
+          title: "Total number of PR: {{total_cnt|length}}",
+          backgroundColor: '#eeeeff',
+          legend: { position: "none" },
+          chartArea: {width: '30%', height: '70%'},
+        };
+
+        var chart;
+        if (column_chart == 1)
+            chart  = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+        else
+            chart  = new google.visualization.BarChart(document.getElementById('chart_div'));
+        chart.draw(data, options);
+        google.visualization.events.addListener(chart, 'click', function(targetID) {
+          var selections = [
+              ["hAxis#0#label#0", "vAxis#0#label#0", "bar#0#0", "annotationtext#0#0#0", "Pending"],
+              ["hAxis#0#label#1", "vAxis#0#label#1", "bar#0#1", "annotationtext#0#1#0", "Debugging"],
+              ["hAxis#0#label#2", "vAxis#0#label#2", "bar#0#2", "annotationtext#0#2#0", "sprint-ready"],
+              ["hAxis#0#label#3", "vAxis#0#label#3", "bar#0#3", "annotationtext#0#3#0", "Sprint-Accepted"],
+              //["hAxis#0#label#4", "vAxis#0#label#4", "bar#0#4", "annotationtext#0#4#0", ""]
+          ];
+          var tid = targetID.targetID;
+          var txtvalue = '';
+          var i, j;
+          for (i=0; i<selections.length; i++) {
+              for (j=0; j<4; j++) {
+                  if (tid == selections[i][j]) {
+                     txtvalue = selections[i][4];
+                     break;
+                  }
+              }
+              if (j < 4)
+                  break;
+          }
+          var txt = document.getElementById('bugs_table_filter');
+          txt = txt.children[0].children[0];
+          txt.value = txtvalue;
+          var table = $('#bugs_table').DataTable();
+          table.search(txt.value).draw();
+        });
+      }
+    </script>
+    <div id="chart_div" style="width: 100%; height: 300px;"></div>
 {% else %}
+
 <script>
 function filter_my_table(id) {
     var txt = document.getElementById('bugs_table_filter');
