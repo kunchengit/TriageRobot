@@ -64,7 +64,6 @@ value0-0-0=
 cmdtype=doit
 columnlist=bug_severity,priority,bug_status,resolution,assigned_to,fix_by,short_desc
 backButton=true
-keywords=CheckinApproved
 
 
 #fix_by_product_name=ESX
