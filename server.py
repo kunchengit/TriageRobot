@@ -99,6 +99,11 @@ with app.test_request_context('/hello', method='POST'):
 @app.route('/')
 def index():
     try:
+        logging.warning("%s login to triagerobot"%session['username'])
+    except:
+        pass
+
+    try:
         return Query()
     except:
         return render_template('query.html')
@@ -2909,6 +2914,10 @@ def Start_download_chrome_plugin():
 
 @app.route('/Sprint_Schedule')
 def Sprint_Schedule():
+    try:
+        logging.warning("%s looking for sprint"%session['username'])
+    except:
+        pass
     return render_template('sprint_schedule.html', sprint_list = get_sprint_date())
 
 @app.route('/Sprint_Schedule_Table')
