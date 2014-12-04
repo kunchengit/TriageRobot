@@ -790,7 +790,7 @@ def Show_EntriesX():
     Input_Rule = assigned_to
     Need_Query_List=[]  #Need_Query_List is a list of new names
     
-    logging.warning("{} queries for assigned_to:{}\t fix_by_product:{}\t fix_by_version:{}\t product:{}.".format(session['username'], assigned_to, request.form['fix_by_product'], request.form['fix_by_version'], request.form['product']))
+    logging.warning("kanban: {} queries for assigned_to:{}\t fix_by_product:{}\t fix_by_version:{}\t product:{}.".format(session['username'], assigned_to, request.form['fix_by_product'], request.form['fix_by_version'], request.form['product']))
     
     
     """
