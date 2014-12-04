@@ -99,6 +99,11 @@ with app.test_request_context('/hello', method='POST'):
 @app.route('/')
 def index():
     try:
+        logging.warning("%s login to triagerobot"%session['username'])
+    except:
+        pass
+
+    try:
         return Query()
     except:
         return render_template('query.html')
@@ -600,10 +605,11 @@ def Query():
             query_assignee = results[0]["query_assignee"],
             query_product = results[0]["query_product"],
             query_version = results[0]["query_version"],
-            query_phase = results[0]["query_phase"]
+            query_phase = results[0]["query_phase"],
+            func = "query"
             )
     else:
-        return render_template('query.html')
+        return render_template('query.html', func="query")
 
 def common_get_user_default_query():
     default_query_result = {}
@@ -784,7 +790,7 @@ def Show_EntriesX():
     Input_Rule = assigned_to
     Need_Query_List=[]  #Need_Query_List is a list of new names
     
-    logging.warning("{} queries for assigned_to:{}\t fix_by_product:{}\t fix_by_version:{}\t product:{}.".format(session['username'], assigned_to, request.form['fix_by_product'], request.form['fix_by_version'], request.form['product']))
+    logging.warning("kanban: {} queries for assigned_to:{}\t fix_by_product:{}\t fix_by_version:{}\t product:{}.".format(session['username'], assigned_to, request.form['fix_by_product'], request.form['fix_by_version'], request.form['product']))
     
     
     """
@@ -2615,9 +2621,9 @@ def autocomplete_profile():
         record = cursor.fetchone()
         if not record:
             break
-        results.append(record[0])
+        results.append({"label":record[0], "value":record[0]})
     
-    sql = """SELECT login_name from profiles 
+    sql = """SELECT login_name, realname from profiles 
         where login_name like "%{}%" or
         realname like "%{}%"
         LIMIT 10""".format(term,term)
@@ -2627,7 +2633,7 @@ def autocomplete_profile():
         record = cursor.fetchone()
         if not record:
             break
-        results.append(record[0])
+        results.append({"label":"%s (%s)"%(record[1], record[0]), "value":record[0]})
     
     """
     Use to process cite-in
@@ -2635,7 +2641,7 @@ def autocomplete_profile():
     if "@:" in request.args.get('term'):
         temp=[]
         for key in results:
-            temp.append("@:"+key)
+            temp.append({"lable":"@:"+key['value'], "value":"@:"+key['value']})
         results=temp
     return json.dumps(results)
 
@@ -2908,6 +2914,10 @@ def Start_download_chrome_plugin():
 
 @app.route('/Sprint_Schedule')
 def Sprint_Schedule():
+    try:
+        logging.warning("%s looking for sprint"%session['username'])
+    except:
+        pass
     return render_template('sprint_schedule.html', sprint_list = get_sprint_date())
 
 @app.route('/Sprint_Schedule_Table')

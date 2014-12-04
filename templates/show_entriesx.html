@@ -290,6 +290,7 @@ $(document).ready(function() {
     <div id="chart_div" style="width: 100%; height: 300px;"></div>
 {% else %}
 
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 <script>
 function filter_my_table(id) {
     var txt = document.getElementById('bugs_table_filter');
@@ -326,6 +327,24 @@ function imgError(image) {
 </script>
 
 <table id="bugs_table" class="display" cellspacing="5px" width="100%">
+<thead>
+                <tr width="100%" hidden="true">
+                  <td>#</td>
+                  <td>Bug ID</td>
+                  <td>Summary</td>
+                  <td>Kanban State</td>
+                  <td>Weight</td>
+                  <td>Priority</td>
+                  <td>Severity</td>
+                  <td>Case Count</td>
+                  <td>Fix By</td>
+                  <td>Assigned_to</td>
+                  <td>ETA</td>
+                  <td>Last Modified</td>
+                  <td>Highlighted<br>Reasons</td>
+                </tr>
+</thead>
+
         <tbody width="100%">
         {% set prev_name = "" %}
         {% set cnt = 1 %}
@@ -377,17 +396,32 @@ function imgError(image) {
             {% else %}
             <tr>
             {% endif %}
-                <td style="font-weight:bold;"> {{ cnt }} </td>
+                <td style="font-weight:bold;" nowrap="nowrap"> {{ cnt }} </td>
                 <td><a href=https://bugzilla.eng.vmware.com/show_bug.cgi?id={{ entry["bug_id"] }} target="_blank">{{ entry["bug_id"] }}</a></td>
                 <td>{{ entry["short_desc"] }}</td>
-                <td style="font-weight:bold;" nowrap="nowrap">{{ kanban_state }}</td>
+                <td style="font-weight:bold;" nowrap="nowrap">{{ kanban_state }}
+                   {% if kanban_state == "Debugging" %}
+                   <script>
+                      var days = new Date() - new Date('{{entry["delta_ts"]}}');
+                      days = days / (1000 * 60 * 60);
+                      days = days - 15;
+                      days = days / 24;
+                      if (days > 14) {
+                          document.write("<img src='static/images/red.png' width='24' height='24' title='No update in the past 2 weeks' />");
+                      } else if (days > 7) {
+                           document.write("<img src='static/images/yell.png' width='24' height='24' title='No update in the past 1 week' />");
+                      }
+                   </script>
+                   {% endif %}
+
+                </td>
                 <td style="color:red;font-weight:bold;">{{ entry["weight"] }}</td>
                 <td>{{ entry["priority"] }}</td>
                 <td>{{ entry["bug_severity"] }}</td>
                 <td>{{ entry["case_count"] }}</td>
                 
                 <!--The following two scripts are implemented for auto-completion-->
-                <td>
+                <td nowrap="nowrap">
                     {% for fix_entry in fix_by[entry["bug_id"]] %}
                         <p> {{ fix_entry['product'] }} - {{ fix_entry['version'] }} - {{ fix_entry['phase'] }}
                     {% endfor %}

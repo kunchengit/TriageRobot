@@ -11,11 +11,73 @@
     <link rel='stylesheet' type='text/css' href='static/css/bootstrap-3.1.1.css'>
     <!-- <link rel="stylesheet" type='text/css' href="static/css/bootstrap.css" >-->
     <link href="static/css/dashboard.css" rel="stylesheet">
+    <link rel='stylesheet' type='text/css' href='static/css/jquery-ui.css'>
+    <script src="static/js/jquery-1.11.1.js"></script>
+    <script src="static/js/jquery-ui.js"></script>
     {%block head%}
     {%endblock%}
 </head>
 
 <body>
+                {% if not session.logged_in %}
+                <div class="mask"></div>
+
+                <style>
+                .mask{height:100%; width:100%; top:0; z-index:1050; 
+                    position:fixed;
+                    opacity:0.7; 
+                    filter: alpha(opacity=70); 
+                    background-color:#000;
+                }
+
+
+
+                .opacity{ 
+                    opacity:1; 
+                    filter: alpha(opacity=100); 
+                    background-color:#FFFFFF;
+                }
+
+                .login_form {
+                    position:absolute;
+                    float: right !important;
+                    margin-left: 70%;
+                    top: 0px;
+                }
+
+                .cover{
+                    position: fixed;
+                    left: 60%;
+                    top: 20%;
+                    z-index: 1051;
+                }
+
+                .input_bg{
+                    background-color: rgb(250, 255, 189);
+                }
+                </style>
+
+                <div class="cover">
+                <!--<img src="static/images/login_prompt.png"/>-->
+                </div>
+
+                   <form class="login_form navbar-form navbar-right" role="form" action = "{{url_for('Login')}}" method = post style="z-index:1051;">
+                        <div class="form-group">
+                            <input type="text" placeholder="Account" class="form-control input_bg" name=BG_account>
+                        </div>
+                        <div class="form-group">
+                            <input type="password" placeholder="Password" class="form-control input_bg" name=BG_password>
+                        </div>
+                        <button type="submit" class="btn btn-success">Sign in</button>
+                    </form>
+                <script>
+                $(document).ready(function() {
+                    alert("Please Login");
+                });
+                </script>
+                {%endif%}
+
+
     <div class="navbar navbar-default navbar-fixed-top" role="navigation">
         <div class="container-fluid">
             <div class="navbar-header">
@@ -29,7 +91,7 @@
             </div>
             <div class="navbar-collapse collapse">
                 {% if not session.logged_in %}
-                    <form class="navbar-form navbar-right" role="form" action = "{{url_for('Login')}}" method = post>
+                   <form class="navbar-form navbar-right" role="form" action = "{{url_for('Login')}}" method = post style="visibility:hidden">
                         <div class="form-group">
                             <input type="text" placeholder="Account" class="form-control" name=BG_account>
                         </div>
@@ -38,7 +100,7 @@
                         </div>
                         <button type="submit" class="btn btn-success">Sign in</button>
                     </form>
-                {% else %}
+                 {% else %}
                     <form class="navbar-form navbar-right" role="form">
                         <a href="https://vmwaresearch.vmware.com/search?proxystylesheet=vmlinksearch_frontend&getfields=*&site=People&q={{session.username}}@vmware.com" class="btn btn-info">Profile</a>
                         <a href={{url_for('Logout')}} class="btn btn-success">Logout</a>
@@ -54,7 +116,6 @@
             
         </div>
     </div>
-
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-3 col-md-2 sidebar" id="div_sidebar">
@@ -70,7 +131,7 @@
                             </li>
                         {% endif %}
                         <li {% if request.path in [url_for('Sprint_Schedule')] %} class="active" {% endif %}><a href={{url_for('Sprint_Schedule')}}>Sprint Schedule</a></li>
-                        <li {% if request.path in [url_for('Query'), '/', url_for('Show_Entries'), url_for('Entries_Processing')]%} class="active" {% endif %}><a href={{url_for('Query')}}>Triage Decision</a></li>
+                        <li {% if request.path in [url_for('Query'), '/', url_for('Show_Entries'), url_for('Entries_Processing')] or func=="query"%} class="active" {% endif %}><a href={{url_for('Query')}}>Triage Decision</a></li>
                         <li {% if request.path in [url_for('QueryX'), url_for('Show_EntriesX')]%} class="active" {% endif %}><a href={{url_for('QueryX')}}>Kanban (BETA)</a></li>
                         <li {% if request.path == url_for('Admin_Custom_Email') or request.path == url_for('Admin_Email_Processing') %} class="active" {% endif %}><a href={{url_for('Admin_Custom_Email')}}>Email Notification</a></li>
                         <li {% if request.path == url_for('Triage_Report') %} class="active" {% endif %}><a href={{url_for('Triage_Report')}}>Triage Report</a></li>
