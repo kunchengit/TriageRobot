@@ -1,5 +1,5 @@
 import os
-
+import MySQLdb
 from BID_Record import *
 from collections import namedtuple, defaultdict, OrderedDict # Python 2.7
 
@@ -7,6 +7,13 @@ SCRIPTS_DIR = os.path.abspath(os.path.dirname(__file__))
 BAR_OPTION_DIRECTORY = os.path.join(SCRIPTS_DIR, "BAR_option/")
 #RULE_PATH = "BAR_option/rule.p"
 RULE_PATH = os.path.join(BAR_OPTION_DIRECTORY, "rule.p")
+
+BUGZILLA_LINK="https://bugzilla.eng.vmware.com"
+BUGZILLA_DATABASE_HOST = "bz3-db3.eng.vmware.com"
+BUGZILLA_DATABASE_PORT = 3306
+BUGZILLA_DATABASE_USER ="mts"
+BUGZILLA_DATABASE_PW="mts"
+BUGZILLA_DATABASE_DATABASE="bugzilla"
 
 #The conn should be the connection between local computer and bugzilla database
 def Urgent_Test(subject, rule, conn, from_web_ui = False):
@@ -84,7 +91,12 @@ class Rule_Match:
                         sdata["bug_id"])
                         
         cursor = self.conn.cursor()
-        cursor.execute(sql)
+        try:
+            cursor.execute(sql)
+        except:
+            self.conn = MySQLdb.connect(host=BUGZILLA_DATABASE_HOST, port=BUGZILLA_DATABASE_PORT, user=BUGZILLA_DATABASE_USER, passwd=BUGZILLA_DATABASE_PW, db=BUGZILLA_DATABASE_DATABASE)
+            cursor = self.conn.cursor()
+            cursor.execute(sql)
         result = cursor.fetchall()
         Case_Count = len(result)
         
@@ -311,7 +323,13 @@ class Rule_Match:
                         ",".join(schema),
                         sdata["bug_id"],
                         sdata["bug_id"])
-        cursor.execute(sql)
+        try:
+            cursor.execute(sql)
+        except:
+            self.conn = MySQLdb.connect(host=BUGZILLA_DATABASE_HOST, port=BUGZILLA_DATABASE_PORT, user=BUGZILLA_DATABASE_USER, passwd=BUGZILLA_DATABASE_PW, db=BUGZILLA_DATABASE_DATABASE)
+            cursor = self.conn.cursor()
+            cursor.execute(sql)
+
         while True:
             record = cursor.fetchone()
             if not record:
@@ -358,8 +376,13 @@ class Rule_Match:
             where bug_id = result.dupe_of or bug_id = result.dupe""".format(",".join(schema),
                         sdata["bug_id"],
                         sdata["bug_id"])
-        cursor.execute(sql)
-        
+        try:
+            cursor.execute(sql)
+        except:
+            self.conn = MySQLdb.connect(host=BUGZILLA_DATABASE_HOST, port=BUGZILLA_DATABASE_PORT, user=BUGZILLA_DATABASE_USER, passwd=BUGZILLA_DATABASE_PW, db=BUGZILLA_DATABASE_DATABASE)
+            cursor = self.conn.cursor()
+            cursor.execute(sql)
+
         while True:
             record = cursor.fetchone()
             if not record:

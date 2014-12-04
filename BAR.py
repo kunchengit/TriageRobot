@@ -227,7 +227,12 @@ class BugzillaDB(object):
         cursor = self.conn.cursor()
         # bugs table
         gLogger.debug(sql)
-        cursor.execute(sql)
+        try:
+            cursor.execute(sql)
+        except:
+            self.conn = MySQLdb.connect(host=self.host, port=self.port, user=self.user, passwd=self.passwd, db=self.db)
+            cursor = self.conn.cursor()
+            cursor.execute(sql)
         bugs = r["bugs"]
         while True:
             record = cursor.fetchone()
@@ -440,7 +445,8 @@ class BugzillaDB(object):
         try:#to match all the possible name
             assigned_to_name = ",".join(map(str, [self.db_index["profiles_login_name"][p].userid for p in self.people]))
         except:
-            assigned_to_name = 'bugs.assigned_to'
+            #just input a number here, otherwise it will get all the bugs..
+            assigned_to_name = '19367'
         sql = """SELECT {} FROM bugs
                  WHERE bugs.assigned_to IN ({}) AND bugs.bug_status IN ({})
                  AND bugs.delta_ts BETWEEN '{}' AND '{}'
@@ -451,6 +457,7 @@ class BugzillaDB(object):
                 self.date_begin,
                 self.date_end,
                 ",".join(["{}".format(p) for p in self.product_id]))
+        #print sql
         return self._fetch_bugs(sql)
 
     def run_report_guru_duty(self):
@@ -482,7 +489,8 @@ class BugzillaDB(object):
         return self._fetch_bugs(sql)
 
 
-REPORTS = [ "incoming", "outgoing", "commented", "backlog", "guru" ]
+#REPORTS = [ "incoming", "outgoing", "commented", "backlog", "guru" ]
+REPORTS = [ "backlog" ]
 
 def run_report_for(*argv):
     people, date_begin, date_end , product_rn= argv
@@ -518,9 +526,9 @@ def run_report_for(*argv):
             ])
             """
             reports = OrderedDict([#report_index -> report_func
-                ("incoming" , bzdb.run_report_incoming),
+                #("incoming" , bzdb.run_report_incoming),
                 #("outgoing" , bzdb.run_report_outgoing), 
-                ("commented", bzdb.run_report_commented),
+                #("commented", bzdb.run_report_commented),
                 ("backlog"  , bzdb.run_report_assigned_to),
                 #("guru"     , bzdb.run_report_guru_duty),
             ])
@@ -576,6 +584,7 @@ def Match_and_Output(Rules, Query_result, check_resolved):
         CHECK_REPORTS = [ "incoming",  "outgoing", "commented", "backlog", "guru"]
     #REPORTS = [ "incoming", "outgoing", "commented", "backlog", "guru" ]
     CHECK_REPORTS = [ "incoming",  "commented", "backlog"]
+    CHECK_REPORTS = ["backlog"]
     Total_Result={}
     Match_Map=[]
     for okey in Rules:
@@ -1477,7 +1486,6 @@ if __name__ == "__main__":
         Update_bug_id = Periodically_Update_Data[1]
         
         
-        
     
     for okey in Raw_OP:
         """
@@ -1542,6 +1550,8 @@ if __name__ == "__main__":
         gOption.update(option)
         gOption["reports"] = REPORTS
         gOption["verbose"] = 3
+        print "run_report_for"
+        print key.data["assigned_rn"]
         Query_result[str(key)] = run_report_for(key.data["assigned_rn"], key.data["D_begin"], key.data["D_end"], key.data["product"])
     
     

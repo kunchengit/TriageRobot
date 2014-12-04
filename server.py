@@ -1110,6 +1110,7 @@ def Show_EntriesX():
        and added='Debugging'
        and bug_id in ({})
     """.format(','.join(map(str,allbugids)))
+    print actsql
     try:
         #global bzdb_conn
         cursor = bzdb_conn.cursor()
@@ -2614,9 +2615,9 @@ def autocomplete_profile():
         record = cursor.fetchone()
         if not record:
             break
-        results.append(record[0])
+        results.append({"label":record[0], "value":record[0]})
     
-    sql = """SELECT login_name from profiles 
+    sql = """SELECT login_name, realname from profiles 
         where login_name like "%{}%" or
         realname like "%{}%"
         LIMIT 10""".format(term,term)
@@ -2626,7 +2627,7 @@ def autocomplete_profile():
         record = cursor.fetchone()
         if not record:
             break
-        results.append(record[0])
+        results.append({"label":"%s (%s)"%(record[1], record[0]), "value":record[0]})
     
     """
     Use to process cite-in
@@ -2634,7 +2635,7 @@ def autocomplete_profile():
     if "@:" in request.args.get('term'):
         temp=[]
         for key in results:
-            temp.append("@:"+key)
+            temp.append({"lable":"@:"+key['value'], "value":"@:"+key['value']})
         results=temp
     return json.dumps(results)
 
