@@ -1104,26 +1104,27 @@ def Show_EntriesX():
     session['last_query_info'] = request.form
 
     #xhs2
-    actsql="""
-       SELECT DISTINCT bug_id FROM bugs_activity
-       where fieldid=12
-       and added='Debugging'
-       and bug_id in ({})
-    """.format(','.join(map(str,allbugids)))
-    try:
-        #global bzdb_conn
-        cursor = bzdb_conn.cursor()
-        cursor.execute(actsql)
-    except (AttributeError, MySQLdb.OperationalError):
-        logging.warning("Bugzilla Database Reconnect")
-        bzdb_conn = MySQLdb.connect(host=BUGZILLA_DATABASE_HOST, port=BUGZILLA_DATABASE_PORT, user=BUGZILLA_DATABASE_USER, passwd=BUGZILLA_DATABASE_PW, db=BUGZILLA_DATABASE_DATABASE)
-        cursor = bzdb_conn.cursor()
-        cursor.execute(actsql)
     allbugids2 = ''
-    for row in cursor.fetchall():
-       allbugids2 = allbugids2 + ('%d' % row[0])
-       allbugids2 = allbugids2 + ','
-    
+    if (len(allbugids) > 0):
+        actsql="""
+           SELECT DISTINCT bug_id FROM bugs_activity
+           where fieldid=12
+           and added='Debugging'
+           and bug_id in ({})
+        """.format(','.join(map(str,allbugids)))
+        try:
+            #global bzdb_conn
+            cursor = bzdb_conn.cursor()
+            cursor.execute(actsql)
+        except (AttributeError, MySQLdb.OperationalError):
+            logging.warning("Bugzilla Database Reconnect")
+            bzdb_conn = MySQLdb.connect(host=BUGZILLA_DATABASE_HOST, port=BUGZILLA_DATABASE_PORT, user=BUGZILLA_DATABASE_USER, passwd=BUGZILLA_DATABASE_PW, db=BUGZILLA_DATABASE_DATABASE)
+            cursor = bzdb_conn.cursor()
+            cursor.execute(actsql)
+        for row in cursor.fetchall():
+           allbugids2 = allbugids2 + ('%d' % row[0])
+           allbugids2 = allbugids2 + ','
+
     return render_template('show_entriesx.html', 
     bugs = Pure_results,
     fix_by=bug_fix_by_results, 
