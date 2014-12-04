@@ -600,10 +600,11 @@ def Query():
             query_assignee = results[0]["query_assignee"],
             query_product = results[0]["query_product"],
             query_version = results[0]["query_version"],
-            query_phase = results[0]["query_phase"]
+            query_phase = results[0]["query_phase"],
+            func = "query"
             )
     else:
-        return render_template('query.html')
+        return render_template('query.html', func="query")
 
 def common_get_user_default_query():
     default_query_result = {}
