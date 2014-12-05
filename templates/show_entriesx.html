@@ -72,6 +72,7 @@ $(document).ready(function() {
         //scrollX: true,
         "bSort":false,
         "aoColumns": [ 
+            {"bVisible":true},
             {"bVisible":true},  //Number
             {"bVisible":true},  //BugID
             {"bVisible":true,"bSearchable":false},  //Summary-short_desc
@@ -85,6 +86,7 @@ $(document).ready(function() {
             {"bVisible":true},  //ETA
             {"bVisible":false},  //Last Modified
             {"bVisible":true, "bSearchable":false},  //Highlighted Reasons
+            {"bVisible":true, "bSearchable":false},
         ],
     } );
 
@@ -290,7 +292,6 @@ $(document).ready(function() {
     <div id="chart_div" style="width: 100%; height: 300px;"></div>
 {% else %}
 
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 <script>
 function filter_my_table(id) {
     var txt = document.getElementById('bugs_table_filter');
@@ -315,9 +316,97 @@ function filter_my_table(id) {
 <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main" id='div_main'>
 <form name="bugs_table_form" action="" id="bugs_table_form" method="post">
     <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-        <h1 class="page-header">
-            <h2 class="sub-header">CPD - Kanban Status</h2>
-        </h1>
+<h1 class="page-header">
+<p class="sub-header">
+<table width="100%" style="white-space:nowrap;font-size:10pt;">
+  <tr>
+    <td style="font-size:22pt" width="100%">CPD - Kanban Status</td>
+    <td style="text-align:right;">
+    <script>
+    $(document).ready(function(){
+      $('#selectall').click(function(){
+        if ($("input[type='checkbox']").prop("checked"))
+        {
+           $(':checkbox').prop('checked', false);
+           $(this).text('Check all');
+        }
+        else{
+          $(':checkbox').prop('checked', true);
+          $(this).text('Uncheck all');
+        }  
+      });
+      $('#selectpending').click(function(){
+        $("input[type='checkbox'][name='checkbox-kanbanstate']").each(function(){
+          if ($(this).val() == "Pending") {
+            $(this).prop('checked', true);
+          } else {
+            $(this).prop('checked', false);
+          }
+        });
+      });
+      $('#selectdebugging').click(function(){
+        $("input[type='checkbox'][name='checkbox-kanbanstate']").each(function(){
+          if ($(this).val() == "Debugging") {
+            $(this).prop('checked', true);
+          } else {
+            $(this).prop('checked', false);
+          }
+        });
+      });
+      $('#selectready').click(function(){
+        $("input[type='checkbox'][name='checkbox-kanbanstate']").each(function(){
+          if ($(this).val() == "sprint-ready") {
+            $(this).prop('checked', true);
+          } else {
+            $(this).prop('checked', false);
+          }
+        });
+      });
+      $('#selectaccepted').click(function(){
+        $("input[type='checkbox'][name='checkbox-kanbanstate']").each(function(){
+          if ($(this).val() == "Sprint-Accepted") {
+            $(this).prop('checked', true);
+          } else {
+            $(this).prop('checked', false);
+          }
+        });
+      });
+      $("#bugzillalist").click(function() {
+        var selected = new Array();
+        var href = '';
+        var chk = $('input[type="checkbox"][name="checkbox-kanbanstate"]:checked');
+        //alert(chk.length);
+        $(chk).each(function(i){
+            selected.push($(this).attr('id'));
+        });
+        //alert(selected);
+        if (chk.length == 0) {
+          alert("Please select at least one Pr");
+          return false;
+        }
+        else {
+          var default_href = "http://bugzilla.eng.vmware.com//buglist.cgi?query_format=advanced&bug_id=";
+          $(this).attr('href',default_href);
+          var href=$(this).attr('href')+ selected.join("%2C");
+          $(this).attr('target','_blank');
+          $(this).attr('href',href);
+        }
+    });
+    });
+    </script> 
+      | <a id="selectall">Check all</a>
+<!--
+      | <a id="selectpending">Check Pending</a>
+      | <a id="selectdebugging">Check Debugging</a>
+      | <a id="selectready">Check sprint-ready</a>
+      | <a id="selectaccepted">Check Sprint-Accepted</a>
+-->
+      | <a id="bugzillalist">View list in Bugzilla</a> |
+    </td>
+  </tr>
+</table>
+</p>
+</h1>
 <script>
 function imgError(image) {
     image.onerror = "";
@@ -329,6 +418,7 @@ function imgError(image) {
 <table id="bugs_table" class="display" cellspacing="5px" width="100%">
 <thead>
                 <tr width="100%" hidden="true">
+                  <td />
                   <td>#</td>
                   <td>Bug ID</td>
                   <td>Summary</td>
@@ -342,6 +432,7 @@ function imgError(image) {
                   <td>ETA</td>
                   <td>Last Modified</td>
                   <td>Highlighted<br>Reasons</td>
+                  <td>Comments</td>
                 </tr>
 </thead>
 
@@ -351,7 +442,7 @@ function imgError(image) {
         {% for entry in bugs %}
             {% if entry["assigned_rn"] != prev_name %}
                 <tr style="background: #aaaaff; font-size: 50px;" width="100%">
-                    <td /><td><img src=https://orgchart.vmware.com/employees/{{ entry["assigned_rn"] }}.jpg height="70" width="70" onerror="imgError(this);"/></td>
+                    <td /><td /><td><img src=https://orgchart.vmware.com/employees/{{ entry["assigned_rn"] }}.jpg height="70" width="70" onerror="imgError(this);"/></td>
                     <td>{{ entry["assigned_rn"] }}</td>
                     {% set people_key = [] %}
                     {% for pk1 in people_list %}
@@ -360,9 +451,10 @@ function imgError(image) {
                         {% endif %}
                     {% endfor %}
                     <td><font color="#aaaaff" size="0px" hidden="true">{{ people_key|join(',') }}</font></td>
-                    <td /><td /><td /><td /><td /><td /><td /><td /><td />
+                    <td /><td /><td /><td /><td /><td /><td /><td /><td /><td />
                 </tr>
                 <tr style="font-weight:bold;background:#aaaaff;" width="100%">
+                  <td />
                   <td>#</td>
                   <td>Bug ID</td>
                   <td>Summary</td>
@@ -376,6 +468,7 @@ function imgError(image) {
                   <td>ETA</td>
                   <td>Last Modified</td>
                   <td>Highlighted<br>Reasons</td>
+                  <td>Comments</td>
                 </tr>
 
             {% set cnt = 1 %}
@@ -396,6 +489,7 @@ function imgError(image) {
             {% else %}
             <tr>
             {% endif %}
+                <td><input type="checkbox" name='checkbox-kanbanstate' value='{{kanban_state}}' id='{{entry["bug_id"]}}'> </td>
                 <td style="font-weight:bold;" nowrap="nowrap"> {{ cnt }} </td>
                 <td><a href=https://bugzilla.eng.vmware.com/show_bug.cgi?id={{ entry["bug_id"] }} target="_blank">{{ entry["bug_id"] }}</a></td>
                 <td>{{ entry["short_desc"] }}</td>
@@ -430,6 +524,7 @@ function imgError(image) {
                 <td nowrap="nowrap">{{ entry["cf_eta"] }}</td>
                 <td>{{ entry["delta_ts"] }}</td>
                 <td>{{ entry["highlighted_by"] }}</td>
+                <td><a href="http://patchtool.eng.vmware.com/dtool/triage/index/scratch?bug_id={{ entry["bug_id"] }}" target="_blank">Discussion Link</a></td>
             </tr>
         {% set prev_name = entry["assigned_rn"] %}
         {% set cnt = cnt + 1 %}
