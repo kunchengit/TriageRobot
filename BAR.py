@@ -258,7 +258,8 @@ class BugzillaDB(object):
                     try:#to match all the possible name
                         assigned_name_to = ",".join([str(self.db_index["profiles_login_name"][guid].userid) for guid in gOption.get("assigned_rn")])
                     except:
-                        assigned_name_to = "longdescs.who"
+                        #just some valid string
+                        assigned_name_to = "19367"
                         
                     sql = """SELECT {} FROM {}
                              WHERE bug_id IN ({})
@@ -273,7 +274,14 @@ class BugzillaDB(object):
                         table_name,
                         bug_ids,)
                 gLogger.debug(sql)
-                cursor.execute(sql)
+                try:
+                    cursor.execute(sql)
+                except:
+                    print "reconnect"
+                    self.conn = MySQLdb.connect(host=self.host, port=self.port, user=self.user, passwd=self.passwd, db=self.db)
+                    cursor = self.conn.cursor()
+                    cursor.execute(sql)
+
                 while True:
                     record = cursor.fetchone()
                     if not record: break
@@ -1026,6 +1034,10 @@ def Connect_With_OurDB(Total_Result, Rules=[], Update=False, Update_end=None):
     """
     for key in Total_Result:
         sdata = Total_Result[key].data
+        if not 'fix_by_product_id' in sdata.keys():
+            print 'continue'
+            print sdata
+            continue
         for ikey in range(0,len(sdata["fix_by_product_id"])):
             temp_sql={}
             for dkey in fix_by_map:
