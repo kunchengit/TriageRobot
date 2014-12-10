@@ -241,7 +241,7 @@ $(document).ready(function() {
         var data = new google.visualization.arrayToDataTable([
           ['State', 'Count', { role: 'style' }, { role: 'annotation' } ],
           ['Pending', {{pending_cnt|length}}, 'color: #444444', '{{pending_cnt|length}}'],
-          ['Debuggin', {{debugging_cnt|length}}, 'color: #aaffaa', '{{debugging_cnt|length}}'],
+          ['Debugging', {{debugging_cnt|length}}, 'color: #aaffaa', '{{debugging_cnt|length}}'],
           ['sprint-ready', {{ready_cnt|length}}, 'color: #ffffaa', '{{ready_cnt|length}}'],
           ['Sprint-Accepted', {{accepted_cnt|length}}, 'color: ffaaaa', '{{accepted_cnt|length}}'],
           //['Total', {{total_cnt|length}}, 'color: #cccccc', '{{total_cnt|length}}'],
