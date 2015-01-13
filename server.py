@@ -1110,7 +1110,13 @@ def Show_EntriesX():
     session['last_query_info'] = request.form
 
     #xhs2
+    date_now = datetime.now()
+    for key in Pure_results:
+        age =  date_now - datetime.strptime(str(key["delta_ts"]), "%Y-%m-%d %H:%M:%S")
+        key["aged"] = age.days
+
     allbugids2 = ''
+    allcases = {}
     if (len(allbugids) > 0):
         actsql="""
            SELECT DISTINCT bug_id FROM bugs_activity
@@ -1131,6 +1137,19 @@ def Show_EntriesX():
            allbugids2 = allbugids2 + ('%d' % row[0])
            allbugids2 = allbugids2 + ','
 
+        actsql="""
+          SELECT bugs.bug_id, count(cases.case_id) as case_cnt
+          FROM bugs, bug_case_map, cases
+           where bugs.bug_id in ({})
+                 and bugs.bug_id=bug_case_map.bug_id
+                 and bug_case_map.case_id=cases.case_id
+                 and cases.status<>'closed'
+           group by bugs.bug_id
+        """.format(','.join(map(str,allbugids)))
+        cursor.execute(actsql)
+        for row in cursor.fetchall():
+            allcases[row[0]] = row[1]
+
     return render_template('show_entriesx.html', 
     bugs = Pure_results,
     fix_by=bug_fix_by_results, 
@@ -1139,7 +1158,8 @@ def Show_EntriesX():
     milestone_flag = milestone_flag, 
     milestone_results = milestone_results, 
     query = request.form,
-    actbugids = allbugids2
+    actbugids = allbugids2,
+    allcases = allcases
     )
 
 @app.route('/Show_Entries', methods=['POST'])

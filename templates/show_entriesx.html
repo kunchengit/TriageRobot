@@ -146,6 +146,8 @@ $(document).ready(function() {
 {% set debugging_cnt = [] %}
 {% set ready_cnt = [] %}
 {% set accepted_cnt = [] %}
+{% set oneweek_cnt = [] %}
+{% set twoweek_cnt = [] %}
 {% set total_cnt = [] %}
 {% set people_list = [] %}
 {% for entry in bugs %}
@@ -159,6 +161,15 @@ $(document).ready(function() {
         {% if people_list.append(entry["assigned_rn"]) %} {% endif %}
         {% if people_list.append("sprint-ready") %} {% endif %}
     {% elif entry["keywords"].find("Debugging") >= 0 %}
+        {% if entry["aged"] >= 14 %}
+            {% if twoweek_cnt.append(1) %} {% endif %}
+            {% if people_list.append(entry["assigned_rn"]) %} {% endif %}
+            {% if people_list.append("No update in 2+ weeks") %} {% endif %}
+        {% elif entry["aged"] >= 7 %}
+            {% if oneweek_cnt.append(1) %} {% endif %}
+            {% if people_list.append(entry["assigned_rn"]) %} {% endif %}
+            {% if people_list.append("No update in 1 week") %} {% endif %}
+        {% endif %}
         {% if debugging_cnt.append(1) %} {% endif %}
         {% if people_list.append(entry["assigned_rn"]) %} {% endif %}
         {% if people_list.append("Debugging") %} {% endif %}
@@ -242,6 +253,8 @@ $(document).ready(function() {
           ['State', 'Count', { role: 'style' }, { role: 'annotation' } ],
           ['Pending', {{pending_cnt|length}}, 'color: #444444', '{{pending_cnt|length}}'],
           ['Debugging', {{debugging_cnt|length}}, 'color: #aaffaa', '{{debugging_cnt|length}}'],
+          ['No update in 1 week', {{oneweek_cnt|length}}, 'color: #aaffaa', '{{oneweek_cnt|length}}'],
+          ['No update in 2+ weeks', {{twoweek_cnt|length}}, 'color: #aaffaa', '{{twoweek_cnt|length}}'],
           ['sprint-ready', {{ready_cnt|length}}, 'color: #ffffaa', '{{ready_cnt|length}}'],
           ['Sprint-Accepted', {{accepted_cnt|length}}, 'color: ffaaaa', '{{accepted_cnt|length}}'],
           //['Total', {{total_cnt|length}}, 'color: #cccccc', '{{total_cnt|length}}'],
@@ -251,7 +264,7 @@ $(document).ready(function() {
           title: "Total number of PR: {{total_cnt|length}}",
           backgroundColor: '#eeeeff',
           legend: { position: "none" },
-          chartArea: {width: '30%', height: '70%'},
+          chartArea: {width: '45%', height: '70%'},
         };
 
         var chart;
@@ -264,8 +277,10 @@ $(document).ready(function() {
           var selections = [
               ["hAxis#0#label#0", "vAxis#0#label#0", "bar#0#0", "annotationtext#0#0#0", "Pending"],
               ["hAxis#0#label#1", "vAxis#0#label#1", "bar#0#1", "annotationtext#0#1#0", "Debugging"],
-              ["hAxis#0#label#2", "vAxis#0#label#2", "bar#0#2", "annotationtext#0#2#0", "sprint-ready"],
-              ["hAxis#0#label#3", "vAxis#0#label#3", "bar#0#3", "annotationtext#0#3#0", "Sprint-Accepted"],
+              ["hAxis#0#label#2", "vAxis#0#label#2", "bar#0#2", "annotationtext#0#2#0", "\"No update in 1 wee\"k"],
+              ["hAxis#0#label#3", "vAxis#0#label#3", "bar#0#3", "annotationtext#0#3#0", "\"No update in 2+ weeks\""],
+              ["hAxis#0#label#4", "vAxis#0#label#4", "bar#0#4", "annotationtext#0#4#0", "sprint-ready"],
+              ["hAxis#0#label#5", "vAxis#0#label#5", "bar#0#5", "annotationtext#0#5#0", "Sprint-Accepted"],
               //["hAxis#0#label#4", "vAxis#0#label#4", "bar#0#4", "annotationtext#0#4#0", ""]
           ];
           var tid = targetID.targetID;
@@ -426,7 +441,7 @@ function imgError(image) {
                   <td>Weight</td>
                   <td>Priority</td>
                   <td>Severity</td>
-                  <td>Case Count</td>
+                  <td>Case Count/Open</td>
                   <td>Fix By</td>
                   <td>Assigned_to</td>
                   <td>ETA</td>
@@ -462,7 +477,7 @@ function imgError(image) {
                   <td>Weight</td>
                   <td>Priority</td>
                   <td>Severity</td>
-                  <td>Case Count</td>
+                  <td>Case Count/Open</td>
                   <td>Fix By</td>
                   <td>Assigned_to</td>
                   <td>ETA</td>
@@ -495,24 +510,19 @@ function imgError(image) {
                 <td>{{ entry["short_desc"] }}</td>
                 <td style="font-weight:bold;" nowrap="nowrap">{{ kanban_state }}
                    {% if kanban_state == "Debugging" %}
-                   <script>
-                      var days = new Date() - new Date('{{entry["delta_ts"]}}');
-                      days = days / (1000 * 60 * 60);
-                      days = days - 15;
-                      days = days / 24;
-                      if (days > 14) {
-                          document.write("<img src='static/images/red.png' width='24' height='24' title='No update in the past 2 weeks' />");
-                      } else if (days > 7) {
-                           document.write("<img src='static/images/yell.png' width='24' height='24' title='No update in the past 1 week' />");
-                      }
-                   </script>
+                       {% if entry["aged"] >= 14 %}
+                          <img src='static/images/red.png' width='24' height='24' title='No update in the past 2 weeks' />
+                          <font size="0px" hidden="true">No update in 2+ weeks</font>
+                       {% elif entry["aged"] >= 7 %}
+                          <img src='static/images/yell.png' width='24' height='24' title='No update in the past 1 week' />
+                          <font size="0px" hidden="true">No update in 1 week</font>
+                       {% endif %}
                    {% endif %}
-
                 </td>
                 <td style="color:red;font-weight:bold;">{{ entry["weight"] }}</td>
                 <td>{{ entry["priority"] }}</td>
                 <td>{{ entry["bug_severity"] }}</td>
-                <td>{{ entry["case_count"] }}</td>
+                <td>{{ entry["case_count"] }}/{{ allcases.get(entry["bug_id"],0) }} </td>
                 
                 <!--The following two scripts are implemented for auto-completion-->
                 <td nowrap="nowrap">
@@ -522,7 +532,7 @@ function imgError(image) {
                 </td>
                 <td style="font-weight:bold;">{{ entry["assigned_rn"] }}</td>
                 <td nowrap="nowrap">{{ entry["cf_eta"] }}</td>
-                <td>{{ entry["delta_ts"] }}</td>
+                <td nowrap="nowrap">{{ entry["delta_ts"] }}</td>
                 <td>{{ entry["highlighted_by"] }}</td>
                 <td><a href="http://patchtool.eng.vmware.com/dtool/triage/index/scratch?bug_id={{ entry["bug_id"] }}" target="_blank">Discussion Link</a></td>
             </tr>
