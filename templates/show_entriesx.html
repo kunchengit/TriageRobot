@@ -250,21 +250,20 @@ $(document).ready(function() {
       function drawChart() {
         var column_chart = 1;
         var data = new google.visualization.arrayToDataTable([
-          ['State', 'Count', { role: 'style' }, { role: 'annotation' } ],
-          ['Pending', {{pending_cnt|length}}, 'color: #444444', '{{pending_cnt|length}}'],
-          ['Debugging', {{debugging_cnt|length}}, 'color: #aaffaa', '{{debugging_cnt|length}}'],
-          ['No update in 1 week', {{oneweek_cnt|length}}, 'color: #aaffaa', '{{oneweek_cnt|length}}'],
-          ['No update in 2+ weeks', {{twoweek_cnt|length}}, 'color: #aaffaa', '{{twoweek_cnt|length}}'],
-          ['sprint-ready', {{ready_cnt|length}}, 'color: #ffffaa', '{{ready_cnt|length}}'],
-          ['Sprint-Accepted', {{accepted_cnt|length}}, 'color: ffaaaa', '{{accepted_cnt|length}}'],
-          //['Total', {{total_cnt|length}}, 'color: #cccccc', '{{total_cnt|length}}'],
+          ['State', 'No update in 2+ weeks', { role: 'style' }, 'No update in 1 week', { role: 'style' }, 'Count', { role: 'style' }, { role: 'annotation' } ],
+          ['Pending', 0, 'color: #444444', 0, 'color: #444444', {{pending_cnt|length}}, 'color: #444444', '{{pending_cnt|length}}'],
+          ['Debugging', {{twoweek_cnt|length}}, 'color: #006600', {{oneweek_cnt|length}}, 'color: #44aa44', {{debugging_cnt|length-oneweek_cnt|length-twoweek_cnt|length}}, 'color: #aaffaa', '{{debugging_cnt|length}}'],
+          ['sprint-ready', 0, 'color: #ffffaa', 0, 'color: #ffffaa', {{ready_cnt|length}}, 'color: #ffffaa', '{{ready_cnt|length}}'],
+          ['Sprint-Accepted', 0, 'color: #ffaaaa', 0, 'color: ffaaaa', {{accepted_cnt|length}}, 'color: #ffaaaa', '{{accepted_cnt|length}}'],
         ]);
 
         var options = {
           title: "Total number of PR: {{total_cnt|length}}",
           backgroundColor: '#eeeeff',
           legend: { position: "none" },
-          chartArea: {width: '45%', height: '70%'},
+          chartArea: {width: '30%', height: '70%'},
+          isStacked: true,
+          annotations: { alwaysOutside:true, highContrast: true }
         };
 
         var chart;
@@ -276,11 +275,11 @@ $(document).ready(function() {
         google.visualization.events.addListener(chart, 'click', function(targetID) {
           var selections = [
               ["hAxis#0#label#0", "vAxis#0#label#0", "bar#0#0", "annotationtext#0#0#0", "Pending"],
-              ["hAxis#0#label#1", "vAxis#0#label#1", "bar#0#1", "annotationtext#0#1#0", "Debugging"],
-              ["hAxis#0#label#2", "vAxis#0#label#2", "bar#0#2", "annotationtext#0#2#0", "\"No update in 1 wee\"k"],
-              ["hAxis#0#label#3", "vAxis#0#label#3", "bar#0#3", "annotationtext#0#3#0", "\"No update in 2+ weeks\""],
-              ["hAxis#0#label#4", "vAxis#0#label#4", "bar#0#4", "annotationtext#0#4#0", "sprint-ready"],
-              ["hAxis#0#label#5", "vAxis#0#label#5", "bar#0#5", "annotationtext#0#5#0", "Sprint-Accepted"],
+              ["hAxis#0#label#1", "vAxis#0#label#1", "bar#2#1", "annotationtext#0#1#0", "Debugging"],
+              ["---------------", "---------------", "bar#1#1", "--------------------", "\"No update in 1 week\""],
+              ["---------------", "---------------", "bar#0#1", "--------------------", "\"No update in 2+ weeks\""],
+              ["hAxis#0#label#2", "vAxis#0#label#2", "bar#0#2", "annotationtext#0#2#0", "sprint-ready"],
+              ["hAxis#0#label#3", "vAxis#0#label#3", "bar#0#3", "annotationtext#0#3#0", "Sprint-Accepted"],
               //["hAxis#0#label#4", "vAxis#0#label#4", "bar#0#4", "annotationtext#0#4#0", ""]
           ];
           var tid = targetID.targetID;
