@@ -3014,8 +3014,9 @@ def get_milestone_from_rn(product):
         and milestone.phase_id = phases.id
         and milestone.name not like "%vum%"
         and milestone.name not like "%p99%"
+        and milestone.name like '{}'
         ORDER by eta
-    """.format(product)
+    """.format(product, product)
     #print sql
     print sql
     cursor.execute(sql)
@@ -3033,7 +3034,7 @@ def get_milestone_from_rn(product):
     """
     for key in results:
         key['matched'] = 0
-        if key["eta"] == "null":
+        if key["eta"] == "null" or not key['eta']:
             continue
         key["eta"] = key["eta"].date()
     
