@@ -297,6 +297,7 @@ $(document).ready(function() {
                 <th>ETA</th>
                 <th>Last Modified</th>
                 <th>Highlighted Reasons</th>
+                <th>Recommended Root Cause</th>
                 <th>Comments</th>
             </tr>
         </thead>
@@ -381,6 +382,7 @@ $(document).ready(function() {
                 <td>{{ entry["cf_eta"] }}</td>
                 <td>{{ entry["delta_ts"] }}</td>
                 <td>{{ entry["highlighted_by"] }}</td>
+                <td style="color:red">Sorry, this bug is not sampled by the Analysis Engine</td>
                 <td><textarea name = comment_id_{{ entry["bug_id"] }} cols="13" rows="3" ></textarea></td>
             </tr>
         {% endfor %}
