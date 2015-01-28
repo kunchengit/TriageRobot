@@ -6,9 +6,9 @@
 <link rel="stylesheet" type="text/css" href="static/css/jquery.dataTables.css">
 <link rel="stylesheet" type="text/css" href="static/css/dataTables.colVis.css">
 <script type='text/javascript' src='static/js/jquery-1.11.1.js'></script>
-<script type='text/javascript' src='static/js/dataTables.bootstrap.js'></script>
 <script type='text/javascript' src='static/js/bootstrap-3.1.1.js'></script>
 <script type='text/javascript' src='static/js/jquery.dataTables.js'></script>
+<script type='text/javascript' src='static/js/dataTables.bootstrap.js'></script>
 <script type='text/javascript' src='static/js/dataTables.colVis.js'></script>
 <script type='text/javascript' src='static/js/dataTables.fixedColumns.js'></script>
 <script type="text/javascript" src="static/js/dataTables.fnGetFilteredNodes.js"></script>
@@ -88,6 +88,7 @@ $(document).ready(function() {
             {"bVisible":true},  //ETA
             {"bVisible":false},  //Last Modified
             {"bVisible":true},  //Highlighted Reasons
+            {"bVisible":true},  //Recommended Root Cause
             {"bVisible":true}   //Comments
         ],
         "order": [[ 4, "desc" ]]
@@ -382,7 +383,7 @@ $(document).ready(function() {
                 <td>{{ entry["cf_eta"] }}</td>
                 <td>{{ entry["delta_ts"] }}</td>
                 <td>{{ entry["highlighted_by"] }}</td>
-                <td style="color:red">Sorry, this bug is not sampled by the Analysis Engine</td>
+                <td style="color:red">Currently not sampled by the Analysis Engine</td>
                 <td><textarea name = comment_id_{{ entry["bug_id"] }} cols="13" rows="3" ></textarea></td>
             </tr>
         {% endfor %}
