@@ -2564,7 +2564,7 @@ def milestone_check(product, version):
     Since the datetime in database is too precise, we have to remove the HMS message
     """
     for key in results:
-        if key["eta"] == "null":
+        if key["eta"] == None or key["eta"] == "null":
             continue
         key["eta"] = key["eta"].date()
     
