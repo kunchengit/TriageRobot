@@ -1338,10 +1338,25 @@ def Update_Milestone():
     #temp_read = urllib2.urlopen(MILESTONE_URL).read() . replace('null', '"null"')
     #milestone_results = ast.literal_eval(temp_read)
     
-    
+    Milestone_Results = []
+
     pttl_conn = MySQLdb.connect(host=PATCHTOOL_DATABASE_HOST, port=PATCHTOOL_DATABASE_PORT, user=PATCHTOOL_DATABASE_USER, passwd=PATCHTOOL_DATABASE_PW, db=PATCHTOOL_DATABASE_DATABASE)
     pttl_cursor=pttl_conn.cursor()
     
+    sql = """SELECT relid, end, phaseid
+             FROM release_sprints"""
+    pttl_cursor.execute(sql)
+    columns = [column[0] for column in pttl_cursor.description]
+    for row in pttl_cursor.fetchall():
+        Milestone_Results.append(dict(zip(columns, row)))
+    """
+    Change dictionary name
+    """
+    for entry in Milestone_Results:
+        entry["eta"] = entry.pop("end")
+        entry["phase_id"] = entry.pop("phaseid")
+        entry["name"] = entry.pop("relid")
+        entry["weight"] = 0
     
     
     sql = """SELECT DATE(dtm_eta) 
@@ -1352,7 +1367,6 @@ def Update_Milestone():
             
     pttl_cursor.execute(sql)
     columns = [column[0] for column in pttl_cursor.description]
-    Milestone_Results = []
     for row in pttl_cursor.fetchall():
         Milestone_Results.append(dict(zip(columns, row)))
     """
@@ -1363,6 +1377,9 @@ def Update_Milestone():
     dtm_min_weight -> weight
     """
     for entry in Milestone_Results:
+        #ommit fisrt set
+        if "eta" in entry.keys():
+            continue
         entry["eta"] = entry.pop("dtm_eta_date")
         entry["phase_id"] = entry.pop("dtm_phase_id")
         entry["name"] = entry.pop("rel_name")
@@ -1377,9 +1394,9 @@ def Update_Milestone():
         for key in entry.keys():
             if entry[key] == None:
                 del entry[key]
-            
     
     for entry in Milestone_Results:
+        #print entry
         sql = """INSERT INTO milestone
         ({})
         VALUES
