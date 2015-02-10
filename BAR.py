@@ -1080,6 +1080,12 @@ def Connect_With_OurDB(Total_Result, Rules=[], Update=False, Update_end=None):
     
     for key in Total_Result:
         sdata = Total_Result[key].data
+        # Sometimes a bug do not have any comments yet
+        if not "ld_id" in sdata.keys():
+            print "continue as not long desc"
+            print key
+            continue
+        print 'start processing ld'
         for ikey in range(0,len(sdata["ld_id"])):
             temp_sql={}
             for dkey in comments:
