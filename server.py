@@ -2972,9 +2972,12 @@ def Sprint_Schedule_Table():
 def check_milestone_within(milestone, sprint):
     if milestone['matched'] == 1:
         return False
-    date = datetime.strptime(str(milestone['eta']),"%Y-%m-%d").date() 
-    begin = datetime.strptime(sprint[1],"%Y-%m-%d").date() 
-    end = datetime.strptime(sprint[2],"%Y-%m-%d").date() 
+    try:
+        date = datetime.strptime(str(milestone['eta']),"%Y-%m-%d").date() 
+        begin = datetime.strptime(sprint[1],"%Y-%m-%d").date() 
+        end = datetime.strptime(sprint[2],"%Y-%m-%d").date() 
+    except:
+        return False
     # matched
     if date <= end and date > begin:
         milestone['matched'] = 1
