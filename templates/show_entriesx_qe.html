@@ -1,0 +1,525 @@
+{% extends "layout.html" %}
+{% if session.logged_in %}
+<head>
+{%block head%}
+<link rel='stylesheet' type='text/css' href='static/css/dataTables.bootstrap.css'>
+<link rel="stylesheet" type="text/css" href="static/css/jquery.dataTables.css">
+<link rel="stylesheet" type="text/css" href="static/css/dataTables.colVis.css">
+<script type='text/javascript' src='static/js/jquery-1.11.1.js'></script>
+<script type='text/javascript' src='static/js/dataTables.bootstrap.js'></script>
+<script type='text/javascript' src='static/js/bootstrap-3.1.1.js'></script>
+<script type='text/javascript' src='static/js/jquery.dataTables.js'></script>
+<script type='text/javascript' src='static/js/dataTables.colVis.js'></script>
+<script type='text/javascript' src='static/js/dataTables.fixedColumns.js'></script>
+<script type="text/javascript" src="static/js/dataTables.fnGetFilteredNodes.js"></script>
+<script type="text/javascript" src="static/js/dataTables.fnGetHiddenNodes.js"></script>
+<!--
+When setting the name of posted variables, the name of "check_id", "comment_id" should not be assigned since I used the check_id to represent the checkboxes and comment_id to represent the comments
+07/15/2014 ShinYeh
+-->
+<link rel="stylesheet" type="text/css" href="static/css/jquery-ui.css">
+<script type='text/javascript' src='static/js/Chart.js'></script>
+<script type='text/javascript' src='static/js/jquery-ui.js'></script>
+
+<script>
+/* Create an array with the values of all the input boxes in a column, parsed as numbers */
+$.fn.dataTable.ext.order['dom-text-numeric'] = function  ( settings, col )
+{
+    return this.api().column( col, {order:'index'} ).nodes().map( function ( td, i ) {
+        return $('input', td).val() * 1;
+    } );
+}
+
+$.fn.dataTable.ext.order['dom-text'] = function  ( settings, col )
+{
+    return this.api().column( col, {order:'index'} ).nodes().map( function ( td, i ) {
+        return $('input', td).val();
+    } );
+}
+</script>
+
+
+<script>
+    $(function() {
+        $(".search-product").autocomplete({
+            source: "{{url_for("autocomplete_product")}}",
+            minLength: 2
+        });
+    });
+</script>
+
+</style>
+
+<script>    
+var oTable;
+$(document).ready(function() {
+    $('#div_sidebar').fadeOut('slide',function(){});
+/*
+    e1 = document.getElementById("submit_button");
+    e1.style.width = "90%";
+    e1.style.marginLeft = 10;
+*/
+    $('.main').each(function(){
+        this.style.width = "100%";
+        this.style.marginLeft = 0;
+    })
+
+    var oTable = $('#bugs_table').DataTable({
+        paging:         true, 
+        "lengthMenu": [ [-1, 5, 10, 25, 50], ["All", 5, 10, 25, 50] ],
+        dom: 'C<"clear">lfrtip',
+        //scrollY:        "600px",
+        //scrollX: true,
+        "bSort":false,
+        "aoColumns": [ 
+            {"bVisible":true},
+            {"bVisible":true},  //Number
+            {"bVisible":true},  //BugID
+            {"bVisible":true,"bSearchable":false},  //Summary-short_desc
+            {"bVisible":true},  //kanban state
+			{"bVisible":true},  //status
+            {"bVisible":false}, //Priority
+            {"bVisible":false}, //Severity
+            {"bVisible":true, "sWidth":"20%", "orderDataType": "dom-text"},  //Fix_by_x
+			{"bVisible":false,"bSearchable":false},  //Assigned to
+            {"bVisible":true},  //ETA
+            {"bVisible":false},  //Last Modified
+        ],
+    } );
+
+} );
+</script>
+
+<link rel="stylesheet" type="text/css" href="static/css/vis.css">
+<script type="text/javascript" src="static/js/vis.js"></script>
+
+{% endblock %}
+</head>
+<body>
+
+{% block body%}
+
+{% set waiting_cnt = [] %}
+{% set ongoing_cnt = [] %}
+{% set fixed_cnt = [] %}
+{% set total_cnt = [] %}
+{% set people_list = [] %}
+{% for entry in bugs %}
+    {% if total_cnt.append(1) %} {% endif %}
+    {% if ((entry["bug_status"].find("new") >= 0 ) or (entry["bug_status"].find("assigned") >= 0)) %}
+        {% if waiting_cnt.append(1) %} {% endif %}
+        {% if people_list.append(entry["qa_contact"]) %} {% endif %}
+        {% if people_list.append("Waiting") %} {% endif %}
+    {% elif ((entry["bug_status"].find("resolved") >= 0) or (entry["bug_status"].find("reopened") >= 0)) %}
+        {% if ongoing_cnt.append(1) %} {% endif %}
+        {% if people_list.append(entry["qa_contact"]) %} {% endif %}
+        {% if people_list.append("Ongoing") %} {% endif %}
+    {% elif entry["bug_status"].find("closed") >= 0 %}
+        {% if fixed_cnt.append(1) %} {% endif %}
+        {% if people_list.append(entry["qa_contact"]) %} {% endif %}
+        {% if people_list.append("Closed") %} {% endif %}
+    {% endif %}
+{% endfor %}
+
+{% set piechart = 0 %}
+{% set barchart = 1 %}
+{% if piechart == 1 %}
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+      google.load("visualization", "1", {packages:["corechart"]});
+      google.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+          ['Kanban State', 'Count'],
+          ['Total : {{ total_cnt|length }}', {{ total_cnt|length }}],
+          ['Waiting : {{ waiting_cnt|length }}',     {{ waiting_cnt|length }}],
+          ['Ongoing : {{ ongoing_cnt|length }}',     {{ ongoing_cnt|length }}],
+          ['Closed : {{ fixed_cnt|length }}',      {{ fixed_cnt|length }}],
+        ]);
+
+        var options = {
+          backgroundColor: '#eeeeff',
+          is3D: true,
+          pieSliceTextStyle: {
+            color: 'black',
+          },
+          slices: {
+            0: { color: '#cccccc' },
+            1: { color: '#444444' },
+            2: { color: '#aaffaa' },
+            3: { color: '#ffffaa' }
+          },
+          legend: {textStyle: {
+            color: 'black',
+            fontSize: 20,
+            bold: true,
+            italic: false },
+            position: 'bottom',
+            alignment: 'center',
+          }
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('piechart_3d'));
+        chart.draw(data, options);
+        google.visualization.events.addListener(chart, 'click', function(targetID) {
+          var tid = targetID.targetID;
+          var txt = document.getElementById('bugs_table_filter');
+          txt = txt.children[0].children[0];
+          if (tid == "slice#1" || tid == "legendentry#1")
+              txt.value = "Waiting";
+          else if (tid == "slice#2" || tid == "legendentry#2")
+              txt.value = "Ongoing";
+		  else if (tid == "slice#3" || tid == "legendentry#3")
+              txt.value = "Closed";
+          else if (tid == "slice#0" || tid == "legendentry#0")
+              txt.value = "";
+          var table = $('#bugs_table').DataTable();
+          table.search(txt.value).draw();
+        });
+      }
+    </script>
+    <div id="piechart_3d" style="width: 100%; height: 400px;"></div>
+{% elif barchart == 1 %}
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+      google.load("visualization", "1", {packages:["corechart"]});
+      google.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var column_chart = 1;
+        var data = new google.visualization.arrayToDataTable([
+          ['State', 'Count', { role: 'style' }, { role: 'annotation' } ],
+          ['Waiting', {{waiting_cnt|length}}, 'color: #444444', '{{waiting_cnt|length}}'],
+          ['Ongoing', {{ongoing_cnt|length}}, 'color: #aaffaa', '{{ongoing_cnt|length}}'],
+          ['Closed', {{fixed_cnt|length}}, 'color: #ffffaa', '{{fixed_cnt|length}}'],
+          //['Total', {{total_cnt|length}}, 'color: #cccccc', '{{total_cnt|length}}'],
+        ]);
+
+        var options = {
+          title: "Total number of PR: {{total_cnt|length}}",
+          backgroundColor: '#eeeeff',
+          legend: { position: "none" },
+          chartArea: {width: '30%', height: '70%'},
+        };
+
+        var chart;
+        if (column_chart == 1)
+            chart  = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+        else
+            chart  = new google.visualization.BarChart(document.getElementById('chart_div'));
+        chart.draw(data, options);
+        google.visualization.events.addListener(chart, 'click', function(targetID) {
+          var selections = [
+              ["hAxis#0#label#0", "vAxis#0#label#0", "bar#0#0", "annotationtext#0#0#0", "Waiting"],
+              ["hAxis#0#label#1", "vAxis#0#label#1", "bar#0#1", "annotationtext#0#1#0", "Ongoing"],
+              ["hAxis#0#label#2", "vAxis#0#label#2", "bar#0#2", "annotationtext#0#2#0", "Closed"],
+              //["hAxis#0#label#4", "vAxis#0#label#4", "bar#0#4", "annotationtext#0#4#0", ""]
+          ];
+          var tid = targetID.targetID;
+          var txtvalue = '';
+          var i, j;
+          for (i=0; i<selections.length; i++) {
+              for (j=0; j<4; j++) {
+                  if (tid == selections[i][j]) {
+                     txtvalue = selections[i][4];
+                     break;
+                  }
+              }
+              if (j < 4)
+                  break;
+          }
+          var txt = document.getElementById('bugs_table_filter');
+          txt = txt.children[0].children[0];
+          txt.value = txtvalue;
+          var table = $('#bugs_table').DataTable();
+          table.search(txt.value).draw();
+        });
+      }
+    </script>
+    <div id="chart_div" style="width: 100%; height: 300px;"></div>
+{% else %}
+
+<script>
+function filter_my_table(id) {
+    var txt = document.getElementById('bugs_table_filter');
+    txt = txt.children[0].children[0];
+    var v = id;
+    txt.value = v;
+    var table = $('#bugs_table').DataTable();
+    table.search(txt.value).draw();
+}
+</script>
+
+<table id="summary_table" align="right">
+<tbody>
+<tr>
+    <td onclick="filter_my_table('');" style="background:#cccccc;color:black;font-weight:bold;font-size:30px;"> &nbsp;&nbsp;&nbsp;&nbsp; Total : {{ total_cnt|length }} &nbsp;&nbsp;&nbsp;&nbsp; </td>
+    <td onclick="filter_my_table('Waiting');" style="background:#aaffaa;font-weight:bold;font-size:30px;"> &nbsp;&nbsp;&nbsp;&nbsp; Waiting : {{ waiting_cnt|length }} &nbsp;&nbsp;&nbsp;&nbsp; </td>
+    <td onclick="filter_my_table('Ongoing');" style="background:#ffffaa;font-weight:bold;font-size:30px;"> &nbsp;&nbsp;&nbsp;&nbsp; Ongoing : {{ ongoing_cnt|length }} &nbsp;&nbsp;&nbsp;&nbsp; </td>
+    <td onclick="filter_my_table('Closed');" style="background:#ffaaaa;font-weight:bold;font-size:30px;"> &nbsp;&nbsp;&nbsp;&nbsp;Closed : {{ fixed_cnt|length }} &nbsp;&nbsp;&nbsp;&nbsp; </td>
+</tr>
+</tbody>
+</table>
+{% endif %}
+<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main" id='div_main'>
+<form name="bugs_table_form" action="" id="bugs_table_form" method="post">
+    <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+<h1 class="page-header">
+<p class="sub-header">
+<table width="100%" style="white-space:nowrap;font-size:10pt;">
+  <tr>
+    <td style="font-size:22pt" width="100%">CPD QE - Kanban Status</td>
+    <td style="text-align:right;">
+    <script>
+    $(document).ready(function(){
+      $('#selectall').click(function(){
+        if ($("input[type='checkbox']").prop("checked"))
+        {
+           $(':checkbox').prop('checked', false);
+           $(this).text('Check all');
+        }
+        else{
+          $(':checkbox').prop('checked', true);
+          $(this).text('Uncheck all');
+        }  
+      });
+      $('#selectwaiting').click(function(){
+        $("input[type='checkbox'][name='checkbox-kanbanstate']").each(function(){
+          if ($(this).val() == "Waiting") {
+            $(this).prop('checked', true);
+          } else {
+            $(this).prop('checked', false);
+          }
+        });
+      });
+      $('#selectongoing').click(function(){
+        $("input[type='checkbox'][name='checkbox-kanbanstate']").each(function(){
+          if ($(this).val() == "Ongoing") {
+            $(this).prop('checked', true);
+          } else {
+            $(this).prop('checked', false);
+          }
+        });
+      });
+      $("#bugzillalist").click(function() {
+        var selected = new Array();
+        var href = '';
+        var chk = $('input[type="checkbox"][name="checkbox-kanbanstate"]:checked');
+        //alert(chk.length);
+        $(chk).each(function(i){
+            selected.push($(this).attr('id'));
+        });
+        //alert(selected);
+        if (chk.length == 0) {
+          alert("Please select at least one Pr");
+          return false;
+        }
+        else {
+          var default_href = "http://bugzilla.eng.vmware.com//buglist.cgi?query_format=advanced&bug_id=";
+          $(this).attr('href',default_href);
+          var href=$(this).attr('href')+ selected.join("%2C");
+          $(this).attr('target','_blank');
+          $(this).attr('href',href);
+        }
+    });
+    });
+    </script> 
+      | <a id="selectall">Check all</a>
+<!--
+      | <a id="selectverification">Check Verification</a>
+      | <a id="selectpreengaged">Check Preengaged</a>
+      | <a id="selectclosed">Check closed</a>
+-->
+      | <a id="bugzillalist">View list in Bugzilla</a> |
+    </td>
+  </tr>
+</table>
+</p>
+</h1>
+<script>
+function imgError(image) {
+    image.onerror = "";
+    image.src = "/static/images/avatar.png";
+    return true;
+}
+</script>
+
+<table id="bugs_table" class="display" cellspacing="5px" width="100%">
+<thead>
+                <tr width="100%" hidden="true">
+                  <td />
+                  <td>#</td>
+                  <td>Bug ID</td>
+                  <td>Summary</td>
+                  <td>Kanban State</td>
+				  <td>Status</td>
+				  <td>Priority</td>
+                  <td>Severity</td>
+                  <td>Fix By</td>
+                  <td>Assigned_to</td>  
+                  <td>ETA</td>
+                  <td>Last Modified</td>
+                </tr>
+</thead>
+
+        <tbody width="100%">
+        {% set prev_qa_contact = "" %}
+        {% set cnt = 1 %}
+        {% for entry in bugs %}
+            {% if entry["qa_contact"] != prev_qa_contact %}
+                <tr style="background: #aaaaff; font-size: 50px;" width="100%">
+                    <td /><td /><td><img src=https://orgchart.vmware.com/employees/{{ qepair[entry['qa_contact']|string]}}.jpg height="70" width="70" onerror="imgError(this);"/></td>
+                    <td>{{ qepair[entry['qa_contact']|string] }}</td>
+                    {% set people_key = [] %}
+                    {% for pk1 in people_list %}
+                        {% if pk1 == entry["qa_contact"] %}
+                            {% if people_key.append(people_list[loop.index]) %} {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                    <td><font color="#aaaaff" size="0px" hidden="true">{{ people_key|join(',') }}</font></td>
+                    <td /><td /><td /><td /><td /><td /><td />
+                </tr>
+                <tr style="font-weight:bold;background:#aaaaff;" width="100%">
+                  <td />
+                  <td>#</td>
+                  <td>Bug ID</td>
+                  <td>Summary</td>
+				  <td>Kanban State</td>
+                  <td>Status</td>
+                  <td>Priority</td>
+                  <td>Severity</td>
+                  <td>Fix By</td>
+                  <td>Assigned_to</td>
+                  <td>ETA</td>
+                  <td>Last Modified</td>
+                </tr>
+
+            {% set cnt = 1 %}
+            {% endif %}
+            {% set kanban_state = "" %}
+            {% if entry["bug_status"].find("assigned") >= 0 %}
+            <tr style="background:#444444;color:white;">
+            {% set kanban_state = "Waiting" %}
+            {% elif entry["bug_status"].find("new") >= 0 %}
+            <tr style="background:#444444;color:white;">
+            {% set kanban_state = "Waiting" %}
+            {% elif entry["bug_status"].find("resolved") >= 0 %}
+            <tr style="background:#aaffaa;">
+            {% set kanban_state = "Ongoing" %}
+			{% elif entry["bug_status"].find("reopened") >= 0 %}
+            <tr style="background:#aaffaa;">
+            {% set kanban_state = "Ongoing" %}
+            {% else %}
+            <tr>
+            {% endif %}
+                <td><input type="checkbox" name='checkbox-kanbanstate' value='{{kanban_state}}' id='{{entry["bug_id"]}}'> </td>
+                <td style="font-weight:bold;" nowrap="nowrap"> {{ cnt }} </td>
+                <td><a href=https://bugzilla.eng.vmware.com/show_bug.cgi?id={{ entry["bug_id"] }} target="_blank">{{ entry["bug_id"] }}</a></td>
+                <td>{{ entry["short_desc"] }}</td>
+                <td style="font-weight:bold;" nowrap="nowrap">{{ kanban_state }}
+                   {% if kanban_state == "Ongoing" %}
+                   <script>
+                      var days = new Date() - new Date('{{entry["delta_ts"]}}');
+                      days = days / (1000 * 60 * 60);
+                      days = days - 15;
+                      days = days / 24;
+                      if (days > 14) {
+                          document.write("<img src='static/images/red.png' width='24' height='24' title='No update in the past 2 weeks' />");
+                      } else if (days > 7) {
+                           document.write("<img src='static/images/yell.png' width='24' height='24' title='No update in the past 1 week' />");
+                      }
+                   </script>
+                   {% endif %}
+				   
+                </td>
+				<td>{{ entry["bug_status"] }}</td>
+				<td>{{ entry["priority"] }}</td>
+                <td>{{ entry["bug_severity"] }}</td>
+                                
+                <!--The following two scripts are implemented for auto-completion-->
+                <td nowrap="nowrap">
+                    {% for fix_entry in fix_by[entry["bug_id"]] %}
+                        <p> {{ fix_entry['product'] }} - {{ fix_entry['version'] }} - {{ fix_entry['phase'] }}
+                    {% endfor %}
+                </td>
+                <td style="font-weight:bold;">{{ devpair[entry["assigned_to"]|string] }}</td>
+                <td nowrap="nowrap">{{ entry["cf_eta"] }}</td>
+                <td>{{ entry["delta_ts"] }}</td>
+            </tr>
+        {% set prev_qa_contact = entry["qa_contact"] %}
+        {% set cnt = cnt + 1 %}
+        {% endfor %}
+        </tbody>
+    </table>
+    <input type=hidden name= assigned_to value= {{assigned}}>
+    <!-- <button id = "button" type = "submit">Submit</button> -->
+
+    <style>
+    .floating-button {position:fixed; z-index:9999; bottom:15px;width:78%;}
+    </style>
+    <!--<h3><button class="btn btn-lg btn-primary btn-block floating-button" type="submit" id="submit_button">Submit Change</button></h3>-->
+    <br>
+    <style>
+    .mini-submenu{
+      width: 1%;
+      position:fixed; 
+      z-index:9999; 
+      top:50%;
+      left:0px;
+    }
+    .mini-submenu-hide{
+      width: 1%;
+      position:fixed; 
+      z-index:9999; 
+      top:50%;
+      left:16%;
+      display:none;
+    }
+    </style>
+    <br>
+    </form>
+    <h3><button class="btn btn-lg btn-primary btn-block mini-submenu" type='button'>-<br>-<br>-</button></h3>
+    <h3><button class="btn btn-lg btn-primary btn-block mini-submenu-hide" type='button'><<br><<br><</button></h3>
+</div>
+
+
+
+<script>
+$(function(){
+
+    $('.mini-submenu').on('click',function(){       
+        $('#div_sidebar').fadeIn('slide',function(){});
+        $('.mini-submenu-hide').fadeIn('slide',function(){});
+        $('.mini-submenu').hide();
+
+/*
+        e1 = document.getElementById("submit_button");
+        e1.style.width = "75%";
+*/
+        $('.main').each(function(){
+            this.style.width = "100%";
+            this.style.marginLeft = "10%";
+        })
+
+    })
+
+    $('.mini-submenu-hide').on('click',function(){       
+        $('.mini-submenu-hide').hide();
+        $('.mini-submenu').fadeIn('slide',function(){});
+
+        $('#div_sidebar').fadeOut('slide',function(){});
+/*
+        e1 = document.getElementById("submit_button");
+        e1.style.width = "90%";
+        //e1.style.marginLeft = '0px';
+*/
+        $('.main').each(function(){
+            this.style.width = "100%";
+            this.style.marginLeft = '0px';
+        })
+    })
+
+})
+</script>
+{% endblock %}
+</body>
+{% endif %}
