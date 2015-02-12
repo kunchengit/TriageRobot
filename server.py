@@ -646,6 +646,102 @@ def common_get_user_default_query():
 
     return default_query_result
 
+# @app.route('/Show_EntriesX_QE', methods=['POST'])
+def Show_EntriesX_QE(request, assigned_to, Date_begin, Date_end):
+	"""
+	This function processes the query for QE and pass the results into show_entriesx_qe.html
+	The function receives parameters from an entry in show_EntriesX which has handled the assigned_to/data_begin/date_end fields. 
+	"""
+	
+	"""
+	Since the request.form['assigned_to'] has been processed by previous function to remove duplicate user id and alias, 
+	we can use it directly.
+	"""
+	
+	print('@@@ assigned_to=[%s], Date_begin=[%s], Date_End=[%s]\n' % (str(assigned_to), str(Date_end), str(Date_begin)))
+	sql = """
+		select login_name, userid from profiles 
+		where login_name in ('{}')
+		""".format("','".join(assigned_to.split(',')))
+    #print('1 -------------- [%s]\n' % sql)
+	bzdb_conn_qe = MySQLdb.connect(host=BUGZILLA_DATABASE_HOST, port=BUGZILLA_DATABASE_PORT, user=BUGZILLA_DATABASE_USER, passwd=BUGZILLA_DATABASE_PW, db=BUGZILLA_DATABASE_DATABASE, charset='utf8')
+	cursor = bzdb_conn_qe.cursor()
+	cursor.execute(sql)
+
+	alluserids = []
+	allqepair = {}  # dict with{ user-id: user-name, } pair
+	columns = [column[0] for column in cursor.description]
+	for row in cursor.fetchall():
+		allqepair[str(row[1])] = str(row[0])
+		alluserids.append(row[1])
+	
+    #xiaotingm, remove bugs with product = Internal/CRS/document/HPQC
+	sql = """select * from bugs 
+		where qa_contact in ({}) 
+		and delta_ts between {} and {}
+		and product_id not in (7,63,232,146,342)
+		and category_id not in (23,794)
+		ORDER by qa_contact ASC, bug_id DESC""".format(','.join(map(str,alluserids)),
+		Date_begin, 
+		Date_end)
+
+	cursor.execute(sql)
+	columns = [column[0] for column in cursor.description]
+	impure_results = []
+	allbugids = []
+	assigned_dev_ids = []
+	alldevpair = {}
+	
+	for row in cursor.fetchall():
+		impure_results.append(dict(zip(columns, row)))
+		allbugids.append(row[0])
+		
+	#impure_results includes all bugs that in new/resolved/under-verification	
+	if impure_results:
+		sql = """select bug_id, products.name, versions.name,phases.name
+			from bug_fix_by_map,products,versions, phases
+			where bug_id in ({})
+			and bug_fix_by_map.product_id = products.id
+			and bug_fix_by_map.version_id = versions.id
+			and bug_fix_by_map.phase_id = phases.id
+			and products.id = versions.product_id
+			and versions.id = phases.version_id
+			""".format(",".join(str(k["bug_id"]) for k in impure_results))
+     
+		bug_fix_by_results = bug_fix_by_SQL(sql, cursor)
+		
+		#get all assigned_to info
+		for key in impure_results:
+			if (key["assigned_to"] not in assigned_dev_ids) :
+				assigned_dev_ids.append(key["assigned_to"])
+			else:
+				continue
+		
+		if assigned_dev_ids :
+			sql = """select login_name, userid from profiles 
+					where userid in ('{}')
+					""".format("','".join(map(str,assigned_dev_ids)))
+			print('XT: sql -------------- [%s]\n' % sql)
+			cursor.execute(sql)
+			for row in cursor.fetchall():
+				alldevpair[str(row[1])] = str(row[0])
+
+	else:
+		bug_fix_by_results = []
+		
+	cursor.close()
+	bzdb_conn_qe.close()
+	
+	return render_template('show_entriesx_qe.html', 
+	bugs = impure_results,
+	fix_by = bug_fix_by_results, 
+	assigned = assigned_to, 
+	query = request,
+	qepair = allqepair,
+	devpair = alldevpair,
+	actbugids = allbugids
+    )
+	
 @app.route('/Show_EntriesX', methods=['POST'])
 def Show_EntriesX():
     """
@@ -818,7 +914,12 @@ def Show_EntriesX():
     if not len_input:
         logging.warning("{} queries are not approved since the assigned column should not be empty.".format(session['username']))
         return render_template('queryx.html', error="The assigned column should not be empty.")
-    
+
+    qeonly = str(request.form.get('qeonly'))
+    if qeonly == "on":
+		cursor.close()
+		conn.close()
+		return Show_EntriesX_QE(request, assigned_to, Date_begin, Date_end)
     
     sql = """select userid from profiles where login_name in ('{}')""".format("','".join(assigned_to.split(',')))
     
