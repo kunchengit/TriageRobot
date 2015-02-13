@@ -428,7 +428,45 @@ function imgError(image) {
     return true;
 }
 </script>
-
+<table width="100%">
+    <tr width="100%" style="background:#aaffff;font-weight:bold;font-size:20px;">
+        <td>Sprint</td>
+        <td>From</td>
+        <td>To</td>
+        <td>fixed</td>
+        <td>unable to duplicate</td>
+        <td>duplicate</td>
+        <td>wont fix</td>
+        <td>user error</td>
+        <td>not a bug</td>
+        <td>Total</td>
+    </tr>
+    <tr style="background:#ddffff;font-size:15px;">
+        <td>Last Sprint</td>
+        <td>{{ last_sprint_begin }}</td>
+        <td>{{ last_sprint_end }} </td>
+        <td><a target="_blank" href="https://bugzilla.eng.vmware.com/buglist.cgi?query_format=advanced&bug_id={{bug_st_last_link['fixed']}}">{{ bug_st_last['fixed'] }}</a></td>
+        <td><a target="_blank" href="https://bugzilla.eng.vmware.com/buglist.cgi?query_format=advanced&bug_id={{bug_st_last_link['unable to duplicate']}}">{{ bug_st_last['unable to duplicate'] }}</a></td>
+        <td><a target="_blank" href="https://bugzilla.eng.vmware.com/buglist.cgi?query_format=advanced&bug_id={{bug_st_last_link['duplicate']}}">{{ bug_st_last['duplicate'] }}</a></td>
+        <td><a target="_blank" href="https://bugzilla.eng.vmware.com/buglist.cgi?query_format=advanced&bug_id={{bug_st_last_link['wont fix']}}">{{ bug_st_last['wont fix'] }}</a></td>
+        <td><a target="_blank" href="https://bugzilla.eng.vmware.com/buglist.cgi?query_format=advanced&bug_id={{bug_st_last_link['user error']}}">{{ bug_st_last['user error'] }}</a></td>
+        <td><a target="_blank" href="https://bugzilla.eng.vmware.com/buglist.cgi?query_format=advanced&bug_id={{bug_st_last_link['not a bug']}}">{{ bug_st_last['not a bug'] }}</a></td>
+        <td><a target="_blank" href="https://bugzilla.eng.vmware.com/buglist.cgi?query_format=advanced&bug_id={{bug_st_last_link['total']}}">{{ bug_st_last['total'] }}</a></td>
+    </tr>
+    <tr  style="background:#ddffff;font-size:15px;">
+        <td>Current Sprint</td>
+        <td>{{ this_sprint_begin }}</td>
+        <td>{{ this_sprint_end }} </td>
+        <td><a target="_blank" href="https://bugzilla.eng.vmware.com/buglist.cgi?query_format=advanced&bug_id={{bug_st_this_link['fixed']}}">{{ bug_st_this['fixed'] }}</a></td>
+        <td><a target="_blank" href="https://bugzilla.eng.vmware.com/buglist.cgi?query_format=advanced&bug_id={{bug_st_this_link['unable to duplicate']}}">{{ bug_st_this['unable to duplicate'] }}</a></td>
+        <td><a target="_blank" href="https://bugzilla.eng.vmware.com/buglist.cgi?query_format=advanced&bug_id={{bug_st_this_link['duplicate']}}">{{ bug_st_this['duplicate'] }}</a></td>
+        <td><a target="_blank" href="https://bugzilla.eng.vmware.com/buglist.cgi?query_format=advanced&bug_id={{bug_st_this_link['wont fix']}}">{{ bug_st_this['wont fix'] }}</a></td>
+        <td><a target="_blank" href="https://bugzilla.eng.vmware.com/buglist.cgi?query_format=advanced&bug_id={{bug_st_this_link['user error']}}">{{ bug_st_this['user error'] }}</a></td>
+        <td><a target="_blank" href="https://bugzilla.eng.vmware.com/buglist.cgi?query_format=advanced&bug_id={{bug_st_this_link['not a bug']}}">{{ bug_st_last['not a bug'] }}</a></td>
+        <td><a target="_blank" href="https://bugzilla.eng.vmware.com/buglist.cgi?query_format=advanced&bug_id={{bug_st_this_link['total']}}">{{ bug_st_this['total'] }}</a></td>
+    </tr>
+</table>
+<br>
 <table id="bugs_table" class="display" cellspacing="5px" width="100%">
 <thead>
                 <tr width="100%" hidden="true">

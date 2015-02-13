@@ -1251,6 +1251,106 @@ def Show_EntriesX():
         for row in cursor.fetchall():
             allcases[row[0]] = row[1]
 
+    #active_product_rn_list = get_active_product_list('ESX')
+    #active_milestone = dict()
+    #for product in active_product_rn_list:
+    #    active_milestone[product] = get_milestone_from_rn(product)
+
+    bug_st_this = {}
+    bug_st_last = {}
+
+    bug_st_this['fixed'] = 0
+    bug_st_this['unable to duplicate'] = 0
+    bug_st_this['duplicate'] = 0
+    bug_st_this['wont fix'] = 0
+    bug_st_this['user error'] = 0
+    bug_st_this['not a bug'] = 0
+    bug_st_this['total'] = 0
+
+    bug_st_this_link = {}
+    bug_st_this_link['fixed'] = ''
+    bug_st_this_link['unable to duplicate'] = ''
+    bug_st_this_link['duplicate'] = ''
+    bug_st_this_link['wont fix'] = ''
+    bug_st_this_link['user error'] = ''
+    bug_st_this_link['not a bug'] = ''
+    bug_st_this_link['total'] = ''
+
+
+    bug_st_last['fixed'] = 0
+    bug_st_last['unable to duplicate'] = 0
+    bug_st_last['duplicate'] = 0
+    bug_st_last['wont fix'] = 0
+    bug_st_last['user error'] = 0
+    bug_st_last['not a bug'] = 0
+    bug_st_last['total'] = 0
+
+    bug_st_last_link = {}
+    bug_st_last_link['fixed'] = ''
+    bug_st_last_link['unable to duplicate'] = ''
+    bug_st_last_link['duplicate'] = ''
+    bug_st_last_link['wont fix'] = ''
+    bug_st_last_link['user error'] = ''
+    bug_st_last_link['not a bug'] = ''
+    bug_st_last_link['total'] = ''
+
+
+
+    last_sprint_begin = ''
+    last_sprint_end = ''
+    this_sprint_begin = ''
+    this_sprint_end = ''
+
+    sprint_list = get_sprint_date()
+    for sprint in sprint_list:
+        if date_now>=datetime.strptime(sprint[1], '%Y-%m-%d') and date_now<=datetime.strptime(sprint[2], '%Y-%m-%d'):
+            this_sprint_begin = sprint[1]
+            this_sprint_end = sprint[2]
+            #print(' ============= [%s]:[%s]\n' % (sprint[1], sprint[2]))
+            break
+        last_sprint_begin = sprint[1]
+        last_sprint_end = sprint[2]
+
+    if this_sprint_begin!='' and last_sprint_begin!='':
+        actsql="""
+            select
+                bugs.bug_id, bugs_activity.bug_when, bugs_activity.added
+            from
+                bugs, profiles, bugs_activity
+            where
+                bugs.assigned_to in ({})
+                and bugs.assigned_to=profiles.userid
+                and bugs.bug_status in ('resolved', 'closed')
+                and bugs.bug_id=bugs_activity.bug_id
+                and bugs_activity.fieldid=13
+                and bugs_activity.added<>''
+                and bug_when between '{}' and '{}'
+            group by bugs.bug_id
+        """.format(profile_number, last_sprint_begin, this_sprint_end)
+        #print(" --------- %s\n" % actsql)
+        try:
+            #global bzdb_conn
+            cursor = bzdb_conn.cursor()
+            cursor.execute(actsql)
+        except (AttributeError, MySQLdb.OperationalError):
+            logging.warning("Bugzilla Database Reconnect")
+            bzdb_conn = MySQLdb.connect(host=BUGZILLA_DATABASE_HOST, port=BUGZILLA_DATABASE_PORT, user=BUGZILLA_DATABASE_USER, passwd=BUGZILLA_DATABASE_PW, db=BUGZILLA_DATABASE_DATABASE)
+            cursor = bzdb_conn.cursor()
+            cursor.execute(actsql)
+        mid_date = datetime.strptime(this_sprint_begin, '%Y-%m-%d')
+        for row in cursor.fetchall():
+            #print(" >>>>>>>>>>>>>> %d\n" % row[0])
+            if row[1] >= mid_date:
+                bug_st_this[row[2]] = bug_st_this.get(row[2], 0) + 1
+                bug_st_this['total'] = bug_st_this.get('total', 0) + 1
+                bug_st_this_link[row[2]] = bug_st_this_link.get(row[2], '') + ("%d,"%row[0])
+                bug_st_this_link['total'] = bug_st_this_link.get('total', '') + ("%d,"%row[0])
+            else:
+                bug_st_last[row[2]] = bug_st_last.get(row[2], 0) + 1
+                bug_st_last['total'] = bug_st_last.get('total', 0) + 1
+                bug_st_last_link[row[2]] = bug_st_last_link.get(row[2], '') + ("%d,"%row[0])
+                bug_st_last_link['total'] = bug_st_last_link.get('total', '') + ("%d,"%row[0])
+
     return render_template('show_entriesx.html', 
     bugs = Pure_results,
     fix_by=bug_fix_by_results, 
@@ -1260,7 +1360,15 @@ def Show_EntriesX():
     milestone_results = milestone_results, 
     query = request.form,
     actbugids = allbugids2,
-    allcases = allcases
+    allcases = allcases,
+    last_sprint_begin = last_sprint_begin,
+    last_sprint_end = last_sprint_end,
+    this_sprint_begin = this_sprint_begin,
+    this_sprint_end = this_sprint_end,
+    bug_st_this = bug_st_this,
+    bug_st_last = bug_st_last,
+    bug_st_this_link = bug_st_this_link,
+    bug_st_last_link = bug_st_last_link
     )
 
 @app.route('/Show_Entries', methods=['POST'])
@@ -1732,7 +1840,7 @@ def Show_Entries():
     triage_date = date_results, 
     assigned = assigned_to, 
     milestone_flag = milestone_flag, 
-    milestone_results = milestone_results, 
+    milestone_results = milestone_results,
     query = request.form)
 
 @app.route('/Back_To_Show_Entries')
@@ -3528,8 +3636,8 @@ def internal_error(error):
     try:
         from_addr = session["username"] + "@vmware.com"
     except:
-        from_addr = "fangchiw@vmware.com"
-    to_addr = "fangchiw@vmware.com"
+        from_addr = "hxie@vmware.com"
+    to_addr = "hxie@vmware.com"
     subject = """[TriageRobot Problem Report] {}""".format(datetime.now().strftime(FMT_YMDHMS))
     message = traceback.format_exc()
     message += '\n\n'+str(request)+'\n\n'
