@@ -1303,7 +1303,7 @@ def Show_EntriesX():
 
     sprint_list = get_sprint_date()
     for sprint in sprint_list:
-        if date_now>=datetime.strptime(sprint[1], '%Y-%m-%d') and date_now<=datetime.strptime(sprint[2], '%Y-%m-%d'):
+        if date_now>=datetime.strptime(sprint[1], '%Y-%m-%d') and date_now+timedelta(days=7)<=datetime.strptime(sprint[2], '%Y-%m-%d'):
             this_sprint_begin = sprint[1]
             this_sprint_end = sprint[2]
             #print(' ============= [%s]:[%s]\n' % (sprint[1], sprint[2]))
