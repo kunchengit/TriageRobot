@@ -1337,7 +1337,7 @@ def Show_EntriesX():
             bzdb_conn = MySQLdb.connect(host=BUGZILLA_DATABASE_HOST, port=BUGZILLA_DATABASE_PORT, user=BUGZILLA_DATABASE_USER, passwd=BUGZILLA_DATABASE_PW, db=BUGZILLA_DATABASE_DATABASE)
             cursor = bzdb_conn.cursor()
             cursor.execute(actsql)
-        mid_date = datetime.strptime(this_sprint_begin, '%Y-%m-%d')
+        mid_date = datetime.strptime(this_sprint_begin, '%Y-%m-%d')-timedelta(days=1)
         for row in cursor.fetchall():
             #print(" >>>>>>>>>>>>>> %d\n" % row[0])
             if row[1] >= mid_date:
