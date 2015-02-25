@@ -1354,7 +1354,8 @@ def Update_Milestone():
     pttl_cursor.execute(sql)
     columns = [column[0] for column in pttl_cursor.description]
     for row in pttl_cursor.fetchall():
-        Milestone_Results.append(dict(zip(columns, row)))
+        pass
+        #Milestone_Results.append(dict(zip(columns, row)))
     """
     Change dictionary name
     """
@@ -1366,7 +1367,7 @@ def Update_Milestone():
     
     
     sql = """SELECT DATE(dtm_eta) 
-            AS dtm_eta_date,dtm_phase_id,rel_name,dtm_min_weight 
+            AS dtm_eta_date,dtm_phase_id,rel_name,dtm_min_weight, DATE(dtm_start) AS dtm_start_date 
             FROM rel JOIN dtool_rel_mil 
             ON rel.rel_id = dtool_rel_mil.dtm_rel_id 
             ORDER BY dtm_eta"""
@@ -1390,11 +1391,14 @@ def Update_Milestone():
         entry["phase_id"] = entry.pop("dtm_phase_id")
         entry["name"] = entry.pop("rel_name")
         entry["weight"] = entry.pop("dtm_min_weight")
+        entry["start"] = entry.pop("dtm_start_date")
     
     local_conn = MySQLdb.connect(host=LOCAL_DATABASE_HOST, user=LOCAL_DATABASE_USER, passwd=LOCAL_DATABASE_PW, db=LOCAL_DATABASE_DATABASE)
     local_cursor = local_conn.cursor()
     
-    
+    #delete all records
+    sql = """DELETE FROM milestone"""
+    local_cursor.execute(sql)
     
     for entry in Milestone_Results:
         for key in entry.keys():

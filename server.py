@@ -3219,7 +3219,7 @@ def get_milestone_from_rn(product):
     cursor=conn.cursor()
 
     sql = """
-        select phases.name as phase_name, eta, weight, milestone.name as product_name
+        select phases.name as phase_name, eta, weight, milestone.name as product_name, start
         from milestone, phases 
         where milestone.phase_id in 
         (select milestone.phase_id from milestone where milestone.name = '{}') 
@@ -3227,7 +3227,7 @@ def get_milestone_from_rn(product):
         and milestone.name not like "%vum%"
         and milestone.name not like "%p99%"
         and milestone.name like '{}'
-        ORDER by eta
+        ORDER by eta, start
     """.format(product, product)
     #print sql
     print sql
@@ -3248,6 +3248,10 @@ def get_milestone_from_rn(product):
         key['matched'] = 0
         if key["eta"] == "null" or not key['eta']:
             continue
+        if key["start"] == "null" or not key["start"]:
+            key["start"] = ""
+        else:
+            key["start"] = key["start"].date()
         key["eta"] = key["eta"].date()
     
     return results
