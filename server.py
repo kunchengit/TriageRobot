@@ -23,6 +23,9 @@ from datetime import datetime, timedelta, date
 from dateutil.relativedelta import relativedelta
 from collections import OrderedDict
 from calendar import month_name
+import re
+from retrieve_similar_bugs import retrieve_similar_bugs
+from retrieve_similar_bugs import find_bug
 
 
 ETA_MONTH_CONFIG = 3
@@ -572,6 +575,45 @@ def QueryX():
     else:
         return render_template('queryx.html')
 
+
+
+
+@app.route('/retrieve', methods=['GET', 'POST'])
+def Retrieve():
+#    """
+#    this function queries the database first.
+#    If there is custom setting in local database, it will fill into respective columns initially.
+#
+#    """
+#
+#    conn = MySQLdb.connect(host=LOCAL_DATABASE_HOST, user=LOCAL_DATABASE_USER, passwd=LOCAL_DATABASE_PW, db=LOCAL_DATABASE_DATABASE)
+#    cursor = conn.cursor()
+#
+#    sql="""
+#        select userid from profiles where login_name = '{}'
+#        """.format(session["username"])
+#    cursor.execute(sql)
+#    profile_number = cursor.fetchone()[0]
+#
+#    sql="""
+#        select * from custom_setting where userid = {}
+#        """.format(profile_number)
+#    cursor.execute(sql)
+#
+#    columns = [column[0] for column in cursor.description]
+#    results = []
+#    for row in cursor.fetchall():
+#        results.append(dict(zip(columns, row)))
+#    if results:
+#        return render_template('reteieve.html',
+#            query_assignee = results[0]["query_assignee"],
+#            query_product = results[0]["query_product"],
+#            query_version = rsults[0]["query_version"],
+#            query_phase = results[0]["query_phase"]
+#            )
+#    else:
+#        return render_template('retrieve.html')
+    return render_template('retrieve.html')
 
 
 
@@ -1370,6 +1412,85 @@ def Show_EntriesX():
     bug_st_this_link = bug_st_this_link,
     bug_st_last_link = bug_st_last_link
     )
+
+
+
+@app.route('/Show_Similar_Bugs', methods=['POST'])
+def Show_Similar_Bugs():
+    """
+    This function processes the query and pass the results into show_similar_bugs.html
+    """
+    
+    """
+    Since the request.form['bugid'] will probably include ',' and space character, 
+    we have to preprocess the request.form['bugid']
+    e.g., 
+    290423,1312084,
+    """
+#    conn = MySQLdb.connect(host=LOCAL_DATABASE_HOST, user=LOCAL_DATABASE_USER, passwd=LOCAL_DATABASE_PW, db=LOCAL_DATABASE_DATABASE)
+#    if not conn:
+#        flash("Fail to Connect my Sql, please try again later")
+#        return render_template('queryx.html', error="Fail to Connect MySQL, Please try again later")
+#    cursor = conn.cursor()
+    
+    bugid = str(request.form['bugid']).rstrip(',')
+    query_list = re.sub(',', ' ', bugid).split()
+
+    length = str(request.form['length']).rstrip(',')
+    length_list_temp = re.sub(',', ' ', length).split()
+
+    if len(length_list_temp) == 1:
+        length_list = length_list_temp*len(query_list)
+    elif len(length_list_temp) == len(query_list):
+        length_list = length_list_temp
+    else:
+        flash("The number of length parameters doesn't match the number of query bugs, pleace check the input")
+        return render_template('retrieve.html', error = "The number of length parameters doesn't match the number of query bugs, pleace check the input")
+
+    dictionary_address = '/root/chenkun/Duplicate-bugs-retrieval/dictionary_ff.txt'
+    topicmodel_address = '/root/chenkun/Duplicate-bugs-retrieval/ldamodel_ff.txt'
+    rankmodel_address = '/root/chenkun/Duplicate-bugs-retrieval/LambdaMART_ff.txt'
+    
+    # result = find_bug()
+    result = retrieve_similar_bugs(query_list, length_list, dictionary_address, topicmodel_address, rankmodel_address)
+    if not result:
+        return render_template('retrieve.html', error="Can't find any similar bugs of {}. This is mainly because the database is not complete".format(bugid))
+    else:
+        conn = MySQLdb.connect(host=BUGZILLA_DATABASE_HOST, port=BUGZILLA_DATABASE_PORT, user=BUGZILLA_DATABASE_USER, passwd=BUGZILLA_DATABASE_PW, db=BUGZILLA_DATABASE_DATABASE)
+        if not conn:
+            flash("Fail to Connect my Sql, please try again later")
+            return render_template('queryx.html', error="Fail to Connect MySQL, Please try again later")
+        cursor = conn.cursor()
+
+        allbugids = []
+        for key in result:
+            allbugids.append(key)
+            allbugids += result[key]
+        allbugids = set(allbugids)
+
+        sql = """select bug_id, short_desc, login_name, host_op_sys, guest_op_sys, priority, products.name, categories.name, components.name
+        from bugs, profiles, products, categories, components
+        where bug_id in ({})
+        and bugs.assigned_to = profiles.userid
+        and bugs.product_id = products.id
+        and bugs.category_id = categories.id
+        and bugs.component_id = components.id
+        """.format(",".join(str(item) for item in allbugids))
+
+        cursor.execute(sql)
+        columns = [column[0] for column in cursor.description]
+        columns[-3:] = ['product_name', 'category_name', 'component_name']
+        bugs = {}
+        for row in cursor.fetchall():
+            bugs[row[0]] = dict(zip(columns[1:], row[1:]))
+        
+        return render_template('show_similar_bugs.html',
+        ranklist = result,
+        bugdata = bugs)
+
+
+
+
 
 @app.route('/Show_Entries', methods=['POST'])
 def Show_Entries():
